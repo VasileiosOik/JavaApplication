@@ -1,0 +1,49 @@
+version: '3'
+services:
+#The application
+  springappserver:
+    build:
+      context: .
+      dockerfile: springapp.dockerfile
+    ports:
+    - 8081:8081
+    networks:
+    - all
+    volumes:
+    - .:/vol/development
+    depends_on:
+    - mysqldbserver
+    - mongodbserver
+#The MongoDB server
+  mongodbserver:
+    build:
+      context: .
+      dockerfile: mongodb.dockerfile
+    ports:
+    - 27017:27017
+    networks:
+    - all
+    environment:
+      MONGODB_DATABASE: Company
+      MONGODB_HOST: 192.168.99.100
+      MONGODB_PORT: 27017
+    volumes:
+    - /app/hdp/mongo/data:/data/db
+    container_name: mongodbserver
+#The MySQL server
+  mysqldbserver:
+    build:
+      context: .
+      dockerfile: mysqldb.dockerfile
+    ports:
+    - 3306:3306
+    networks:
+    - all
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    container_name: mysqldbserver
+networks:
+  all:

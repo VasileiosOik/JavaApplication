@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<typeAliases>
+		<package name="com.connection.domain" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="/mappers/mapper.xml" />
+	</mappers>
+</configuration>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+<Department
+	ID="1001"
+	NAME="Research">
+</Department>
+
+<Department
+	ID="1003"
+	NAME="Technology">
+</Department>
+
+<Department
+	ID="1004"
+	NAME="Security">
+</Department>
+
+<Employee
+	ID="100001"
+	FIRST_NAME="David"
+	LAST_NAME="Duffy"
+	JOB_TITLE="CEO"
+	HIRE_DATE="1985-20-10">
+</Employee>
+
+<Employee
+	ID="100002"
+	FIRST_NAME="Kevin"
+	LAST_NAME="Withers"
+	JOB_TITLE="Head of Research"
+	HIRE_DATE="1989-01-05"
+	MANAGER_ID="100001"
+	DEPARTMENT_ID="1001">
+</Employee>
+
+<Employee
+	ID="100003"
+	FIRST_NAME="Tracey"
+	LAST_NAME="Connor"
+	JOB_TITLE="VP-Sales"
+	HIRE_DATE="1995-02-10"
+	MANAGER_ID="100001">
+</Employee>
+
+<Employee
+	ID="100004"
+	FIRST_NAME="Gary"
+	LAST_NAME="White"
+	JOB_TITLE="CTO"
+	HIRE_DATE="1999-03-15"
+	MANAGER_ID="100001"
+	DEPARTMENT_ID="1003">
+</Employee>
+
+<Employee
+	ID="100005"
+	FIRST_NAME="Matthew"
+	LAST_NAME="Frost"
+	JOB_TITLE="Security Manager"
+	HIRE_DATE="1998-04-20"
+	MANAGER_ID="100001"
+	DEPARTMENT_ID="1004">
+</Employee>
+
+<Employee
+	ID="100006"
+	FIRST_NAME="Petra"
+	LAST_NAME="Moody"
+	JOB_TITLE="Senior Research Analyst"
+	HIRE_DATE="2009-06-15"
+	MANAGER_ID="100002"
+	DEPARTMENT_ID="1001">
+</Employee>
+
+<Employee
+	ID="100007"
+	FIRST_NAME="Nigel"
+	LAST_NAME="Pentland"
+	JOB_TITLE="Research Analyst"
+	HIRE_DATE="2014-01-25"
+	MANAGER_ID="100002"
+	DEPARTMENT_ID="1001">
+</Employee>
+
+<Employee
+	ID="100008"
+	FIRST_NAME="Patricia"
+	LAST_NAME="Murray"
+	JOB_TITLE="Senior Sales Asscoiate"
+	HIRE_DATE="2011-09-18"
+	MANAGER_ID="100003">
+</Employee>
+
+<Employee
+	ID="100009"
+	FIRST_NAME="Rachael"
+	LAST_NAME="Stevenson"
+	JOB_TITLE="Sales Asscoiate"
+	HIRE_DATE="2012-10-22"
+	MANAGER_ID="100003">
+</Employee>
+
+<Employee
+	ID="100010"
+	FIRST_NAME="John"
+	LAST_NAME="Smith"
+	JOB_TITLE="Sales Asscoiate"
+	HIRE_DATE="2013-11-26"
+	MANAGER_ID="100003">
+</Employee>
+
+<Employee
+	ID="100011"
+	FIRST_NAME="Joe"
+	LAST_NAME="Bloggs"
+	JOB_TITLE="Business Analyst"
+	HIRE_DATE="2011-02-23"
+	MANAGER_ID="100004"
+	DEPARTMENT_ID="1003">
+</Employee>
+
+<Employee
+	ID="100012"
+	FIRST_NAME="Gerard"
+	LAST_NAME="Brawley"
+	JOB_TITLE="Software Developer"
+	HIRE_DATE="2013-03-29"
+	MANAGER_ID="100004"
+	DEPARTMENT_ID="1003">
+</Employee>
+
+<Employee
+	ID="100013"
+	FIRST_NAME="Ricky"
+	LAST_NAME="McLaren"
+	JOB_TITLE="Security Analyst"
+	HIRE_DATE="2009-06-03"
+	MANAGER_ID="100005"
+	DEPARTMENT_ID="1004">
+</Employee>
+
+<Employee
+	ID="100014"
+	FIRST_NAME="Andy"
+	LAST_NAME="McNee"
+	JOB_TITLE="Security Analyst"
+	HIRE_DATE="2010-05-09"
+	MANAGER_ID="100005"
+	DEPARTMENT_ID="1004">
+</Employee>
+
+
+</dataset>
