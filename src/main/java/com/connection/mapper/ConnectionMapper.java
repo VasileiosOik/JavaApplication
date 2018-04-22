@@ -19,7 +19,6 @@ public interface ConnectionMapper {
 
 	List<Employee> getEmployeesByNumOfYearsWorked(int numOfYears);
 
-	// done
 	void changeEmployeeJobTitle(@Param("name") String name, @Param("lName") String lName,
 			@Param("jobTitle") String jobTitle);
 

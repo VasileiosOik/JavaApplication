@@ -28,7 +28,9 @@ import com.connection.mapper.ConnectionMapper;
 @TestPropertySource(locations = "classpath:test.properties")
 public class ConnectionDAOTest {
 
-	@Mock
+
+
+    @Mock
 	private ConnectionMapper connectionMapper;
 
 	@InjectMocks
@@ -46,7 +48,11 @@ public class ConnectionDAOTest {
 	@Captor
 	private ArgumentCaptor<Department> depCaptor;
 
-	public static final Logger LOG = LoggerFactory.getLogger(ConnectionDAOTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConnectionDAOTest.class);
+
+	private static final String SALES = "Sales";
+
+    private static final String TECHNOLOGY = "Technology";
 
 	@Test
 	public void returnAllEmployees() {
@@ -72,12 +78,12 @@ public class ConnectionDAOTest {
 
 	@Test
 	public void testEmployeesInSpecificDepartment() {
-		when(connectionMapper.employeesInSpecificDepartment("Sales")).thenReturn(getMockEmployee());
-		connectionDAO.getAllEmployeesInADepartment("Sales");
+		when(connectionMapper.employeesInSpecificDepartment(SALES)).thenReturn(getMockEmployee());
+		connectionDAO.getAllEmployeesInADepartment(SALES);
 
 		Mockito.verify(connectionMapper, times(1)).employeesInSpecificDepartment(captor1.capture());
 		LOG.debug("The value is [ {} ]", captor1.getValue());
-		assertEquals("Sales", captor1.getValue());
+		assertEquals(SALES, captor1.getValue());
 
 	}
 	
@@ -99,14 +105,14 @@ public class ConnectionDAOTest {
 
 		Mockito.verify(connectionMapper, times(1)).addDepartment(depCaptor.capture());
 
-		assertEquals(depCaptor.getValue().getDepName(), "Technology");
+		assertEquals(depCaptor.getValue().getDepName(), TECHNOLOGY);
 		assertEquals(depCaptor.getValue().getDepId(), 1003);
 	}
 
 	@Test
 	public void testAddEmployee() {
 
-		when(connectionMapper.departmentFound(1003)).thenReturn("Technology");
+		when(connectionMapper.departmentFound(1003)).thenReturn(TECHNOLOGY);
 
 		when(connectionMapper.managerOfADepartment(1003)).thenReturn(100004);
 
@@ -160,7 +166,7 @@ public class ConnectionDAOTest {
 		employee.setDepartmentId(1001);
 		employee.setHiredate("1988-10-23");
 
-		List<Employee> emp = new ArrayList<Employee>();
+		List<Employee> emp = new ArrayList<>();
 		emp.add(employee);
 
 		return emp;
@@ -185,7 +191,7 @@ public class ConnectionDAOTest {
 	private Department getMockDepartment() {
 		Department department = new Department();
 		department.setDepId(1003);
-		department.setDepName("Technology");
+		department.setDepName(TECHNOLOGY);
 
 		return department;
 
@@ -194,9 +200,9 @@ public class ConnectionDAOTest {
 	private List<Department> getMockDepartments() {
 		Department department = new Department();
 		department.setDepId(1003);
-		department.setDepName("Technology");
+		department.setDepName(TECHNOLOGY);
 		
-		List<Department> dep = new ArrayList<Department>();
+		List<Department> dep = new ArrayList<>();
 		dep.add(department);
 
 		return dep;

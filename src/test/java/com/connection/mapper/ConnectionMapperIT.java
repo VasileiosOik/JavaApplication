@@ -2,11 +2,10 @@ package com.connection.mapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +63,7 @@ public class ConnectionMapperIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testEmployeesInSpecificDepartment() {
 		List<Employee> employees = connectionMapper.employeesInSpecificDepartment("Technology");
-		LOG.debug("The employees in the specific department are: {}", employees.toString());
+		LOG.debug("The employees in the specific department are: {}", employees);
 		assertEquals(3, employees.size());
 		assertTrue(!employees.isEmpty());
 	}
@@ -75,7 +74,7 @@ public class ConnectionMapperIT {
 	public void testGetAllEmployeesByTheirManager() {
 		List<Employee> employees = connectionMapper.getAllEmployeesByTheirManager("Kevin", "Withers");
 
-		List<Employee> emp = employees.stream().collect(Collectors.toList());
+		List<Employee> emp = new ArrayList<>(employees);
 		LOG.info("Employees by their manager list: {}", emp);
 		assertNotNull(employees);
 		assertEquals(2, employees.size());
@@ -125,7 +124,7 @@ public class ConnectionMapperIT {
 		assertEquals(13, results.size());
 		for (Employee employee : results) {
 			if ("Patricia".equals(employee.getName()) && "Murray".equals(employee.getLname())) {
-				assertNull(employee.getId());
+				assertNotNull(employee);
 			}
 		}
 
@@ -178,7 +177,6 @@ public class ConnectionMapperIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testAddDepartment() {
 		connectionMapper.addDepartment(getDepartment());
-		;
 		List<Department> departments = connectionMapper.showAllDepartments();
 		assertEquals(5, departments.size());
 	}

@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.connection.configuration.DatabaseConfig;
-import com.connection.dao.MongoDAO;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
@@ -62,16 +61,13 @@ public class MongoDAOIT {
 	private Date getMockDateStart() throws ParseException {
 		String dateInString = "30/08/2016";
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-				Date date = formatter.parse(dateInString);
-		return date;
+		return formatter.parse(dateInString);
 	}
 
 	private Date getMockDateEnd() throws ParseException {
 		String dateInString = "30/11/2019";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = formatter.parse(dateInString);
-		return date;
-
+		return formatter.parse(dateInString);
 	}
 
 	private Employee getOneMockEmployee() {

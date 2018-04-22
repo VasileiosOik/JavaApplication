@@ -20,7 +20,7 @@ import com.connection.dao.ConnectionDAO;
 import com.connection.dao.MongoDAO;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
-import com.connection.errorhandler.CustomErrorType;
+import com.connection.customerror.CustomErrorType;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,7 +34,7 @@ import io.swagger.annotations.Tag;
 @SwaggerDefinition(tags = { @Tag(name = "company", description = "Operations pertaining to manage a company") })
 public class ConnectionController {
 
-	public static final Logger LOG = LoggerFactory.getLogger(ConnectionController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConnectionController.class);
 
 	@Autowired
 	private ConnectionDAO connectionDAO;
@@ -175,7 +175,7 @@ public class ConnectionController {
 		mongoDAO.addDepartmentToMongoDB(department);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/company/department/{id}").buildAndExpand(department.getDepId()).toUri());
+		headers.setLocation(ucBuilder.path("/company/department").buildAndExpand(department.getDepId()).toUri());
 		return new ResponseEntity<>(headers, HttpStatus.CREATED);
 	}
 

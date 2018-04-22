@@ -1,5 +1,6 @@
 package com.connection.controller;
 
+import static com.jayway.restassured.RestAssured.*;
 import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
@@ -32,14 +33,15 @@ import com.jayway.restassured.response.Response;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class })
 public class ConnectionControllerIT {
 
-	public static final Logger LOG = LoggerFactory.getLogger(ConnectionControllerIT.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConnectionControllerIT.class);
+	private static final String APPLICATION_JSON = "application/json";
 
 	@LocalServerPort
 	private int port;
 
 	@Before
-	public void setUp() throws Exception {
-		RestAssured.port = port;
+	public void setUp() {
+		port = port;
 	}
 
 	@Before
@@ -52,14 +54,14 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testGetAllEmployees() throws Exception {
 
-		Response response = given().contentType("application/json").when().get("/company/employees");
-		JSONArray JSONResponseBody = new JSONArray(response.body().asString());
+		Response response = given().contentType(APPLICATION_JSON).when().get("/company/employees");
+		JSONArray jsonArray = new JSONArray(response.body().asString());
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("id"), "100001");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("name"), "David");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("id"), "100001");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("name"), "David");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("id"), "100002");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("name"), "Kevin");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("id"), "100002");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("name"), "Kevin");
 
 	}
 
@@ -68,17 +70,17 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testGetAllDepartments() throws Exception {
 
-		Response response = given().contentType("application/json").when().get("/company/departments");
-		JSONArray JSONResponseBody = new JSONArray(response.body().asString());
+		Response response = given().contentType(APPLICATION_JSON).when().get("/company/departments");
+		JSONArray jsonArray = new JSONArray(response.body().asString());
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("depId"), "1001");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("depName"), "Research");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("depId"), "1001");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("depName"), "Research");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("depId"), "1002");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("depName"), "Sales");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("depId"), "1002");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("depName"), "Sales");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("depId"), "1003");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("depName"), "Technology");
+		Assert.assertEquals(jsonArray.getJSONObject(2).getString("depId"), "1003");
+		Assert.assertEquals(jsonArray.getJSONObject(2).getString("depName"), "Technology");
 
 	}
 
@@ -87,18 +89,18 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testGetEmployeesInASpecificDepartment() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("depName", "Sales").when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("depName", "Sales").when()
 				.get("/company/department/{depName}");
-		JSONArray JSONResponseBody = new JSONArray(response.body().asString());
+		JSONArray jsonArray = new JSONArray(response.body().asString());
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("id"), "100003");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("name"), "Tracey");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("id"), "100003");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("name"), "Tracey");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("id"), "100008");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("name"), "Patricia");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("id"), "100008");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("name"), "Patricia");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("id"), "100009");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("name"), "Rachael");
+		Assert.assertEquals(jsonArray.getJSONObject(2).getString("id"), "100009");
+		Assert.assertEquals(jsonArray.getJSONObject(2).getString("name"), "Rachael");
 
 	}
 
@@ -107,7 +109,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testGetEmployeesInASpecificDepartment_whenTheDepartmentIsEmpty() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("depName", "Sales").when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("depName", "Sales").when()
 				.get("/company/department/{depName}");
 		assertEquals(response.statusCode(), 404);
 
@@ -118,7 +120,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testReturnEmployeesByNumOfYearsWorked_whenTheyDoNotExist() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("number", 20).when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("number", 20).when()
 				.get("/company/employees/{number}");
 		assertEquals(response.statusCode(), 404);
 
@@ -129,15 +131,15 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testReturnEmployeesByNumOfYearsWorked() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("number", 20).when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("number", 20).when()
 				.get("/company/employees/{number}");
-		JSONArray JSONResponseBody = new JSONArray(response.body().asString());
+		JSONArray jsonArray = new JSONArray(response.body().asString());
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("id"), "100002");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("name"), "Kevin");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("id"), "100002");
+		Assert.assertEquals(jsonArray.getJSONObject(0).getString("name"), "Kevin");
 
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("id"), "100003");
-		Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("name"), "Tracey");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("id"), "100003");
+		Assert.assertEquals(jsonArray.getJSONObject(1).getString("name"), "Tracey");
 
 	}
 
@@ -147,21 +149,21 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteDepartment_whenExists() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("depName", "Sales").when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("depName", "Sales").when()
 				.delete("/company/departments/{depName}");
 		if (response.statusCode() == 200) {
 
-			JSONArray JSONResponseBody = new JSONArray(response.body().asString());
-			Assert.assertEquals(JSONResponseBody.length(), 3);
+			JSONArray jsonArray = new JSONArray(response.body().asString());
+			Assert.assertEquals(jsonArray.length(), 3);
 
-			Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("depId"), "1001");
-			Assert.assertEquals(JSONResponseBody.getJSONObject(0).getString("depName"), "Research");
+			Assert.assertEquals(jsonArray.getJSONObject(0).getString("depId"), "1001");
+			Assert.assertEquals(jsonArray.getJSONObject(0).getString("depName"), "Research");
 
-			Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("depId"), "1003");
-			Assert.assertEquals(JSONResponseBody.getJSONObject(1).getString("depName"), "Technology");
+			Assert.assertEquals(jsonArray.getJSONObject(1).getString("depId"), "1003");
+			Assert.assertEquals(jsonArray.getJSONObject(1).getString("depName"), "Technology");
 
-			Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("depId"), "1004");
-			Assert.assertEquals(JSONResponseBody.getJSONObject(2).getString("depName"), "Security");
+			Assert.assertEquals(jsonArray.getJSONObject(2).getString("depId"), "1004");
+			Assert.assertEquals(jsonArray.getJSONObject(2).getString("depName"), "Security");
 		}
 	}
 
@@ -171,7 +173,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteDepartment_whenDoesNotExists() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("depName", "Finance").when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("depName", "Finance").when()
 				.delete("/company/departments/{depName}");
 		assertEquals(response.statusCode(), 404);
 	}
@@ -181,7 +183,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteDepartment_whenTheCompanyIsEmpty() throws Exception {
 
-		Response response = given().contentType("application/json").pathParam("depName", "Finance").when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("depName", "Finance").when()
 				.delete("/company/departments/{depName}");
 		assertEquals(response.statusCode(), 204);
 	}
@@ -191,7 +193,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeesAfterDeleting.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteEmployee() throws Exception {
-		Response response = given().contentType("application/json").pathParam("id", 100014).when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("id", 100014).when()
 				.delete("/company/employees/{id}");
 
 		Assert.assertEquals(response.getStatusCode(), 200);
@@ -203,7 +205,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteEmployee_whenDoesNotExist() throws Exception {
-		Response response = given().contentType("application/json").pathParam("id", 100017).when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("id", 100017).when()
 				.delete("/company/employees/{id}");
 
 		Assert.assertEquals(response.getStatusCode(), 404);
@@ -214,7 +216,7 @@ public class ConnectionControllerIT {
 	@DatabaseSetup("/ClearData.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testDeleteEmployee_whenTheCompanyIsEmpty() throws Exception {
-		Response response = given().contentType("application/json").pathParam("id", 100017).when()
+		Response response = given().contentType(APPLICATION_JSON).pathParam("id", 100017).when()
 				.delete("/company/employees/{id}");
 
 		Assert.assertEquals(response.getStatusCode(), 204);
@@ -227,7 +229,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testAddNewDepartment() throws Exception {
 
-		Response response = given().contentType("application/json").body(getMockDepartmentRequestJSON()).when()
+		Response response = given().contentType(APPLICATION_JSON).body(getMockDepartmentRequestJSON()).when()
 				.post("/company/department/");
 
 		Assert.assertEquals(response.getStatusCode(), 201);
@@ -239,7 +241,7 @@ public class ConnectionControllerIT {
 	@DatabaseTearDown("/ClearData.xml")
 	public void testAddNewDepartment_whenIsDuplicate() throws Exception {
 
-		Response response = given().contentType("application/json").body(getMockDuplicateDepartmentRequestJSON()).when()
+		Response response = given().contentType(APPLICATION_JSON).body(getMockDuplicateDepartmentRequestJSON()).when()
 				.post("/company/department/");
 
 		Assert.assertEquals(response.getStatusCode(), 409);
@@ -251,7 +253,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeeAfterAdding.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testAddNewEmployee() {
-		Response response = given().contentType("application/json").body(getNewEmployeeDetailsRequestJSON()).when()
+		Response response = given().contentType(APPLICATION_JSON).body(getNewEmployeeDetailsRequestJSON()).when()
 				.post("/company/employee");
 
 		Assert.assertEquals(response.getStatusCode(), 201);
@@ -263,7 +265,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testAddNewEmployee_employeeExists() {
-		Response response = given().contentType("application/json").body(getMockEmployeeDuplicateDetailsRequestJSON())
+		Response response = given().contentType(APPLICATION_JSON).body(getMockEmployeeDuplicateDetailsRequestJSON())
 				.when().post("/company/employee");
 
 		Assert.assertEquals(response.getStatusCode(), 409);
@@ -275,7 +277,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeeAfterUpdatingDetails.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testUpdateEmployeeJobTitle() throws JSONException {
-		Response response = given().contentType("application/json").pathParam("id", 100014)
+		Response response = given().contentType(APPLICATION_JSON).pathParam("id", 100014)
 				.body(getMockEmployeeDetailsRequestJSON()).when().put("/company/employee/{id}");
 
 		Assert.assertEquals(response.getStatusCode(), 200);
@@ -287,7 +289,7 @@ public class ConnectionControllerIT {
 	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/ClearData.xml")
 	public void testUpdateEmployeeJobTitle_whenDoesNotExist() throws JSONException {
-		Response response = given().contentType("application/json").pathParam("id", 100017)
+		Response response = given().contentType(APPLICATION_JSON).pathParam("id", 100017)
 				.body(getMockEmployeeThatDoesNotExistDetailsRequestJSON()).when().put("/company/employee/{id}");
 
 		Assert.assertEquals(response.getStatusCode(), 404);

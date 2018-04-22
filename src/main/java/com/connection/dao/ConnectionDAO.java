@@ -3,6 +3,7 @@ package com.connection.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -93,20 +94,24 @@ public class ConnectionDAO {
 		List<Employee> employees = connectionMapper.employeesInSpecificDepartment(name);
 
 		if (!employees.isEmpty()) {
-			log.debug("Department found! " + "\n" + "Displaying Employees in it: {}" + "\n", employees);
+			log.debug("Department found!%n");
+			log.info("Displaying Employees in it: {}%n", employees);
 		} else {
 			log.debug("No department found with such a name");
 		}
 		return employees;
 	}
 
-	public void getAllEmployeesByTheirManagers(String name, String lastName) {
+	public List<Employee> getAllEmployeesByTheirManagers(String name, String lastName) {
 
 		List<Employee> employees = connectionMapper.getAllEmployeesByTheirManager(name, lastName);
 		if (!employees.isEmpty()) {
-			log.debug("Manager found! " + "\n" + "Displaying Employees under management: {}" + "\n", employees);
+            log.debug("Manager found!%n");
+            log.info("Displaying Employees in it: {}%n", employees);
+            return employees;
 		} else {
 			log.debug("No Manager found with such a name");
+			return Collections.emptyList();
 		}
 	}
 
@@ -149,16 +154,15 @@ public class ConnectionDAO {
 
 	// add an employee
 	public void addEmployee(Employee employee) {
-		Employee emp = employee;
 		if (addEmployeeEnchanced(employee.getManagerId(), employee.getDepartmentId())) {
-			emp.setHiredate(determineTheHireDate(employee.getHiredate()));
-			connectionMapper.addEmployee(emp);
+			employee.setHiredate(determineTheHireDate(employee.getHiredate()));
+			connectionMapper.addEmployee(employee);
 			log.debug("Employee was saved successfully!");
 		}
 	}
 
 	// checking 1
-	public boolean addEmployeeEnchanced(int managerId, int departmentId) {
+	private boolean addEmployeeEnchanced(int managerId, int departmentId) {
 		if (verifyDepartmentExistence(connectionMapper.departmentFound(departmentId)) == 0
 				&& (connectionMapper.managerOfADepartment(departmentId)) == managerId) {
 			log.debug("Both exists under the same section in the system.");
