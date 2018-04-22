@@ -1,7 +1,10 @@
-DROP SCHEMA IF EXISTS testdb1; 
-CREATE SCHEMA testdb1;
-GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'%' IDENTIFIED BY 'root';
-GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+DROP SCHEMA IF EXISTS testdb1;
+
+CREATE SCHEMA IF NOT EXISTS testdb1;
+
+#GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'%' IDENTIFIED BY 'root';
+#GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+
 use testdb1;
 
 DROP TABLE IF EXISTS Employee;

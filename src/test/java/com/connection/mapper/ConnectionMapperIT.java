@@ -141,11 +141,11 @@ public class ConnectionMapperIT {
 		List<Department> departments = connectionMapper.showAllDepartments();
 		assertEquals(3, departments.size());
 
-		assertEquals(departments.get(1).getDepId(), 1003);
-		assertEquals(departments.get(1).getDepName(), "Technology");
+		assertEquals(1003, departments.get(1).getDepId());
+		assertEquals("Technology", departments.get(1).getDepName());
 
-		assertEquals(departments.get(2).getDepId(), 1004);
-		assertEquals(departments.get(2).getDepName(), "Security");
+		assertEquals(1004, departments.get(2).getDepId());
+		assertEquals("Security", departments.get(2).getDepName());
 
 	}
 

@@ -105,8 +105,8 @@ public class ConnectionDAOTest {
 
 		Mockito.verify(connectionMapper, times(1)).addDepartment(depCaptor.capture());
 
-		assertEquals(depCaptor.getValue().getDepName(), TECHNOLOGY);
-		assertEquals(depCaptor.getValue().getDepId(), 1003);
+		assertEquals(TECHNOLOGY, depCaptor.getValue().getDepName());
+		assertEquals(1003, depCaptor.getValue().getDepId());
 	}
 
 	@Test
@@ -130,10 +130,10 @@ public class ConnectionDAOTest {
 
 		Mockito.verify(connectionMapper, times(1)).addEmployee(empCaptor.capture());
 
-		assertEquals(empCaptor.getValue().getId(), 100015);
-		assertEquals(empCaptor.getValue().getName(), "Alex");
-		assertEquals(empCaptor.getValue().getLname(), "Tso");
-		assertEquals(empCaptor.getValue().getJobTitle(), "Tester");
+		assertEquals(100015, empCaptor.getValue().getId());
+		assertEquals("Alex", empCaptor.getValue().getName());
+		assertEquals("Tso", empCaptor.getValue().getLname());
+		assertEquals("Tester", empCaptor.getValue().getJobTitle());
 
 	}
 
