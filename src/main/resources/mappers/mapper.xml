@@ -1,7 +1,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.connection.mapper.ConnectionMapper">
+<mapper namespace="com.connection.mapper.CompanyMapper">
 
 	<resultMap id="employeeResults" type="Employee">
 		<result property="id" column="ID" />
@@ -22,116 +22,158 @@
 
 	<select id="showAllEmployees" resultMap="employeeResults">
 		SELECT
-		e.ID,
-		e.FIRST_NAME,
-		e.LAST_NAME,
-		e.DEPARTMENT_ID,
-		e.JOB_TITLE,
-		e.HIRE_DATE,
-		e.MANAGER_ID
-		FROM Employee e
+			e.ID,
+			e.FIRST_NAME,
+			e.LAST_NAME,
+			e.DEPARTMENT_ID,
+			e.JOB_TITLE,
+			e.HIRE_DATE,
+			e.MANAGER_ID
+		FROM
+			Employee e
 	</select>
 
 
 	<select id="showAllDepartments" resultMap="departmentResults">
-		SELECT d.NAME,
-		d.ID
+		SELECT
+            d.NAME,
+		    d.ID
 		FROM
-		Department d
+		    Department d
 	</select>
 
 	<select id="employeesInSpecificDepartment" resultMap="employeeResults"
 		parameterType="String">
 		SELECT
-		e.ID,
-		e.FIRST_NAME,
-		e.LAST_NAME,
-		e.DEPARTMENT_ID,
-		e.JOB_TITLE,
-		e.HIRE_DATE,
-		e.MANAGER_ID
+		    e.ID,
+		    e.FIRST_NAME,
+		    e.LAST_NAME,
+		    e.DEPARTMENT_ID,
+		    e.JOB_TITLE,
+		    e.HIRE_DATE,
+		    e.MANAGER_ID
 		FROM
-		Employee e,
-		Department d
+		    Employee e,
+		    Department d
 		WHERE
-		d.NAME=#{depName} AND
-		d.ID=e.DEPARTMENT_ID
+		   d.NAME=#{depName} AND
+		   d.ID=e.DEPARTMENT_ID
 	</select>
 
 
 	<select id="getAllEmployeesByTheirManager" resultMap="employeeResults"
 		parameterType="String">
 		SELECT
-		e1.ID,
-		e1.FIRST_NAME,
-		e1.LAST_NAME,
-		e1.DEPARTMENT_ID,
-		e1.JOB_TITLE,
-		e1.HIRE_DATE,
-		e1.MANAGER_ID
-		FROM Employee
-		e1,
-		Employee e2
+		    e1.ID,
+		    e1.FIRST_NAME,
+		    e1.LAST_NAME,
+		    e1.DEPARTMENT_ID,
+		    e1.JOB_TITLE,
+		    e1.HIRE_DATE,
+		    e1.MANAGER_ID
+		FROM
+            Employee e1,
+		    Employee e2
 		WHERE
-		e1.MANAGER_ID=e2.ID AND
-		e2.FIRST_NAME=#{name}
+		    e1.MANAGER_ID=e2.ID
+        AND
+		    e2.FIRST_NAME=#{name}
 		AND
-		e2.LAST_NAME=#{lName}
-		ORDER BY e2.FIRST_NAME,
-		e1.FIRST_NAME
+		    e2.LAST_NAME=#{lName}
+		ORDER BY
+            e2.FIRST_NAME,
+		    e1.FIRST_NAME
 	</select>
 
 	<select id="getEmployeesByNumOfYearsWorked" resultMap="employeeResults"
 		parameterType="int">
 		SELECT
-		e.id, e.FIRST_NAME, e.LAST_NAME, e.JOB_TITLE,
-		e.MANAGER_ID,
-		e.DEPARTMENT_ID
-		FROM Employee e
-		WHERE (select DISTINCT
-		floor(DATEDIFF(CURDATE(), e.HIRE_DATE) /365) FROM
-		Employee)>
-		#{numOfYears}
+		    e.id,
+            e.FIRST_NAME,
+            e.LAST_NAME,
+            e.JOB_TITLE,
+		    e.MANAGER_ID,
+		    e.DEPARTMENT_ID
+		FROM
+            Employee e
+		WHERE
+            (select
+                 DISTINCT
+		         floor(DATEDIFF(CURDATE(), e.HIRE_DATE) /365)
+             FROM
+		         Employee) > #{numOfYears}
 	</select>
 
 	<update id="changeEmployeeJobTitle" parameterType="String">
 		UPDATE
-		Employee e SET e.JOB_TITLE=#{jobTitle} WHERE e.FIRST_NAME=#{name} AND
-		e.LAST_NAME=#{lName}
+		    Employee e
+        SET
+            e.JOB_TITLE=#{jobTitle}
+        WHERE
+            e.FIRST_NAME=#{name}
+        AND
+		    e.LAST_NAME=#{lName}
 	</update>
 
 	<delete id="removeEmployee" parameterType="String">
-		DELETE FROM Employee
-		WHERE First_name=#{name} AND Last_name=#{lName}
+		DELETE
+        FROM
+            Employee
+		WHERE
+            First_name=#{name}
+        AND
+            Last_name=#{lName}
 	</delete>
 
 	<delete id="removeEmployeeThatIsManager">
 		UPDATE
-		Employee e SET e.MANAGER_ID=null WHERE
-		e.MANAGER_ID=
-		(SELECT DISTINCT
-		e1.MANAGER_ID FROM Employee e1 WHERE
-		e1.MANAGER_ID NOT IN
-		(SELECT e2.id
-		FROM Employee e2 WHERE e2.id IS NOT
-		NULL))
+		    Employee e
+        SET
+            e.MANAGER_ID=null
+        WHERE
+		    e.MANAGER_ID=
+            (SELECT DISTINCT
+		         e1.MANAGER_ID
+            FROM
+                 Employee e1
+            WHERE
+		         e1.MANAGER_ID NOT IN
+		    (SELECT
+                 e2.id
+		    FROM
+                 Employee e2
+            WHERE
+                 e2.id IS NOT NULL))
 	</delete>
 
 	<delete id="updateEmployeeDataBeforeDeleteOfDepartment"
 		parameterType="String">
-		UPDATE Employee e SET e.DEPARTMENT_ID=NULL WHERE
-		e.DEPARTMENT_ID IN (SELECT
-		d.id FROM Department d WHERE
-		d.name=#{depName})
+		UPDATE
+            Employee e
+        SET
+            e.DEPARTMENT_ID=NULL
+        WHERE
+		    e.DEPARTMENT_ID IN
+            (SELECT
+		         d.id
+             FROM
+                Department d
+             WHERE
+		        d.name=#{depName})
 	</delete>
 
 	<delete id="removeDepartment" parameterType="String">
-		DELETE FROM
-		Department WHERE name=#{depName}
+		DELETE
+        FROM
+		   Department
+        WHERE
+           name=#{depName}
 	</delete>
 
 	<insert id="addDepartment" parameterType="Department">
-		INSERT INTO Department
+		INSERT
+        INTO
+            Department
 		(ID,
 		NAME)
 		VALUES
@@ -141,94 +183,179 @@
 
 	<select id="changeAnEmployeeDepartment" parameterType="String">
 		SELECT
-		e.id FROM Employee e WHERE e.FIRST_NAME=#{name} AND
-		e.LAST_NAME=#{lName} AND e.id IN (SELECT e.MANAGER_ID FROM Employee e)
+		    e.id
+        FROM
+            Employee e
+        WHERE
+            e.FIRST_NAME=#{name}
+        AND
+		    e.LAST_NAME=#{lName}
+        AND
+            e.id IN
+            (SELECT
+                 e.MANAGER_ID
+             FROM
+                 Employee e)
 	</select>
 
 	<update id="changeAnEmployeeDepartmentAndCheckIfManager"
 		parameterType="String">
-		UPDATE Employee e SET DEPARTMENT_ID = (SELECT
-		d.ID FROM
-		Department d WHERE
-		d.NAME=#{departmentName})
-		MANAGER_ID=
-		(select e.id
-		from employee e, employee mgr where e.manager_id =
-		mgr.id
-		and e.id IN
-		(select emp.manager_id from employee emp, department dep
-		where
-		emp.DEPARTMENT_ID = dep.id and dep.NAME=#{departmentName}))
+		UPDATE
+            Employee e
+        SET
+            DEPARTMENT_ID = (SELECT
+                                 d.ID
+                             FROM
+		                         Department d
+                             WHERE
+		                         d.NAME=#{departmentName})
+		                         MANAGER_ID=
+		                                    (select
+                                                 e.id
+		                                     from
+                                                 employee e, employee mgr
+                                             where
+                                                 e.manager_id = mgr.id
+		                                     and e.id IN
+		                                              (select
+                                                           emp.manager_id
+                                                       from
+                                                           employee emp, department dep
+		                                               where
+		                                                   emp.DEPARTMENT_ID = dep.id
+                                                       and
+                                                           dep.NAME=#{departmentName}))
 		WHERE
-		e.FIRST_NAME=#{name} AND e.LAST_NAME={lName}
+		    e.FIRST_NAME=#{name}
+        AND
+            e.LAST_NAME={lName}
 	</update>
 
 	<select id="managerFound" resultType="int">
-		SELECT e.FIRST_NAME,
-		e.LAST_NAME FROM Employee e WHERE e.ID=#{id} AND
-		e.DEPARTMENT_ID=#{departmentId}
+		SELECT
+            e.FIRST_NAME, e.LAST_NAME
+        FROM
+            Employee e
+        WHERE
+            e.ID=#{id}
+        AND
+		    e.DEPARTMENT_ID=#{departmentId}
 	</select>
 
 	<insert id="addEmployee" parameterType="Employee">
-		INSERT INTO Employee (ID,
-		FIRST_NAME, LAST_NAME, JOB_TITLE, HIRE_DATE,
-		MANAGER_ID, DEPARTMENT_ID)
+		INSERT INTO Employee
+        (ID,
+		FIRST_NAME,
+        LAST_NAME,
+        JOB_TITLE,
+        HIRE_DATE,
+		MANAGER_ID,
+        DEPARTMENT_ID)
 		VALUES
-		(#{id},#{name},#{lName},#{jobTitle},#{hireDate},#{managerId},#{departmentId})
+		(#{id},
+        #{name},
+        #{lName},
+        #{jobTitle},
+        #{hireDate},
+        #{managerId},
+        #{departmentId})
 	</insert>
 
 	<select id="returnDepartmentIdAndManagerId" resultType="String">
 		SELECT
-		e.id, e.DEPARTMENT_ID FROM Employee e WHERE e.FIRST_NAME=#{name} AND
-		e.LAST_NAME=#{lName}
+		    e.id, e.DEPARTMENT_ID
+        FROM
+            Employee e
+        WHERE
+            e.FIRST_NAME=#{name}
+        AND
+		    e.LAST_NAME=#{lName}
 	</select>
 
 	<select id="getMaxEmployeeId" resultType="int">
-		SELECT e.ID FROM
-		Employee e WHERE e.ID=(SELECT max(ID) FROM Employee)
+		SELECT
+            e.ID
+        FROM
+		    Employee e
+        WHERE
+            e.ID=(SELECT
+                      max(ID)
+                  FROM
+                      Employee)
 	</select>
 
 	<select id="getMaxDepartmentId" resultType="int">
-		SELECT d.ID FROM
-		Department d WHERE d.ID=(SELECT max(ID) FROM Department)
+		SELECT
+            d.ID
+        FROM
+		   Department d
+        WHERE
+           d.ID=(SELECT
+                     max(ID)
+                 FROM
+                     Department)
 	</select>
 
 	<select id="verifyDepartmentExistence" parameterType="String"
 		resultType="int">
-		SELECT d.ID FROM Department d WHERE d.NAME=#{depName}
+		SELECT
+            d.ID
+        FROM
+            Department d
+        WHERE
+            d.NAME=#{depName}
 	</select>
 
 	<select id="departmentFound" parameterType="int" resultType="String">
-		SELECT d.NAME FROM Department d WHERE d.ID=#{depId}
+		SELECT
+            d.NAME
+        FROM
+            Department d
+        WHERE
+            d.ID=#{depId}
 	</select>
 
 	<update id="updateEmployee" parameterType="String">
-		UPDATE Employee e SET
-		e.DEPARTMENT_ID=NULL WHERE e.DEPARTMENT_ID IN (SELECT
-		d.id FROM
-		Department d WHERE d.name=#{depName})
+		UPDATE
+            Employee e
+        SET
+            e.DEPARTMENT_ID=NULL
+        WHERE
+            e.DEPARTMENT_ID IN (SELECT
+		                           d.id
+                                FROM
+		                           Department d
+                                WHERE d.name=#{depName})
 	</update>
 
 	<select id="verifyIfEmployeeExists" parameterType="int"
 		resultMap="employeeResults">
 		SELECT
-		e.ID,
-		e.FIRST_NAME,
-		e.LAST_NAME,
-		e.DEPARTMENT_ID,
-		e.JOB_TITLE,
-		e.HIRE_DATE,
-		e.MANAGER_ID
-		FROM Employee e
-		WHERE e.ID=#{id}
+		    e.ID,
+		    e.FIRST_NAME,
+		    e.LAST_NAME,
+		    e.DEPARTMENT_ID,
+		    e.JOB_TITLE,
+		    e.HIRE_DATE,
+		    e.MANAGER_ID
+        FROM
+            Employee e
+		WHERE
+            e.ID=#{id}
 	</select>
 
 	<select id="managerOfADepartment" parameterType="int"
 		resultType="int">
-		select e.manager_id
-		from Employee e
-		where e.manager_id is not null and department_id=#{depId}
-		group by e.manager_id
+		select
+            e.manager_id
+		from
+            Employee e
+		where
+            e.manager_id is not null
+        and
+           department_id=#{depId}
+		group by
+           e.manager_id
 		having count(e.manager_id)>1
 	</select>
 

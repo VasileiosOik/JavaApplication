@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 
-public interface ConnectionMapper {
+public interface CompanyMapper {
 
 	List<Employee> showAllEmployees();
 

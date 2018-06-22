@@ -16,9 +16,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
 @Component
-public class MongoDAO {
+public class CompanyMongoDao {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MongoDAO.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CompanyMongoDao.class);
 
 	private static final String COMPANY = "Company";
 	private static final String CREATED_TIME = "timeCreated";

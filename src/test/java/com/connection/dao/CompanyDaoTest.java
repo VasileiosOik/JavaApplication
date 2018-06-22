@@ -15,26 +15,22 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
-import com.connection.mapper.ConnectionMapper;
+import com.connection.mapper.CompanyMapper;
 
-@RunWith(SpringRunner.class)
-@TestPropertySource(locations = "classpath:test.properties")
-public class ConnectionDAOTest {
-
-
+@RunWith(MockitoJUnitRunner.class)
+public class CompanyDaoTest {
 
     @Mock
-	private ConnectionMapper connectionMapper;
+	private CompanyMapper companyMapper;
 
 	@InjectMocks
-	private ConnectionDAO connectionDAO;
+	private CompanyDao companyDao;
 
 	@Captor
 	private ArgumentCaptor<String> captor1;
@@ -48,7 +44,7 @@ public class ConnectionDAOTest {
 	@Captor
 	private ArgumentCaptor<Department> depCaptor;
 
-	private static final Logger LOG = LoggerFactory.getLogger(ConnectionDAOTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CompanyDaoTest.class);
 
 	private static final String SALES = "Sales";
 
@@ -57,31 +53,31 @@ public class ConnectionDAOTest {
 	@Test
 	public void returnAllEmployees() {
 
-		when(connectionMapper.showAllEmployees()).thenReturn(getMockEmployee());
+		when(companyMapper.showAllEmployees()).thenReturn(getMockEmployee());
 		LOG.debug("The returned employee is [ {} ]", getMockEmployee());
 
-		connectionDAO.getAllEmployees();
+		companyDao.getAllEmployees();
 
-		Mockito.verify(connectionMapper, times(1)).showAllEmployees();
+		Mockito.verify(companyMapper, times(1)).showAllEmployees();
 	}
 	
 	@Test
 	public void returnAllDepartments() {
 
-		when(connectionMapper.showAllDepartments()).thenReturn(getMockDepartments());
+		when(companyMapper.showAllDepartments()).thenReturn(getMockDepartments());
 		LOG.debug("The returned department is [ {} ]", getMockDepartments());
 
-		connectionDAO.getAllDepartments();
+		companyDao.getAllDepartments();
 
-		Mockito.verify(connectionMapper, times(1)).showAllDepartments();
+		Mockito.verify(companyMapper, times(1)).showAllDepartments();
 	}
 
 	@Test
 	public void testEmployeesInSpecificDepartment() {
-		when(connectionMapper.employeesInSpecificDepartment(SALES)).thenReturn(getMockEmployee());
-		connectionDAO.getAllEmployeesInADepartment(SALES);
+		when(companyMapper.employeesInSpecificDepartment(SALES)).thenReturn(getMockEmployee());
+		companyDao.getAllEmployeesInADepartment(SALES);
 
-		Mockito.verify(connectionMapper, times(1)).employeesInSpecificDepartment(captor1.capture());
+		Mockito.verify(companyMapper, times(1)).employeesInSpecificDepartment(captor1.capture());
 		LOG.debug("The value is [ {} ]", captor1.getValue());
 		assertEquals(SALES, captor1.getValue());
 
@@ -89,10 +85,10 @@ public class ConnectionDAOTest {
 	
 	@Test
 	public void testEmployeesbyManager() {
-		when(connectionMapper.getAllEmployeesByTheirManager("Bill", "Eco")).thenReturn(getMockEmployee());
-		connectionDAO.getAllEmployeesByTheirManagers("Bill", "Eco");
+		when(companyMapper.getAllEmployeesByTheirManager("Bill", "Eco")).thenReturn(getMockEmployee());
+		companyDao.getAllEmployeesByTheirManagers("Bill", "Eco");
 
-		Mockito.verify(connectionMapper, times(1)).getAllEmployeesByTheirManager(captor1.capture(), captor2.capture());
+		Mockito.verify(companyMapper, times(1)).getAllEmployeesByTheirManager(captor1.capture(), captor2.capture());
 		assertEquals("Bill", captor1.getValue());
 		assertEquals("Eco", captor2.getValue());
 
@@ -100,10 +96,10 @@ public class ConnectionDAOTest {
 
 	@Test
 	public void testAddDepartment() {
-		Mockito.doNothing().when(connectionMapper).addDepartment(getMockDepartment());
-		connectionDAO.addDepartment(getMockDepartment());
+		Mockito.doNothing().when(companyMapper).addDepartment(getMockDepartment());
+		companyDao.addDepartment(getMockDepartment());
 
-		Mockito.verify(connectionMapper, times(1)).addDepartment(depCaptor.capture());
+		Mockito.verify(companyMapper, times(1)).addDepartment(depCaptor.capture());
 
 		assertEquals(TECHNOLOGY, depCaptor.getValue().getDepName());
 		assertEquals(1003, depCaptor.getValue().getDepId());
@@ -112,23 +108,23 @@ public class ConnectionDAOTest {
 	@Test
 	public void testAddEmployee() {
 
-		when(connectionMapper.departmentFound(1003)).thenReturn(TECHNOLOGY);
+		when(companyMapper.departmentFound(1003)).thenReturn(TECHNOLOGY);
 
-		when(connectionMapper.managerOfADepartment(1003)).thenReturn(100004);
+		when(companyMapper.managerOfADepartment(1003)).thenReturn(100004);
 
-		when(connectionMapper.showAllDepartments()).thenReturn(getMockDepartments());
+		when(companyMapper.showAllDepartments()).thenReturn(getMockDepartments());
 
-		Mockito.doNothing().when(connectionMapper).addEmployee(getOneMockEmployee());
+		Mockito.doNothing().when(companyMapper).addEmployee(getOneMockEmployee());
 
-		connectionDAO.addEmployee(getOneMockEmployee());
+		companyDao.addEmployee(getOneMockEmployee());
 
-		Mockito.verify(connectionMapper, times(1)).departmentFound(1003);
+		Mockito.verify(companyMapper, times(1)).departmentFound(1003);
 
-		Mockito.verify(connectionMapper, times(1)).managerOfADepartment(1003);
+		Mockito.verify(companyMapper, times(1)).managerOfADepartment(1003);
 
-		Mockito.verify(connectionMapper, times(1)).showAllDepartments();
+		Mockito.verify(companyMapper, times(1)).showAllDepartments();
 
-		Mockito.verify(connectionMapper, times(1)).addEmployee(empCaptor.capture());
+		Mockito.verify(companyMapper, times(1)).addEmployee(empCaptor.capture());
 
 		assertEquals(100015, empCaptor.getValue().getId());
 		assertEquals("Alex", empCaptor.getValue().getName());
@@ -140,18 +136,18 @@ public class ConnectionDAOTest {
 	@Test
 	public void testChangeAnEmployeeDepartment()
 	{
-		when(connectionMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
+		when(companyMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
 				.thenReturn(getMockEmployee());
 		
-		when(connectionMapper.changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(), anyString()))
+		when(companyMapper.changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(), anyString()))
 				.thenReturn(getOneMockEmployee());
 
 
-		connectionDAO.changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+		companyDao.changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-		Mockito.verify(connectionMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+		Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-		Mockito.verify(connectionMapper, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
+		Mockito.verify(companyMapper, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
 				anyString());
 
 	}

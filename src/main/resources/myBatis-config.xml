@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Confi 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL" />
@@ -7,6 +7,6 @@
 		<package name="com.connection.domain" />
 	</typeAliases>
 	<mappers>
-		<mapper resource="/mappers/mapper.xml" />
+		<mapper resource="mappers/mapper.xml" />
 	</mappers>
 </configuration>

@@ -12,9 +12,9 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import com.mongodb.MongoClient;
 
 @Configuration
-public class DatabaseConfig {
+public class MongoDBConfiguration {
 
-	private final Logger log = LoggerFactory.getLogger(DatabaseConfig.class);
+	private final Logger log = LoggerFactory.getLogger(MongoDBConfiguration.class);
 
 	@Value("${spring.data.mongodb.host}")
 	private String mongoUrl;

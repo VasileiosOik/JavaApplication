@@ -1,6 +1,7 @@
 package com.connection.domain;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class Department {
 	@ApiModelProperty(notes = "The Id of the department")
@@ -36,7 +37,6 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return "Department [depId=" + depId + ", depName=" + depName + "]";
+		return ReflectionToStringBuilder.toString(this);
 	}
-
 }

@@ -1,13 +1,13 @@
 package com.connection.dao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.connection.configuration.MongoDBConfiguration;
+import com.connection.domain.Department;
+import com.connection.domain.Employee;
+import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
+import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
+import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
@@ -15,30 +15,25 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.connection.configuration.DatabaseConfig;
-import com.connection.domain.Department;
-import com.connection.domain.Employee;
-import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
-import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
-import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { MongoDAO.class, DatabaseConfig.class })
+@SpringBootTest(classes = { CompanyMongoDao.class, MongoDBConfiguration.class })
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-public class MongoDAOIT {
+public class CompanyMongoDaoIT {
 
 	@Autowired
-	private MongoDAO mongoDAO;
-
-	public static final Logger LOG = LoggerFactory.getLogger(MongoDAOIT.class);
+	private CompanyMongoDao companyMongoDao;
 
 	@Test
 	@UsingDataSet(locations = "initialJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
 	@ShouldMatchDataSet(location = "afterDepFile.json")
 	public void addDepartmentData() {
 		
-		mongoDAO.addDepartmentToMongoDB(getMockDepartment());
+		companyMongoDao.addDepartmentToMongoDB(getMockDepartment());
 
 	}
 
@@ -47,14 +42,14 @@ public class MongoDAOIT {
 	@ShouldMatchDataSet(location = "afterEmpFile.json")
 	public void addEmployeeData() {
 
-		mongoDAO.addEmployeeToMongoDB(getOneMockEmployee());
+		companyMongoDao.addEmployeeToMongoDB(getOneMockEmployee());
 
 	}
 
 	@Test
 	public void testReturnDateBetweenDates() throws ParseException {
 
-		mongoDAO.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
+		companyMongoDao.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
 
 	}
 

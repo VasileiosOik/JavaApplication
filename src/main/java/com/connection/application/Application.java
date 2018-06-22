@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -17,10 +17,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan("com.connection.*")
-public class CompanyExampleApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CompanyExampleApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@Bean
@@ -35,11 +35,13 @@ public class CompanyExampleApplication {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("Spring Boot REST API", "Spring Boot REST API for a Company", "1.0",
-				"Terms of service",
-				new Contact("Vasileios", "Oikonomou", "Application"),
-				"Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0");
-
+		return new ApiInfoBuilder()
+				.title("Spring Rest Swagger")
+				.description("Spring Rest Swagger")
+				.termsOfServiceUrl("http://springfox.io")
+				.license("Apache License Version 2.0")
+				.licenseUrl("https://github.com/springfox/springfox/blob/maste/LICENSE")
+				.version("2.0")
+				.build();
 	}
-
 }
