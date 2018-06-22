@@ -28,7 +28,7 @@
         <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.language>java</sonar.language>
         <sonar.jacoco.itReportPaths>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPaths>
-        <sonar.user>admin</sonar.user>
+        <sonar.login>admin</sonar.login>
         <sonar.password>admin</sonar.password>
     </properties>
 
