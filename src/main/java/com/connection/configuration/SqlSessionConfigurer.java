@@ -15,8 +15,6 @@ public class SqlSessionConfigurer {
     @Autowired
     private DataSource dataSource;
 
-    public SqlSessionConfigurer(){}
-
     public SqlSessionFactory sqlSessionFactory(Resource myBatisConfigFile) {
         return this.sqlSessionFactory(this.dataSource, myBatisConfigFile);
     }
