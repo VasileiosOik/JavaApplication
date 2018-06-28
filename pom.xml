@@ -169,7 +169,7 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.1</version>
                 <configuration>
-                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                    <destFile>${sonar.jacoco.reportPaths}</destFile>
                     <append>true</append>
                 </configuration>
                 <executions>
