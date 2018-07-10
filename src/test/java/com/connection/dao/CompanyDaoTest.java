@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.connection.mapper.EmployeeBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -170,17 +171,15 @@ public class CompanyDaoTest {
 
 
 	private Employee getOneMockEmployee() {
-		Employee employee = new Employee();
-		employee.setName("Alex");
-		employee.setLname("Tso");
-		employee.setJobTitle("Tester");
-		employee.setId(100015);
-		employee.setManagerId(100004);
-		employee.setDepartmentId(1003);
-		employee.setHiredate("2016-05-29");
-
-		return employee;
-
+		EmployeeBuilder employeeBuilder = new EmployeeBuilder()
+                .withDepartmentId(1003)
+                .withHireDate("2016-05-29")
+                .withId(100015)
+                .withJobTitle("Tester")
+                .withName("Alex")
+                .withLname("Tso")
+                .withManageId(100004);
+		return employeeBuilder.build();
 	}
 
 
