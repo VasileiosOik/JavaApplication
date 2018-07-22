@@ -201,7 +201,7 @@
                     <execution>
                         <id>default-report-integration</id>
                         <goals>
-                            <goal>report-integration</goal>
+                            <goal>report-aggregate</goal>
                         </goals>
                     </execution>
                     <execution>
