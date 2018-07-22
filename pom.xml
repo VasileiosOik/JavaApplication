@@ -175,8 +175,8 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <destFile>${sonar.jacoco.reportPaths}</destFile>
-                            <!--   <append>true</append> -->
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                               <append>true</append>
                         </configuration>
                         <id>default-prepare-agent</id>
                         <goals>
@@ -185,7 +185,7 @@
                     </execution>
                     <execution>
                         <configuration>
-                            <destFile>${sonar.jacoco.itReportPaths}</destFile>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
                         </configuration>
                         <id>default-prepare-agent-integration</id>
                         <goals>
