@@ -127,8 +127,13 @@
         <plugins>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>failsafe-integration-tests</id>
+                        <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -179,6 +184,9 @@
                         </goals>
                     </execution>
                     <execution>
+                        <configuration>
+                            <destFile>${sonar.jacoco.itReportPaths}</destFile>
+                        </configuration>
                         <id>default-prepare-agent-integration</id>
                         <goals>
                             <goal>prepare-agent-integration</goal>
