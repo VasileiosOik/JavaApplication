@@ -138,7 +138,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                src/it/java
+                                src/test/java
                             </sources>
                         </configuration>
                     </execution>
