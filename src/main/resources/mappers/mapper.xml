@@ -177,8 +177,8 @@
 		(ID,
 		NAME)
 		VALUES
-		(#{depId},
-		#{depName})
+		(#{department.depId},
+		#{department.depName})
 	</insert>
 
 	<select id="changeAnEmployeeDepartment" parameterType="String">
@@ -252,13 +252,13 @@
 		MANAGER_ID,
         DEPARTMENT_ID)
 		VALUES
-		(#{id},
-        #{name},
-        #{lName},
-        #{jobTitle},
-        #{hireDate},
-        #{managerId},
-        #{departmentId})
+		(#{employee.id},
+        #{employee.name},
+        #{employee.lName},
+        #{employee.jobTitle},
+        #{employee.hireDate},
+        #{employee.managerId},
+        #{employee.departmentId})
 	</insert>
 
 	<select id="returnDepartmentIdAndManagerId" resultType="String">

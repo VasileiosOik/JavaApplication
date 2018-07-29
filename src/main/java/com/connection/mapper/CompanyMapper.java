@@ -18,7 +18,7 @@ public interface CompanyMapper {
 
 	List<Employee> getAllEmployeesByTheirManager(@Param("name") String name, @Param("lName") String lName);
 
-	List<Employee> getEmployeesByNumOfYearsWorked(int numOfYears);
+	List<Employee> getEmployeesByNumOfYearsWorked(@Param("numOfYears") int numOfYears);
 
 	void changeEmployeeJobTitle(@Param("name") String name, @Param("lName") String lName,
 			@Param("jobTitle") String jobTitle);
@@ -31,7 +31,7 @@ public interface CompanyMapper {
 
 	void updateEmployeeDataBeforeDeleteOfDepartment(@Param("depName") String depName);
 
-	void addDepartment(Department department);
+	void addDepartment(@Param("department") Department department);
 
 	List<Employee> changeAnEmployeeDepartment(@Param("name") String name, @Param("lName") String lName,
 			@Param("depName") String departmentName);
@@ -41,7 +41,7 @@ public interface CompanyMapper {
 
 	String departmentFound(@Param("depId") int depId);
 
-	void addEmployee(Employee employee);
+	void addEmployee(@Param("employee") Employee employee);
 
 	Employee returnDepartmentIdAndManagerId(@Param("name") String name, @Param("lName") String lName);
 
