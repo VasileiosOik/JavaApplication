@@ -208,27 +208,27 @@
                              FROM
 		                         Department d
                              WHERE
-		                         d.NAME=#{departmentName})
-		                         MANAGER_ID=
+		                         d.NAME=#{departmentName}
+		                     AND e.MANAGER_ID=
 		                                    (select
                                                  e.id
 		                                     from
-                                                 employee e, employee mgr
+												  Employee e, Employee mgr
                                              where
                                                  e.manager_id = mgr.id
 		                                     and e.id IN
 		                                              (select
                                                            emp.manager_id
                                                        from
-                                                           employee emp, department dep
+															Employee emp, Department dep
 		                                               where
 		                                                   emp.DEPARTMENT_ID = dep.id
                                                        and
-                                                           dep.NAME=#{departmentName}))
+                                                           dep.NAME=#{departmentName})))
 		WHERE
 		    e.FIRST_NAME=#{name}
         AND
-            e.LAST_NAME={lName}
+            e.LAST_NAME=#{lName}
 	</update>
 
 	<select id="managerFound" resultType="int">
