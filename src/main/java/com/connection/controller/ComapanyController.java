@@ -4,6 +4,7 @@ import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.service.CompanyService;
 import io.swagger.annotations.*;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -73,7 +74,7 @@ public class ComapanyController {
 	@ApiOperation(value = "Add a new department", response = ResponseEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 409, message = "Already exists") })
-	@PostMapping(value = "/department")
+	@PostMapping(value = "/department", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> addNewDepartment(@RequestBody Department department, UriComponentsBuilder ucBuilder) {
 		return companyService.addNewDepartment(department, ucBuilder);
 	}
@@ -90,7 +91,7 @@ public class ComapanyController {
 	@ApiOperation(value = "Add a new employee", response = ResponseEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created"),
 			@ApiResponse(code = 409, message = "Already exists") })
-	@PostMapping(value = "/employee")
+	@PostMapping(value = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> addNewEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder) {
 		return companyService.addNewEmployee(employee, ucBuilder);
 	}

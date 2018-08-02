@@ -6,7 +6,7 @@
 	<resultMap id="employeeResults" type="Employee">
 		<result property="id" column="ID" />
 		<result property="name" column="FIRST_NAME" />
-		<result property="lname" column="lAST_NAME" />
+		<result property="lName" column="lAST_NAME" />
 		<result property="jobTitle" column="JOB_TITLE" />
 		<result property="hireDate" column="HIRE_DATE" />
 		<result property="managerId" column="MANAGER_ID" />
@@ -25,10 +25,10 @@
 			e.ID,
 			e.FIRST_NAME,
 			e.LAST_NAME,
-			e.DEPARTMENT_ID,
 			e.JOB_TITLE,
 			e.HIRE_DATE,
-			e.MANAGER_ID
+			e.MANAGER_ID,
+			e.DEPARTMENT_ID
 		FROM
 			Employee e
 	</select>
@@ -36,8 +36,8 @@
 
 	<select id="showAllDepartments" resultMap="departmentResults">
 		SELECT
-            d.NAME,
-		    d.ID
+			d.ID,
+            d.NAME
 		FROM
 		    Department d
 	</select>
@@ -45,13 +45,13 @@
 	<select id="employeesInSpecificDepartment" resultMap="employeeResults"
 		parameterType="String">
 		SELECT
-		    e.ID,
-		    e.FIRST_NAME,
-		    e.LAST_NAME,
-		    e.DEPARTMENT_ID,
-		    e.JOB_TITLE,
-		    e.HIRE_DATE,
-		    e.MANAGER_ID
+			   e.ID,
+			   e.FIRST_NAME,
+			   e.LAST_NAME,
+			   e.JOB_TITLE,
+			   e.HIRE_DATE,
+			   e.MANAGER_ID,
+			   e.DEPARTMENT_ID
 		FROM
 		    Employee e,
 		    Department d
@@ -64,13 +64,13 @@
 	<select id="getAllEmployeesByTheirManager" resultMap="employeeResults"
 		parameterType="String">
 		SELECT
-		    e1.ID,
-		    e1.FIRST_NAME,
-		    e1.LAST_NAME,
-		    e1.DEPARTMENT_ID,
-		    e1.JOB_TITLE,
-		    e1.HIRE_DATE,
-		    e1.MANAGER_ID
+			   e1.ID,
+			   e1.FIRST_NAME,
+			   e1.LAST_NAME,
+			   e1.JOB_TITLE,
+			   e1.HIRE_DATE,
+			   e1.MANAGER_ID,
+			   e1.DEPARTMENT_ID
 		FROM
             Employee e1,
 		    Employee e2

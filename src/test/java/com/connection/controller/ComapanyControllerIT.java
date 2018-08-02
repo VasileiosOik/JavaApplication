@@ -327,28 +327,28 @@ public class ComapanyControllerIT {
 
 	private String getNewEmployeeDetailsRequestJSON() {
 		return "{" + "\"id\":100015," + "\"name\":\"Alex\"," + "\"jobTitle\":\"Tester\"," + "\"managerId\":100004,"
-				+ "\"departmentId\":1003," + "\"lname\":\"Tso\"," + "\"hiredate\":\"2016-05-29\"" + " }";
+				+ "\"departmentId\":1003," + "\"lName\":\"Tso\"," + "\"hireDate\":\"2016-05-29\"" + " }";
 
 	}
 
 	private String getMockEmployeeDetailsRequestJSON() {
 		return "{" + "\"id\":100014," + "\"name\":\"Andy\"," + "\"jobTitle\":\"Account Manager\","
-				+ "\"managerId\":100005," + "\"departmentId\":1004," + "\"lname\":\"McNee\","
-				+ "\"hiredate\":\"2010-05-09\"" + " }";
+				+ "\"managerId\":100005," + "\"departmentId\":1004," + "\"lName\":\"McNee\","
+				+ "\"hireDate\":\"2010-05-09\"" + " }";
 
 	}
 
 	private String getMockEmployeeDuplicateDetailsRequestJSON() {
 		return "{" + "\"id\":100012," + "\"name\":\"Gerard\"," + "\"jobTitle\":\"Software Developer\","
-				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lname\":\"Brawley\","
-				+ "\"hiredate\":\"2013-03-29\"" + " }";
+				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lName\":\"Brawley\","
+				+ "\"hireDate\":\"2013-03-29\"" + " }";
 
 	}
 
 	private String getMockEmployeeThatDoesNotExistDetailsRequestJSON() {
 		return "{" + "\"id\":100017," + "\"name\":\"Gerrold\"," + "\"jobTitle\":\"PHP Developer\","
-				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lname\":\"Brown\","
-				+ "\"hiredate\":\"2014-04-29\"" + " }";
+				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lName\":\"Brown\","
+				+ "\"hireDate\":\"2014-04-29\"" + " }";
 
 	}
 

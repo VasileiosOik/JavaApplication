@@ -165,7 +165,7 @@ public class CompanyDao {
 	private String determineTheHireDate(String hireDate) {
 
 		// hire date checking
-		Boolean dateStory;
+		boolean dateStory;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		do {
                 LocalDate date1 = LocalDate.parse(hireDate, formatter);

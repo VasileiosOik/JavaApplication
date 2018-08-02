@@ -126,7 +126,7 @@ public class DefaultCompanyService implements CompanyService {
                             "Unable to create. A department with name " + department.getDepName() + " already exist."),
                     HttpStatus.CONFLICT);
         }
-
+        LOG.debug("The department is: {}", department);
         companyDao.addDepartment(department);
         companyMongoDao.addDepartmentToMongoDB(department);
         HttpHeaders headers = new HttpHeaders();
@@ -159,7 +159,7 @@ public class DefaultCompanyService implements CompanyService {
                             "Unable to create. An employee with name " + employee.getName() + " already exist."),
                     HttpStatus.CONFLICT);
         }
-
+        LOG.debug("The employee is: {}", employee);
         companyDao.addEmployee(employee);
         companyMongoDao.addEmployeeToMongoDB(employee);
         HttpHeaders headers = new HttpHeaders();

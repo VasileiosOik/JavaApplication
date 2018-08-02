@@ -26,9 +26,9 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withLname(String lname){
+    public EmployeeBuilder withLname(String lName){
 
-        this.lName = lname;
+        this.lName = lName;
 
         return this;
 

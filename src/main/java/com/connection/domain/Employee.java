@@ -14,7 +14,7 @@ public class Employee {
 	private String jobTitle;
 	@ApiModelProperty(notes = "The Employee Hire Date")
 	private String hireDate;
-	@ApiModelProperty(notes = "The Employee's manage Id")
+	@ApiModelProperty(notes = "The Employee's manager Id")
 	private int managerId;
 	@ApiModelProperty(notes = "The Employee's department Id")
 	private int departmentId;
@@ -55,8 +55,8 @@ public class Employee {
 		return lName;
 	}
 
-	public void setLname(String lname) {
-		this.lName = lname;
+	public void setLname(String lName) {
+		this.lName = lName;
 	}
 
 	public String getJobTitle() {
