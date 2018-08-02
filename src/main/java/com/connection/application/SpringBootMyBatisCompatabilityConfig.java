@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringBootMyBatisCompatabilityConfiguration {
+public class SpringBootMyBatisCompatabilityConfig {
 
     @Autowired
     private SqlSessionFactory companySqlSessionFactory;

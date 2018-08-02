@@ -105,7 +105,7 @@ public class DefaultCompanyService implements CompanyService {
             for (Employee emp : employees) {
                 if (emp.getId() == (id)) {
                     LOG.info("Employee with {} id found", id);
-                    companyDao.removeEmployee(emp.getName(), emp.getLname());
+                    companyDao.removeEmployee(emp.getName(), emp.getlName());
                     return new ResponseEntity<>(companyDao.getAllDepartments(), HttpStatus.OK);
                 }
             }
@@ -146,7 +146,7 @@ public class DefaultCompanyService implements CompanyService {
         LOG.info("Updating Employee with id {}", id);
         currentEmployee.setJobTitle(employee.getJobTitle());
 
-        companyDao.changeEmployeeJobTitle(employee.getName(), employee.getLname(), currentEmployee.getJobTitle());
+        companyDao.changeEmployeeJobTitle(employee.getName(), employee.getlName(), currentEmployee.getJobTitle());
         return new ResponseEntity<>(currentEmployee, HttpStatus.OK);
     }
 

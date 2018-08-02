@@ -6,7 +6,7 @@
 	<resultMap id="employeeResults" type="Employee">
 		<result property="id" column="ID" />
 		<result property="name" column="FIRST_NAME" />
-		<result property="lName" column="lAST_NAME" />
+		<result property="lName" column="LAST_NAME" />
 		<result property="jobTitle" column="JOB_TITLE" />
 		<result property="hireDate" column="HIRE_DATE" />
 		<result property="managerId" column="MANAGER_ID" />
@@ -120,9 +120,9 @@
         FROM
             Employee
 		WHERE
-            First_name=#{name}
+            First_Name=#{name}
         AND
-            Last_name=#{lName}
+            Last_Name=#{lName}
 	</delete>
 
 	<delete id="removeEmployeeThatIsManager">

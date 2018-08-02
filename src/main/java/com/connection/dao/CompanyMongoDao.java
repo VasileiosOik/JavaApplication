@@ -47,8 +47,8 @@ public class CompanyMongoDao {
 		DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
 		BasicDBObject basicDBObject = new BasicDBObject();
 		basicDBObject.append("EmployeeId", emp.getId()).append("FirstName", emp.getName())
-				.append("LastName", emp.getLname()).append("JobTitle", emp.getJobTitle())
-				.append("HireDate", emp.getHiredate()).append("ManagerId", emp.getManagerId())
+				.append("LastName", emp.getlName()).append("JobTitle", emp.getJobTitle())
+				.append("HireDate", emp.getHireDate()).append("ManagerId", emp.getManagerId())
 				.append("DepartmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
 		dbCollection.insert(basicDBObject);
 		LOG.debug("The employee document has been added successfully");

@@ -81,9 +81,9 @@ public class CompanyMapperIT {
 		assertEquals(2, employees.size());
 		assertTrue(!employees.isEmpty());
 		assertEquals("Nigel", employees.get(0).getName());
-		assertEquals("Pentland", employees.get(0).getLname());
+		assertEquals("Pentland", employees.get(0).getlName());
 		assertEquals("Petra", employees.get(1).getName());
-		assertEquals("Moody", employees.get(1).getLname());
+		assertEquals("Moody", employees.get(1).getlName());
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class CompanyMapperIT {
 		assertNotNull(employees);
 		assertEquals(2, employees.size());
 		assertEquals("Kevin", employees.get(0).getName());
-		assertEquals("Withers", employees.get(0).getLname());
+		assertEquals("Withers", employees.get(0).getlName());
 	}
 
 	@Test
@@ -145,12 +145,12 @@ public class CompanyMapperIT {
 	private Employee getEmployee() {
 		Employee emp = new Employee();
 		emp.setName("Alex");
-		emp.setLname("Tso");
+		emp.setlName("Tso");
 		emp.setId((companyMapper.getMaxEmployeeId() + 1));
 		emp.setJobTitle("Tester");
 		emp.setDepartmentId(1003);
 		emp.setManagerId(100004);
-		emp.setHiredate("2016-05-29");
+		emp.setHireDate("2016-05-29");
 		return emp;
 	}
 

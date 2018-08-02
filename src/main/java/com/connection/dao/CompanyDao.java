@@ -25,7 +25,6 @@ public class CompanyDao {
 	public List<Employee> getEmployeesByNumOfYearsWorked(int numOfYears) {
 
 		List<Employee> listEmp = companyMapper.getEmployeesByNumOfYearsWorked(numOfYears);
-
 		if (CollectionUtils.isEmpty(listEmp)) {
 			log.debug("No employees found");
 			return Collections.emptyList();
@@ -39,7 +38,7 @@ public class CompanyDao {
 
 		if (!CollectionUtils.isEmpty(listEmp)) {
             listEmp.forEach(employee -> {
-                if (employee.getName().equals(name) && employee.getLname().equals(lName)) {
+                if (employee.getName().equals(name) && employee.getlName().equals(lName)) {
                     companyMapper.removeEmployee(name, lName);
                     log.debug("Employee removed successfully");
                     removeEmployeeThatIsManager(listEmp, employee);
@@ -68,6 +67,8 @@ public class CompanyDao {
             log.debug("No employees found");
             return Collections.emptyList();
         }
+        listEmp.forEach(System.out::println);
+
         return listEmp;
 	}
 
@@ -109,7 +110,7 @@ public class CompanyDao {
 		List<Employee> results = companyMapper.showAllEmployees();
 		if (!CollectionUtils.isEmpty(results)) {
 			for (Employee employee : results) {
-				if (employee.getName().equals(name) && employee.getLname().equals(lName)) {
+				if (employee.getName().equals(name) && employee.getlName().equals(lName)) {
 					companyMapper.changeEmployeeJobTitle(name, lName, jobTitle);
 					log.debug("Employee's job title has been updated successfully!");
 				}
@@ -143,7 +144,8 @@ public class CompanyDao {
 
 	public void addEmployee(Employee employee) {
 		if (addEmployeeEnchanced(employee.getManagerId(), employee.getDepartmentId())) {
-			employee.setHiredate(determineTheHireDate(employee.getHiredate()));
+		    System.out.println(employee);
+			employee.setHireDate(determineTheHireDate(employee.getHireDate()));
 			companyMapper.addEmployee(employee);
 			log.debug("Employee was saved successfully!");
 		}
@@ -168,6 +170,7 @@ public class CompanyDao {
 		boolean dateStory;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		do {
+		        System.out.println(hireDate);
                 LocalDate date1 = LocalDate.parse(hireDate, formatter);
 				// 1st check
 				dateStory = date1.isBefore(LocalDate.now());

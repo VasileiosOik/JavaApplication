@@ -35,63 +35,63 @@ public class Employee {
 		this.departmentId = departmentId;
 	}
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getLname() {
-		return lName;
-	}
+    public String getlName() {
+        return lName;
+    }
 
-	public void setLname(String lName) {
-		this.lName = lName;
-	}
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-	public String getHiredate() {
-		return hireDate;
-	}
+    public String getHireDate() {
+        return hireDate;
+    }
 
-	public void setHiredate(String hireDate) {
-		this.hireDate = hireDate;
-	}
+    public void setHireDate(String hireDate) {
+        this.hireDate = hireDate;
+    }
 
-	public int getManagerId() {
-		return managerId;
-	}
+    public int getManagerId() {
+        return managerId;
+    }
 
-	public void setManagerId(int managerId) {
-		this.managerId = managerId;
-	}
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
+    }
 
-	public int getDepartmentId() {
-		return departmentId;
-	}
+    public int getDepartmentId() {
+        return departmentId;
+    }
 
-	public void setDepartmentId(int departmentId) {
-		this.departmentId = departmentId;
-	}
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
 
-	@Override
+    @Override
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this);
 	}

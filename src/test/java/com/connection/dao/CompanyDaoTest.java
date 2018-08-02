@@ -129,7 +129,7 @@ public class CompanyDaoTest {
 
 		assertEquals(100015, empCaptor.getValue().getId());
 		assertEquals("Alex", empCaptor.getValue().getName());
-		assertEquals("Tso", empCaptor.getValue().getLname());
+		assertEquals("Tso", empCaptor.getValue().getlName());
 		assertEquals("Tester", empCaptor.getValue().getJobTitle());
 
 	}
@@ -156,12 +156,12 @@ public class CompanyDaoTest {
 	private List<Employee> getMockEmployee() {
 		Employee employee = new Employee();
 		employee.setName("Bill");
-		employee.setLname("Eco");
+		employee.setlName("Eco");
 		employee.setJobTitle("Developer");
 		employee.setId(1);
 		employee.setManagerId(100015);
 		employee.setDepartmentId(1001);
-		employee.setHiredate("1988-10-23");
+		employee.setHireDate("1988-10-23");
 
 		List<Employee> emp = new ArrayList<>();
 		emp.add(employee);

@@ -68,12 +68,12 @@ public class CompanyMongoDaoIT {
 	private Employee getOneMockEmployee() {
 		Employee employee = new Employee();
 		employee.setName("Alex");
-		employee.setLname("Tso");
+		employee.setlName("Tso");
 		employee.setJobTitle("Tester");
 		employee.setId(100015);
 		employee.setManagerId(100004);
 		employee.setDepartmentId(1003);
-		employee.setHiredate("2016-05-29");
+		employee.setHireDate("2016-05-29");
 
 		return employee;
 

@@ -74,11 +74,11 @@ public class EmployeeBuilder {
 
         employee.setName(this.name);
 
-        employee.setLname(this.lName);
+        employee.setlName(this.lName);
 
         employee.setJobTitle(this.jobTitle);
 
-        employee.setHiredate(this.hireDate);
+        employee.setHireDate(this.hireDate);
 
         employee.setDepartmentId(this.departmentId);
 
