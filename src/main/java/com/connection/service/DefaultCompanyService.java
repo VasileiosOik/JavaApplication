@@ -34,7 +34,7 @@ public class DefaultCompanyService implements CompanyService {
         List<Employee> employees = companyDao.getAllEmployees();
 
         if (CollectionUtils.isEmpty(employees)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class DefaultCompanyService implements CompanyService {
         List<Department> departments = companyDao.getAllDepartments();
 
         if (CollectionUtils.isEmpty(departments)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }

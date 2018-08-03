@@ -1,4 +1,4 @@
-package com.connection.application;
+package com.connection.configuration;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

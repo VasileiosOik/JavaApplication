@@ -25,7 +25,7 @@ public class ComapanyController {
 
 	@ApiOperation(value = "View the list of available Employees", response = ResponseEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
-			@ApiResponse(code = 204, message = "No content to display") })
+			@ApiResponse(code = 404, message = "No content to display") })
 	@GetMapping(value = "/employees", produces = "application/json")
 	public ResponseEntity<List<Employee>> returnAllEmployees() {
 		return companyService.returnAllEmployees();
@@ -33,7 +33,7 @@ public class ComapanyController {
 
 	@ApiOperation(value = "View the list of available Departments", response = ResponseEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
-			@ApiResponse(code = 204, message = "No content to display") })
+			@ApiResponse(code = 404, message = "No content to display") })
 	@GetMapping(value = "/departments", produces = "application/json")
 	public ResponseEntity<List<Department>> returnAllDepartments() {
 		return companyService.returnAllDepartments();
