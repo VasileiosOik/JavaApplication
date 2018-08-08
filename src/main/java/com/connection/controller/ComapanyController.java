@@ -93,7 +93,6 @@ public class ComapanyController {
 			@ApiResponse(code = 409, message = "Already exists") })
 	@PostMapping(value = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> addNewEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder) {
-	    System.out.println("eiami ston controller: " +employee);
 		return companyService.addNewEmployee(employee, ucBuilder);
 	}
 
