@@ -1,5 +1,6 @@
 package com.connection.dao;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ public class CompanyMongoDao {
 		BasicDBObject basicDBObject = new BasicDBObject();
 		basicDBObject.append("EmployeeId", emp.getId()).append("FirstName", emp.getName())
 				.append("LastName", emp.getlName()).append("JobTitle", emp.getJobTitle())
-				.append("HireDate", emp.getHireDate()).append("ManagerId", emp.getManagerId())
+				.append("HireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant())).append("ManagerId", emp.getManagerId())
 				.append("DepartmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
 		dbCollection.insert(basicDBObject);
 		LOG.debug("The employee document has been added successfully");

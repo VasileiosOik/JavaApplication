@@ -1,6 +1,11 @@
 package com.connection.controller;
 
 import com.connection.application.Application;
+import com.connection.domain.Employee;
+import com.connection.mapper.DepartmentBuilder;
+import com.connection.mapper.EmployeeBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
@@ -15,6 +20,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,8 +46,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetAllEmployees() {
 
 		given()
@@ -55,8 +64,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetAllDepartments() {
 
 		 given()
@@ -75,8 +84,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetEmployeesInASpecificDepartment() {
 
 		given()
@@ -96,8 +105,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/ClearData.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/departmentTestData/ClearData.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetEmployeesInASpecificDepartment_whenTheDepartmentIsEmpty() {
 
 		given()
@@ -111,8 +120,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/ClearData.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/departmentTestData/ClearData.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testReturnEmployeesByNumOfYearsWorked_whenTheyDoNotExist() {
 
 		given()
@@ -127,8 +136,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testReturnEmployeesByNumOfYearsWorked() {
 
 		given()
@@ -146,9 +155,9 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/DepartmentsRemainedExpected.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/departmentTestData/DepartmentsRemainedExpected.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteDepartment_whenExists() {
 
 		given()
@@ -168,9 +177,9 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteDepartment_whenDoesNotExists() {
 
 		given()
@@ -183,8 +192,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/ClearData.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/departmentTestData/ClearData.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteDepartment_whenTheCompanyIsEmpty() {
 
 		given()
@@ -197,9 +206,9 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAfterDeleting.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAfterDeleting.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteEmployee() {
 		given()
                 .contentType(APPLICATION_JSON)
@@ -211,9 +220,9 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteEmployee_whenDoesNotExist() {
 		given()
                 .contentType(APPLICATION_JSON)
@@ -225,8 +234,8 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/ClearData.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/departmentTestData/ClearData.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteEmployee_whenTheCompanyIsEmpty() {
 		given()
                 .contentType(APPLICATION_JSON)
@@ -238,10 +247,10 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/DepartmentAfterAdding.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testAddNewDepartment() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/departmentTestData/DepartmentAfterAdding.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testAddNewDepartment() throws JsonProcessingException {
 
 		given()
                 .contentType(APPLICATION_JSON)
@@ -253,10 +262,10 @@ public class ComapanyControllerIT {
 		}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testAddNewDepartment_whenIsDuplicate() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testAddNewDepartment_whenIsDuplicate() throws JsonProcessingException {
 
 		given()
                 .contentType(APPLICATION_JSON)
@@ -268,10 +277,10 @@ public class ComapanyControllerIT {
 		}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeeAfterAdding.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testAddNewEmployee() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeeAfterAdding.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testAddNewEmployee() throws IOException {
 		given()
                 .contentType(APPLICATION_JSON)
                 .body(getNewEmployeeDetailsRequestJSON())
@@ -282,10 +291,10 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testAddNewEmployee_employeeExists() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testAddNewEmployee_employeeExists() throws JsonProcessingException {
 		given()
                 .contentType(APPLICATION_JSON)
                 .body(getMockEmployeeDuplicateDetailsRequestJSON())
@@ -296,10 +305,10 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeeAfterUpdatingDetails.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testUpdateEmployeeJobTitle() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeeAfterUpdatingDetails.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testUpdateEmployeeJobTitle() throws JsonProcessingException {
 		given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", 100014)
@@ -311,10 +320,10 @@ public class ComapanyControllerIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
-	public void testUpdateEmployeeJobTitle_whenDoesNotExist() {
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
+	public void testUpdateEmployeeJobTitle_whenDoesNotExist() throws JsonProcessingException {
 		given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", 100017)
@@ -325,39 +334,75 @@ public class ComapanyControllerIT {
                 .statusCode(404);
 	}
 
-	private String getNewEmployeeDetailsRequestJSON() {
-		return "{" + "\"id\":100015," + "\"name\":\"Alex\"," + "\"jobTitle\":\"Tester\"," + "\"managerId\":100004,"
-				+ "\"departmentId\":1003," + "\"lName\":\"Tso\"," + "\"hireDate\":\"2016-05-29\"" + " }";
+	private String getNewEmployeeDetailsRequestJSON() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(anEmployee());
+	}
+
+    private Employee anEmployee() {
+        EmployeeBuilder employeeBuilder = new EmployeeBuilder()
+                .withDepartmentId(1003)
+                .withHireDate(LocalDate.of(2016, Month.MAY, 29 ))
+                .withId(100015)
+                .withJobTitle("Tester")
+                .withName("Alex")
+                .withLname("Tso")
+                .withManageId(100004);
+        return employeeBuilder.build();
+    }
+
+    private String getMockEmployeeDetailsRequestJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(anotherEmployee());
 
 	}
 
-	private String getMockEmployeeDetailsRequestJSON() {
-		return "{" + "\"id\":100014," + "\"name\":\"Andy\"," + "\"jobTitle\":\"Account Manager\","
-				+ "\"managerId\":100005," + "\"departmentId\":1004," + "\"lName\":\"McNee\","
-				+ "\"hireDate\":\"2010-05-09\"" + " }";
+    private Employee anotherEmployee() {
+        EmployeeBuilder employeeBuilder = new EmployeeBuilder()
+                .withDepartmentId(1004)
+                .withHireDate(LocalDate.of(2010, Month.MAY, 9 ))
+                .withId(100014)
+                .withJobTitle("Account Manager")
+                .withName("Andy")
+                .withLname("McNee")
+                .withManageId(100005);
+        return employeeBuilder.build();
+    }
+
+    private String getMockEmployeeDuplicateDetailsRequestJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(new EmployeeBuilder()
+                .withDepartmentId(1003)
+                .withHireDate(LocalDate.of(2013, Month.MARCH, 29 ))
+                .withId(100012)
+                .withJobTitle("Software Developer")
+                .withName("Gerard")
+                .withLname("Brawley")
+                .withManageId(100004).build());
 
 	}
 
-	private String getMockEmployeeDuplicateDetailsRequestJSON() {
-		return "{" + "\"id\":100012," + "\"name\":\"Gerard\"," + "\"jobTitle\":\"Software Developer\","
-				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lName\":\"Brawley\","
-				+ "\"hireDate\":\"2013-03-29\"" + " }";
+	private String getMockEmployeeThatDoesNotExistDetailsRequestJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(new EmployeeBuilder()
+                .withDepartmentId(1003)
+                .withHireDate(LocalDate.of(2014, Month.APRIL, 29 ))
+                .withId(100017)
+                .withJobTitle("PHP Developer")
+                .withName("Gerrold")
+                .withLname("Brown")
+                .withManageId(100004).build());
 
 	}
 
-	private String getMockEmployeeThatDoesNotExistDetailsRequestJSON() {
-		return "{" + "\"id\":100017," + "\"name\":\"Gerrold\"," + "\"jobTitle\":\"PHP Developer\","
-				+ "\"managerId\":100004," + "\"departmentId\":1003," + "\"lName\":\"Brown\","
-				+ "\"hireDate\":\"2014-04-29\"" + " }";
-
+	private String getMockDepartmentRequestJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(new DepartmentBuilder().withId(1005).withName("Finance").build());
 	}
 
-	private String getMockDepartmentRequestJSON() {
-		return "{" + "\"depId\": \"1005\", " + "\"depName\": \"Finance\"" + " }";
-	}
-
-	private String getMockDuplicateDepartmentRequestJSON() {
-		return "{" + "\"depId\": \"1002\", " + "\"depName\": \"Sales\"" + " }";
+	private String getMockDuplicateDepartmentRequestJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(new DepartmentBuilder().withId(1002).withName("Sales").build());
 	}
 
 }

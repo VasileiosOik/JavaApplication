@@ -1,7 +1,12 @@
 package com.connection.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.time.LocalDate;
 
 public class Employee {
 	@ApiModelProperty(notes = "The Employee Id")
@@ -13,7 +18,9 @@ public class Employee {
 	@ApiModelProperty(notes = "The Employee job title")
 	private String jobTitle;
 	@ApiModelProperty(notes = "The Employee Hire Date")
-	private String hireDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateSerializer.class)
+	private LocalDate hireDate;
 	@ApiModelProperty(notes = "The Employee's manager Id")
 	private int managerId;
 	@ApiModelProperty(notes = "The Employee's department Id")
@@ -23,7 +30,7 @@ public class Employee {
 		//empty constructor is needed
 	}
 
-	public Employee(int id, String name, String lName, String jobTitle, String hireDate, int managerId,
+	public Employee(int id, String name, String lName, String jobTitle, LocalDate hireDate, int managerId,
 			int departmentId) {
 		super();
 		this.id = id;
@@ -67,11 +74,11 @@ public class Employee {
         this.jobTitle = jobTitle;
     }
 
-    public String getHireDate() {
+    public LocalDate getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(String hireDate) {
+    public void setHireDate(LocalDate hireDate) {
         this.hireDate = hireDate;
     }
 

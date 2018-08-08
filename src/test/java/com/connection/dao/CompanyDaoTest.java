@@ -5,6 +5,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,7 +163,7 @@ public class CompanyDaoTest {
 		employee.setId(1);
 		employee.setManagerId(100015);
 		employee.setDepartmentId(1001);
-		employee.setHireDate("1988-10-23");
+		employee.setHireDate(LocalDate.of(1988, Month.OCTOBER, 23));
 
 		List<Employee> emp = new ArrayList<>();
 		emp.add(employee);
@@ -173,7 +175,7 @@ public class CompanyDaoTest {
 	private Employee getOneMockEmployee() {
 		EmployeeBuilder employeeBuilder = new EmployeeBuilder()
                 .withDepartmentId(1003)
-                .withHireDate("2016-05-29")
+                .withHireDate(LocalDate.of(2016, Month.MAY, 29 ))
                 .withId(100015)
                 .withJobTitle("Tester")
                 .withName("Alex")

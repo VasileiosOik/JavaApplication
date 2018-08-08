@@ -2,13 +2,15 @@ package com.connection.mapper;
 
 import com.connection.domain.Employee;
 
+import java.time.LocalDate;
+
 public class EmployeeBuilder {
 
     private int id;
     private String name;
     private String lName;
     private String jobTitle;
-    private String hireDate;
+    private LocalDate hireDate;
     private int managerId;
     private int departmentId;
 
@@ -42,7 +44,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withHireDate(String hireDate){
+    public EmployeeBuilder withHireDate(LocalDate hireDate){
 
         this.hireDate = hireDate;
 

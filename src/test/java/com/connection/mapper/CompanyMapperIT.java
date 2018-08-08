@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,8 @@ public class CompanyMapperIT {
 	private CompanyMapper companyMapper;
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testShowAllEmployees() {
 		List<Employee> employees = companyMapper.showAllEmployees();
 		LOG.debug("The employees are: {}", employees);
@@ -50,8 +52,8 @@ public class CompanyMapperIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testShowAllDepartments() {
 		List<Department> departments = companyMapper.showAllDepartments();
 		LOG.debug("The departments are: {}", departments);
@@ -60,8 +62,8 @@ public class CompanyMapperIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testEmployeesInSpecificDepartment() {
 		List<Employee> employees = companyMapper.employeesInSpecificDepartment("Technology");
 		LOG.debug("The employees in the specific department are: {}", employees);
@@ -70,8 +72,8 @@ public class CompanyMapperIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetAllEmployeesByTheirManager() {
 		List<Employee> employees = companyMapper.getAllEmployeesByTheirManager("Kevin", "Withers");
 
@@ -87,8 +89,8 @@ public class CompanyMapperIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testGetEmployeesByNumOfYearsWorked() {
 		List<Employee> employees = companyMapper.getEmployeesByNumOfYearsWorked(20);
 		LOG.debug("The employees are: {}", employees);
@@ -99,34 +101,34 @@ public class CompanyMapperIT {
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/ChangeEmployeeTitle.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/ChangeEmployeeTitle.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testChangeEmployeeJobTitle() {
 		companyMapper.changeEmployeeJobTitle("John", "Smith", "Developer");
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/RemovedEmployeesExpected.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/RemovedEmployeesExpected.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testRemoveEmployee() {
 		companyMapper.removeEmployee("Patricia", "Murray");
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/DepartmentsRemainedExpected.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/departmentTestData/DepartmentsRemainedExpected.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testRemoveDepartment() {
 		companyMapper.updateEmployeeDataBeforeDeleteOfDepartment("Sales");
 		companyMapper.removeDepartment("Sales");
 	}
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/EmployeeAfterAdding.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/employeeTestData/EmployeeAfterAdding.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddEmployee() {
 		companyMapper.addEmployee(getEmployee());
 		List<Employee> employees = companyMapper.showAllEmployees();
@@ -135,9 +137,9 @@ public class CompanyMapperIT {
 
 
 	@Test
-	@DatabaseSetup("/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/DepartmentAfterAdding.xml")
-	@DatabaseTearDown("/ClearData.xml")
+	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase("/departmentTestData/DepartmentAfterAdding.xml")
+	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddDepartment() {
 		companyMapper.addDepartment(getDepartment());
 	}
@@ -150,7 +152,7 @@ public class CompanyMapperIT {
 		emp.setJobTitle("Tester");
 		emp.setDepartmentId(1003);
 		emp.setManagerId(100004);
-		emp.setHireDate("2016-05-29");
+		emp.setHireDate(LocalDate.of(2016, Month.MAY, 29 ));
 		return emp;
 	}
 

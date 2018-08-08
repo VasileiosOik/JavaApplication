@@ -160,17 +160,16 @@ public class CompanyDao {
         }
     }
 
-    private String determineTheHireDate(String hireDate) {
+    private LocalDate determineTheHireDate(LocalDate hireDate) {
 
-        boolean dateStory;
+        boolean dateStory = false;
         do {
-            LocalDate date1 = LocalDate.parse(hireDate);
             // 1st check
-            dateStory = date1.isBefore(LocalDate.now());
+            boolean hireDateBefore = hireDate.isBefore(LocalDate.now());
             // 2nd check
             LocalDate currentDatePlusOneMonth = LocalDate.now().plusDays(30);
 
-            if (date1.isBefore(currentDatePlusOneMonth)) {
+            if (hireDateBefore && hireDate.isBefore(currentDatePlusOneMonth)) {
                 dateStory = true;
             } else {
                 log.debug("The date is more than one month in front");

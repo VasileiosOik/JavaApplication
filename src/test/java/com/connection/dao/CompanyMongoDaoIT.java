@@ -17,6 +17,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 
 @RunWith(SpringRunner.class)
@@ -30,7 +32,7 @@ public class CompanyMongoDaoIT {
 
 	@Test
 	@UsingDataSet(locations = "initialJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
-	@ShouldMatchDataSet(location = "afterDepFile.json")
+	@ShouldMatchDataSet(location = "mongoTestData/afterDepFile.json")
 	public void addDepartmentData() {
 		
 		companyMongoDao.addDepartmentToMongoDB(getMockDepartment());
@@ -39,7 +41,7 @@ public class CompanyMongoDaoIT {
 
 	@Test
 	@UsingDataSet(locations = "initialJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
-	@ShouldMatchDataSet(location = "afterEmpFile.json")
+	@ShouldMatchDataSet(location = "mongoTestData/afterEmpFile.json")
 	public void addEmployeeData() {
 
 		companyMongoDao.addEmployeeToMongoDB(getOneMockEmployee());
@@ -73,7 +75,7 @@ public class CompanyMongoDaoIT {
 		employee.setId(100015);
 		employee.setManagerId(100004);
 		employee.setDepartmentId(1003);
-		employee.setHireDate("2016-05-29");
+		employee.setHireDate(LocalDate.of(2016, Month.MAY, 29 ));
 
 		return employee;
 
