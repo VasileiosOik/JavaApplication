@@ -124,6 +124,7 @@ public class CompanyDao {
         if (verifyDepartmentExistence(department.getDepName()) == 0) {
             log.debug("Cannot add department with the same name");
         } else {
+            department.setDepId(companyMapper.getMaxDepartmentId()+1);
             companyMapper.addDepartment(department);
             log.debug("Department was saved successfully!");
         }
@@ -142,14 +143,15 @@ public class CompanyDao {
     }
 
     public void addEmployee(Employee employee) {
-        if (addEmployeeEnchanced(employee.getManagerId(), employee.getDepartmentId())) {
+        if (addEmployeeEnhanced(employee.getManagerId(), employee.getDepartmentId())) {
             employee.setHireDate(determineTheHireDate(employee.getHireDate()));
+            employee.setId(companyMapper.getMaxEmployeeId()+1);
             companyMapper.addEmployee(employee);
             log.debug("Employee was saved successfully!");
         }
     }
 
-    private boolean addEmployeeEnchanced(int managerId, int departmentId) {
+    private boolean addEmployeeEnhanced(int managerId, int departmentId) {
         if (verifyDepartmentExistence(companyMapper.departmentFound(departmentId)) == 0
                 && (companyMapper.managerOfADepartment(departmentId)) == managerId) {
             log.debug("Both exists under the same section in the system.");

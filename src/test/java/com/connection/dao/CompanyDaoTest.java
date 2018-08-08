@@ -100,12 +100,15 @@ public class CompanyDaoTest {
 	@Test
 	public void testAddDepartment() {
 		Mockito.doNothing().when(companyMapper).addDepartment(getMockDepartment());
-		companyDao.addDepartment(getMockDepartment());
+
+        when(companyMapper.getMaxDepartmentId()).thenReturn(1004);
+
+        companyDao.addDepartment(getMockDepartment());
 
 		Mockito.verify(companyMapper, times(1)).addDepartment(depCaptor.capture());
 
 		assertEquals(TECHNOLOGY, depCaptor.getValue().getDepName());
-		assertEquals(1003, depCaptor.getValue().getDepId());
+		assertEquals(1005, depCaptor.getValue().getDepId());
 	}
 
 	@Test
@@ -116,6 +119,8 @@ public class CompanyDaoTest {
 		when(companyMapper.managerOfADepartment(1003)).thenReturn(100004);
 
 		when(companyMapper.showAllDepartments()).thenReturn(getMockDepartments());
+
+		when(companyMapper.getMaxEmployeeId()).thenReturn(100015);
 
 		Mockito.doNothing().when(companyMapper).addEmployee(getOneMockEmployee());
 
@@ -129,7 +134,7 @@ public class CompanyDaoTest {
 
 		Mockito.verify(companyMapper, times(1)).addEmployee(empCaptor.capture());
 
-		assertEquals(100015, empCaptor.getValue().getId());
+		assertEquals(100016, empCaptor.getValue().getId());
 		assertEquals("Alex", empCaptor.getValue().getName());
 		assertEquals("Tso", empCaptor.getValue().getlName());
 		assertEquals("Tester", empCaptor.getValue().getJobTitle());
