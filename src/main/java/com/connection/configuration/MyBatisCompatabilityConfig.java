@@ -8,8 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyBatisCompatabilityConfig {
 
+    private final SqlSessionFactory companySqlSessionFactory;
+
     @Autowired
-    private SqlSessionFactory companySqlSessionFactory;
+    public MyBatisCompatabilityConfig(SqlSessionFactory companySqlSessionFactory) {
+        this.companySqlSessionFactory = companySqlSessionFactory;
+    }
 
     @Bean
     public SqlSessionFactory sqlSessionFactory() {

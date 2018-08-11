@@ -24,10 +24,14 @@ public class CompanyMongoDao {
 	private static final String COMPANY = "Company";
 	private static final String CREATED_TIME = "timeCreated";
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+	private final MongoTemplate mongoTemplate;
 
-	public void addDepartmentToMongoDB(Department department) {
+    @Autowired
+    public CompanyMongoDao(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    public void addDepartmentToMongoDB(Department department) {
 		if (!mongoTemplate.collectionExists(COMPANY)) {
 			mongoTemplate.createCollection(COMPANY);
 		}

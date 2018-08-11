@@ -113,8 +113,18 @@ public class CompanyMapperIT {
 	@ExpectedDatabase("/employeeTestData/RemovedEmployeesExpected.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testRemoveEmployee() {
-		companyMapper.removeEmployee("Patricia", "Murray");
-	}
+        int removeEmployee = companyMapper.removeEmployee(100008);
+        assertEquals(1, removeEmployee);
+    }
+
+    @Test
+    @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @DatabaseTearDown("/departmentTestData/ClearData.xml")
+    public void testRemoveEmployeeThatDoesNotExist() {
+        int removeEmployee = companyMapper.removeEmployee(1);
+        assertEquals(0, removeEmployee);
+    }
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")

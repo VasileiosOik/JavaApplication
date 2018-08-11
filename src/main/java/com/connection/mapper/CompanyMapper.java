@@ -23,9 +23,9 @@ public interface CompanyMapper {
 	void changeEmployeeJobTitle(@Param("name") String name, @Param("lName") String lName,
 			@Param("jobTitle") String jobTitle);
 
-	void removeEmployee(@Param("name") String name, @Param("lName") String lName);
+	int removeEmployee(@Param("id") int id);
 
-	void removeDepartment(@Param("depName") String depName);
+	int removeDepartment(@Param("depName") String depName);
 
 	void removeEmployeeThatIsManager();
 
@@ -51,7 +51,7 @@ public interface CompanyMapper {
 
 	int getMaxDepartmentId();
 
-	int verifyDepartmentExistence(@Param("depName") String depName);
+	Department verifyDepartmentExistence(@Param("depName") String depName);
 
 	Employee verifyIfEmployeeExists(@Param("id") int id);
 

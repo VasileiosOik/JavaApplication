@@ -12,8 +12,12 @@ import org.springframework.core.io.Resource;
 @MapperScan(value = "com.connection.mapper", sqlSessionFactoryRef = "companySqlSessionFactory")
 public class MapperConfiguration {
 
+    private final SqlSessionConfigurer sqlSessionConfigurer;
+
     @Autowired
-    private SqlSessionConfigurer sqlSessionConfigurer;
+    public MapperConfiguration(SqlSessionConfigurer sqlSessionConfigurer) {
+        this.sqlSessionConfigurer = sqlSessionConfigurer;
+    }
 
     @Value(value = "classpath:/myBatis-config.xml")
     private Resource myBatisConfig;

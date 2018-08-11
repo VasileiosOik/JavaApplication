@@ -26,4 +26,6 @@ public interface CompanyService {
     ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee);
 
     ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder);
+
+    ResponseEntity<Object> changeAnEmployeeDepartment(String name, String lName, String departmentName);
 }

@@ -12,8 +12,12 @@ import javax.sql.DataSource;
 @Configuration
 public class DbUnitConfiguration {
 
+    private final DataSource dataSource;
+
     @Autowired
-    private DataSource dataSource;
+    public DbUnitConfiguration(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection() {

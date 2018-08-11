@@ -12,8 +12,12 @@ import javax.sql.DataSource;
 @Component
 public class SqlSessionConfigurer {
 
+    private final DataSource dataSource;
+
     @Autowired
-    private DataSource dataSource;
+    public SqlSessionConfigurer(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public SqlSessionFactory sqlSessionFactory(Resource myBatisConfigFile) {
         return this.sqlSessionFactory(this.dataSource, myBatisConfigFile);

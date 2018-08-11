@@ -115,14 +115,12 @@
 		    e.LAST_NAME=#{lName}
 	</update>
 
-	<delete id="removeEmployee" parameterType="String">
+	<delete id="removeEmployee" parameterType="int">
 		DELETE
         FROM
             Employee
 		WHERE
-            First_Name=#{name}
-        AND
-            Last_Name=#{lName}
+           ID=#{id}
 	</delete>
 
 	<delete id="removeEmployeeThatIsManager">
@@ -162,7 +160,7 @@
 		        d.name=#{depName})
 	</delete>
 
-	<delete id="removeDepartment" parameterType="String">
+	<delete id="removeDepartment" parameterType="String" >
 		DELETE
         FROM
 		   Department
@@ -297,9 +295,9 @@
 	</select>
 
 	<select id="verifyDepartmentExistence" parameterType="String"
-		resultType="int">
+		resultMap="departmentResults">
 		SELECT
-            d.ID
+            *
         FROM
             Department d
         WHERE
