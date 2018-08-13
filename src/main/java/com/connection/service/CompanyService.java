@@ -28,4 +28,8 @@ public interface CompanyService {
     ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder);
 
     ResponseEntity<Object> changeAnEmployeeDepartment(String name, String lName, String departmentName);
+
+    ResponseEntity<Object> getAnEmployee(int id);
+
+    ResponseEntity<Object> updateAnEmployee(int id, Employee employee);
 }

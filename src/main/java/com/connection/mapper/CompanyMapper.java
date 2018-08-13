@@ -57,4 +57,8 @@ public interface CompanyMapper {
 
 	void updateEmployee(@Param("depName") String depName);
 
+	Employee getAnEmployee(@Param("id") int id);
+
+	void updateAnEmployee(@Param("id") int id, @Param("employee") Employee employee);
+
 }

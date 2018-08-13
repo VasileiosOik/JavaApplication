@@ -51,6 +51,15 @@ public class CompanyMapperIT {
 		assertTrue(!employees.isEmpty());
 	}
 
+    @Test
+    @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @DatabaseTearDown("/departmentTestData/ClearData.xml")
+    public void getAnEmployee() {
+        Employee employee = companyMapper.getAnEmployee(100006);
+        assertNotNull(employee);
+        assertEquals("Petra", employee.getName());
+    }
+
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
@@ -134,6 +143,18 @@ public class CompanyMapperIT {
 		companyMapper.updateEmployeeDataBeforeDeleteOfDepartment("Sales");
 		companyMapper.removeDepartment("Sales");
 	}
+
+    @Test
+    @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @ExpectedDatabase("/employeeTestData/updateAnEmployee.xml")
+    @DatabaseTearDown("/departmentTestData/ClearData.xml")
+    public void updateAnEmployee() {
+	    Employee employee = new EmployeeBuilder().withJobTitle("Senior Analyst")
+            .withHireDate(LocalDate.of(2014, Month.JANUARY, 25))
+            .withName("Nigel").withDepartmentId(1001)
+            .withManageId(100002).withLname("Pentland").build();
+        companyMapper.updateAnEmployee(100007, employee);
+    }
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")

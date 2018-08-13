@@ -177,4 +177,31 @@ public class DefaultCompanyService implements CompanyService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<Object> getAnEmployee(int id) {
+        Employee anEmployee = companyMapper.getAnEmployee(id);
+        if (null != anEmployee) {
+            LOG.debug("Retrieved einai: [{}]", anEmployee);
+            return new ResponseEntity<>(anEmployee, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(
+                    new CustomErrorType(
+                            "The current employee cannot be found"),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> updateAnEmployee(int id, Employee employee) {
+        try {
+            companyMapper.updateAnEmployee(id, employee);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    new CustomErrorType(
+                            "The current employee cannot be found"),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
 }

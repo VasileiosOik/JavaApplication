@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,9 +34,6 @@ public class DefaultCompanyServiceTest {
 
     @Mock
     private CompanyMongoDao companyMongoDao;
-
-    @Mock
-    private HttpHeaders httpHeaders;
 
 	private static final String SALES = "Sales";
 
@@ -169,4 +165,45 @@ public class DefaultCompanyServiceTest {
 				anyString());
 
 	}
+
+
+	@Test
+    public void testGetAnEmployee() {
+
+        Employee employee = new EmployeeBuilder()
+                .withName("Bill")
+                .withLname("Eco")
+                .withId(1)
+                .withDepartmentId(1001)
+                .withManageId(100015)
+                .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
+                .withJobTitle("Developer")
+                .build();
+
+        when(companyMapper.getAnEmployee(1)).thenReturn(employee);
+
+        defaultCompanyService.getAnEmployee(1);
+
+        verify(companyMapper, times(1)).getAnEmployee(1);
+
+    }
+
+    @Test
+    public void testUpdateAnEmployee() {
+
+        Employee employee = new EmployeeBuilder()
+                .withName("Bill")
+                .withLname("Eco")
+                .withId(1)
+                .withDepartmentId(1001)
+                .withManageId(100015)
+                .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
+                .withJobTitle("Developer")
+                .build();
+
+        defaultCompanyService.updateAnEmployee(1, employee);
+
+        verify(companyMapper, times(1)).updateAnEmployee(1, employee);
+
+    }
 }

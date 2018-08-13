@@ -19,25 +19,26 @@
 		<result property="depName" column="NAME" />
 	</resultMap>
 
-
 	<select id="showAllEmployees" resultMap="employeeResults">
 		SELECT
-			e.ID,
-			e.FIRST_NAME,
-			e.LAST_NAME,
-			e.JOB_TITLE,
-			e.HIRE_DATE,
-			e.MANAGER_ID,
-			e.DEPARTMENT_ID
+             *
 		FROM
 			Employee e
+	</select>
+
+	<select id="getAnEmployee" resultMap="employeeResults">
+		SELECT
+		     *
+		FROM
+			 Employee e
+		WHERE
+			e.ID = #{id}
 	</select>
 
 
 	<select id="showAllDepartments" resultMap="departmentResults">
 		SELECT
-			d.ID,
-            d.NAME
+		*
 		FROM
 		    Department d
 	</select>
@@ -114,6 +115,20 @@
         AND
 		    e.LAST_NAME=#{lName}
 	</update>
+
+    <update id="updateAnEmployee">
+        UPDATE
+                Employee e
+        SET
+            e.JOB_TITLE=#{employee.jobTitle},
+            e.FIRST_NAME=#{employee.name},
+            e.LAST_NAME=#{employee.lName},
+            e.HIRE_DATE=#{employee.hireDate},
+            e.MANAGER_ID=#{employee.managerId},
+            e.DEPARTMENT_ID=#{employee.departmentId}
+        WHERE
+                e.ID=#{id}
+    </update>
 
 	<delete id="removeEmployee" parameterType="int">
 		DELETE
@@ -329,13 +344,7 @@
 	<select id="verifyIfEmployeeExists" parameterType="int"
 		resultMap="employeeResults">
 		SELECT
-		    e.ID,
-		    e.FIRST_NAME,
-		    e.LAST_NAME,
-		    e.DEPARTMENT_ID,
-		    e.JOB_TITLE,
-		    e.HIRE_DATE,
-		    e.MANAGER_ID
+		    *
         FROM
             Employee e
 		WHERE

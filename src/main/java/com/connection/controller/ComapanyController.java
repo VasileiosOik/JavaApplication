@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/company")
 @SwaggerDefinition(tags = { @Tag(name = "company", description = "Operations pertaining to manage a company") })
@@ -94,5 +93,21 @@ public class ComapanyController {
 	public ResponseEntity<Object> addNewEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder) {
 		return companyService.addNewEmployee(employee, ucBuilder);
 	}
+
+	@ApiOperation(value = "Get an Employee back", response = ResponseEntity.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved"),
+			@ApiResponse(code = 404, message = "Not found") })
+	@GetMapping(value = "/oneemployee/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> getAnEmployee(@PathVariable("id") int id) {
+		return companyService.getAnEmployee(id);
+	}
+
+    @ApiOperation(value = "Get n Employee back", response = ResponseEntity.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved"),
+            @ApiResponse(code = 404, message = "Not found") })
+    @PutMapping(value = "/updateemployee/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateAnEmployee(@PathVariable("id") int id, @RequestBody Employee employee) {
+        return companyService.updateAnEmployee(id, employee);
+    }
 
 }

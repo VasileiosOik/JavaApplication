@@ -63,6 +63,23 @@ public class ComapanyControllerIT {
                 .body("[1].name", equalTo("Kevin"));
 	}
 
+    @Test
+    @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @DatabaseTearDown("/departmentTestData/ClearData.xml")
+    public void testGetAnEmployees() {
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("id", 100006)
+                .when()
+                .get("/company/oneemployee/{id}")
+                .then()
+                .log().everything()
+                .statusCode(200)
+                .body("id", equalTo(100006))
+                .body("name", equalTo("Petra"));
+    }
+
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
