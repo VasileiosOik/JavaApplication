@@ -91,8 +91,6 @@ public class DefaultCompanyServiceTest {
 
         Mockito.doNothing().when(companyMapper).addDepartment(department);
 
-        when(companyMapper.getMaxDepartmentId()).thenReturn(1003);
-
         when(companyMapper.verifyDepartmentExistence(TECHNOLOGY)).thenReturn(null);
 
         doNothing().when(companyMongoDao).addDepartmentToMongoDB(department);
@@ -101,7 +99,6 @@ public class DefaultCompanyServiceTest {
 
 		Mockito.verify(companyMapper, times(1)).addDepartment(department);
         Mockito.verify(companyMongoDao, times(1)).addDepartmentToMongoDB(department);
-        Mockito.verify(companyMapper, times(1)).getMaxDepartmentId();
         Mockito.verify(companyMapper, times(1)).verifyDepartmentExistence(department.getDepName());
 	}
 
@@ -124,15 +121,11 @@ public class DefaultCompanyServiceTest {
 
         when(companyMapper.verifyIfEmployeeExists(1)).thenReturn(null);
 
-		when(companyMapper.getMaxEmployeeId()).thenReturn(100015);
-
 		Mockito.doNothing().when(companyMapper).addEmployee(employee);
 
 		defaultCompanyService.addNewEmployee(employee, aComponentsBuilder());
 
 		Mockito.verify(companyMapper, times(1)).verifyIfEmployeeExists(1);
-
-		Mockito.verify(companyMapper, times(1)).getMaxEmployeeId();
 
 		Mockito.verify(companyMapper, times(1)).addEmployee(employee);
 	}

@@ -20,13 +20,13 @@ services:
       context: .
       dockerfile: mongodb.dockerfile
     ports:
-    - 27017:27017
+    - 27018:27018
     networks:
     - all
     environment:
       MONGODB_DATABASE: Company
       MONGODB_HOST: 192.168.99.100
-      MONGODB_PORT: 27017
+      MONGODB_PORT: 27018
     volumes:
     - /app/hdp/mongo/data:/data/db
     container_name: mongodbserver
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: mysqldb.dockerfile
     ports:
-    - 3306:3306
+    - 3307:3307
     networks:
     - all
     environment:
