@@ -39,11 +39,7 @@ public interface CompanyMapper {
 	Employee changeAnEmployeeDepartmentAndCheckIfManager(@Param("name") String name, @Param("lName") String lName,
 			@Param("depName") String departmentName);
 
-	String departmentFound(@Param("depId") int depId);
-
 	void addEmployee(@Param("employee") Employee employee);
-
-	Employee returnDepartmentIdAndManagerId(@Param("name") String name, @Param("lName") String lName);
 
 	int managerOfADepartment(@Param("depId") int depId);
 

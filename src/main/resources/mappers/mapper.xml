@@ -138,7 +138,7 @@
            ID=#{id}
 	</delete>
 
-	<delete id="removeEmployeeThatIsManager">
+	<delete id="">
 		UPDATE
 		    Employee e
         SET
@@ -274,17 +274,6 @@
         #{employee.departmentId})
 	</insert>
 
-	<select id="returnDepartmentIdAndManagerId" resultType="String">
-		SELECT
-		    e.id, e.DEPARTMENT_ID
-        FROM
-            Employee e
-        WHERE
-            e.FIRST_NAME=#{name}
-        AND
-		    e.LAST_NAME=#{lName}
-	</select>
-
 	<select id="getMaxEmployeeId" resultType="int">
 		SELECT
             e.ID
@@ -317,15 +306,6 @@
             Department d
         WHERE
             d.NAME=#{depName}
-	</select>
-
-	<select id="departmentFound" parameterType="int" resultType="String">
-		SELECT
-            d.NAME
-        FROM
-            Department d
-        WHERE
-            d.ID=#{depId}
 	</select>
 
 	<update id="updateEmployee" parameterType="String">

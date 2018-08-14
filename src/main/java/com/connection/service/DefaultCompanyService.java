@@ -120,7 +120,6 @@ public class DefaultCompanyService implements CompanyService {
                     HttpStatus.CONFLICT);
         }
         LOG.debug("The department is: {}", department);
-        department.setDepId(companyMapper.getMaxDepartmentId()+1);
         companyMapper.addDepartment(department);
         companyMongoDao.addDepartmentToMongoDB(department);
         HttpHeaders headers = new HttpHeaders();
@@ -154,7 +153,6 @@ public class DefaultCompanyService implements CompanyService {
                     HttpStatus.CONFLICT);
         }
         LOG.debug("The employee is: {}", employee);
-        employee.setId(companyMapper.getMaxEmployeeId()+1);
         companyMapper.addEmployee(employee);
         companyMongoDao.addEmployeeToMongoDB(employee);
         HttpHeaders headers = new HttpHeaders();
