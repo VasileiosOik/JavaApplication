@@ -1,11 +1,11 @@
-package com.connection.dao;
+package com.connection.service;
 
+import com.connection.dao.CompanyMongoDao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.mapper.CompanyMapper;
 import com.connection.mapper.DepartmentBuilder;
 import com.connection.mapper.EmployeeBuilder;
-import com.connection.service.DefaultCompanyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
