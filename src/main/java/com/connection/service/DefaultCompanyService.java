@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class DefaultCompanyService implements CompanyService {
         List<Employee> employees = companyMapper.showAllEmployees();
 
         if (CollectionUtils.isEmpty(employees)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
@@ -47,7 +48,7 @@ public class DefaultCompanyService implements CompanyService {
         List<Department> departments = companyMapper.showAllDepartments();
 
         if (CollectionUtils.isEmpty(departments)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
@@ -149,7 +150,7 @@ public class DefaultCompanyService implements CompanyService {
         if (companyMapper.verifyIfEmployeeExists(employee.getId()) != null) {
             return new ResponseEntity<>(
                     new CustomErrorType(
-                            "Unable to create. An employee with name " + employee.getName() + " already exist."),
+                            "Unable to create. An employee with id " + employee.getId() + " already exist."),
                     HttpStatus.CONFLICT);
         }
         LOG.debug("The employee is: {}", employee);
