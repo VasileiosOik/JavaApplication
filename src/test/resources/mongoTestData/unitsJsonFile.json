@@ -1,0 +1,24 @@
+{
+"Company": [
+{
+  "EmployeeId" : 100015,
+  "FirstName" : "Alex",
+  "LastName" : "Tso",
+  "JobTitle" : "Tester",
+  "HireDate" : ISODate("2016-05-29T23:00:00.000Z"),
+  "ManagerId" : 100004,
+  "DepartmentId" : 1003,
+  "timeCreated" : ISODate("2018-09-02T19:15:26.869Z")
+},
+  {
+    "EmployeeId" : 100016,
+    "FirstName" : "Bill",
+    "LastName" : "Eco",
+    "JobTitle" : "Dev",
+    "HireDate" : ISODate("2016-05-29T19:15:26.869Z")
+    "ManagerId" : 100004,
+    "DepartmentId" : 1003,
+    "timeCreated" : ISODate("2018-11-10T19:15:26.869Z")
+  }
+  ]
+}
