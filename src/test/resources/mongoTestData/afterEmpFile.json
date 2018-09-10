@@ -1,13 +1,13 @@
 {
   "Company": {
 
-  "EmployeeId": 100015,
-  "FirstName": "Alex",
-  "LastName": "Tso",
-  "JobTitle": "Tester",
-  "HireDate": "2016-05-29",
-  "ManagerId": 100004,
-  "DepartmentId": 1003
+  "employeeId": 100015,
+  "firstName": "Alex",
+  "lastName": "Tso",
+  "jobTitle": "Tester",
+  "hireDate": "2016-05-29",
+  "managerId": 100004,
+  "departmentId": 1003
 }
 
 }

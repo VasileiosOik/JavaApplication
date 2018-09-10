@@ -1,7 +1,7 @@
 {
  "Company": {
 
-    "DepartmentId" : 1005,
-    "DepartmentName" : "Finance"
+    "departmentId" : 1005,
+    "departmentName" : "Finance"
 }
 }

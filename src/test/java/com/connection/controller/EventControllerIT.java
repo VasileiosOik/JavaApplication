@@ -53,8 +53,8 @@ public class EventControllerIT {
                 .log().everything()
                 .statusCode(200)
                 .body("size()", is(2))
-                .body("[0].EmployeeId", equalTo(100016))
-                .body("[1].EmployeeId", equalTo(100015));
+                .body("[0].employeeId", equalTo(100016))
+                .body("[1].employeeId", equalTo(100015));
 
     }
 }

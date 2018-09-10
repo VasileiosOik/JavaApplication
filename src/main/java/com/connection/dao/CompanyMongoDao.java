@@ -45,7 +45,7 @@ public class CompanyMongoDao {
 
 		DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.append("DepartmentId", department.getDepId()).append("DepartmentName", department.getDepName())
+		basicDBObject.append("departmentId", department.getDepId()).append("departmentName", department.getDepName())
 				.append(CREATED_TIME, new Date());
 		dbCollection.insert(basicDBObject);
 		LOG.debug("The department document has been added successfully");
@@ -58,10 +58,11 @@ public class CompanyMongoDao {
 
 		DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
 		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.append("EmployeeId", emp.getId()).append("FirstName", emp.getName())
-				.append("LastName", emp.getlName()).append("JobTitle", emp.getJobTitle())
-				.append("HireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant())).append("ManagerId", emp.getManagerId())
-				.append("DepartmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
+		basicDBObject.append("employeeId", emp.getId()).append("firstName", emp.getName())
+				.append("lastName", emp.getlName()).append("jobTitle", emp.getJobTitle())
+				.append("hireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .append("managerId", emp.getManagerId())
+				.append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
 		dbCollection.insert(basicDBObject);
 		LOG.debug("The employee document has been added successfully");
 	}
@@ -72,6 +73,7 @@ public class CompanyMongoDao {
 			Pageable pageable = new PageRequest(0,1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
             Query query = Query.query(criteria).with(pageable);
             List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
+            LOG.debug("The events are: {}", events);
             if (!CollectionUtils.isEmpty(events)) {
                 return events;
             }
