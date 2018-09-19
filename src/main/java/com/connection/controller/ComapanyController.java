@@ -82,7 +82,6 @@ public class ComapanyController {
 			@ApiResponse(code = 404, message = "Not found") })
 	@PutMapping(value = "/employee/{id}")
 	public ResponseEntity<Object> updateEmployeeJobTitle(@PathVariable("id") int id, @RequestBody Employee employee) {
-
 		return companyService.updateEmployeeJobTitle(id, employee);
 	}
 

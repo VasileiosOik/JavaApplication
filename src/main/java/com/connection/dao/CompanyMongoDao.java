@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -67,18 +69,20 @@ public class CompanyMongoDao {
 		LOG.debug("The employee document has been added successfully");
 	}
 
-	public List<Map> returnDateBetweenDates(LocalDate fromDate, LocalDate toDate) {
-		if (mongoTemplate.collectionExists(COMPANY)) {
+	public ResponseEntity<Object> returnDateBetweenDates(LocalDate fromDate, LocalDate toDate) {
+		if (!mongoTemplate.collectionExists(COMPANY)) {
+			mongoTemplate.createCollection(COMPANY);
+		}
             Criteria criteria = this.eventsCriteria(fromDate, toDate);
 			Pageable pageable = new PageRequest(0,1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
             Query query = Query.query(criteria).with(pageable);
             List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
             LOG.debug("The events are: {}", events);
             if (!CollectionUtils.isEmpty(events)) {
-                return events;
-            }
-		}
-        return Collections.emptyList();
+                return new ResponseEntity<>(events, HttpStatus.OK);
+            } else {
+				return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+			}
     }
 
     private Criteria eventsCriteria(LocalDate fromDate, LocalDate toDate) {

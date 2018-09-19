@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,8 +18,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,9 +37,8 @@ public class CompanyMongoDaoIT {
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
     public void testReturnDateBetweenDates() {
 
-        List<Map> dateBetweenDates = companyMongoDao.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
-        assertEquals(2, dateBetweenDates.size());
-
+        ResponseEntity<Object> dateBetweenDates = companyMongoDao.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
+        assertEquals(200, dateBetweenDates.getStatusCode().value());
     }
 
 	private LocalDate getMockDateStart() {

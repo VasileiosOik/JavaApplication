@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/event")
@@ -30,7 +28,7 @@ public class EventController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 404, message = "No content to display") })
     @GetMapping(value = "/getEvents", produces = "application/json")
-    public List<Map> returnAllEvents(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
+    public ResponseEntity<Object> returnAllEvents(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
         LocalDate fromDateParsed = parseDate(fromDate);
         LocalDate toDateParsed = parseDate(toDate);
         return companyMongoDao.returnDateBetweenDates(fromDateParsed, toDateParsed);
