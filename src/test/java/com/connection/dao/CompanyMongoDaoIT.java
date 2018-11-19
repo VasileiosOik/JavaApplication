@@ -22,18 +22,18 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { CompanyMongoDao.class, MongoDBConfiguration.class })
+@SpringBootTest(classes = {CompanyMongoDao.class, MongoDBConfiguration.class})
 @TestPropertySource(locations = "classpath:test.properties")
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public class CompanyMongoDaoIT {
 
-	@Autowired
-	private CompanyMongoDao companyMongoDao;
+    @Autowired
+    private CompanyMongoDao companyMongoDao;
 
-	@Rule
+    @Rule
     public MongoDbRule remoteMongoDbRule = new CompanyMongoDbRule();
 
-	@Test
+    @Test
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
     public void testReturnDateBetweenDates() {
 
@@ -41,15 +41,15 @@ public class CompanyMongoDaoIT {
         assertEquals(200, dateBetweenDates.getStatusCode().value());
     }
 
-	private LocalDate getMockDateStart() {
-		String dateInString = "2016-08-30";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return LocalDate.parse(dateInString,formatter);
-	}
+    private LocalDate getMockDateStart() {
+        String dateInString = "2016-08-30";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(dateInString, formatter);
+    }
 
-	private LocalDate getMockDateEnd() {
-		String dateInString = "2019-11-30";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return LocalDate.parse(dateInString,formatter);
-	}
+    private LocalDate getMockDateEnd() {
+        String dateInString = "2019-11-30";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(dateInString, formatter);
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class DefaultCompanyService implements CompanyService {
     public ResponseEntity<Object> deleteEmployee(int id) {
         LOG.info("Fetching and Deleting employee with id {}", id);
 
-        if (companyMapper.removeEmployee(id)>0) {
+        if (companyMapper.removeEmployee(id) > 0) {
             LOG.info("Employee with {} id found", id);
             return new ResponseEntity<>(companyMapper.showAllEmployees(), HttpStatus.OK);
         } else {

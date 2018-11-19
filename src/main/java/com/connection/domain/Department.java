@@ -4,39 +4,39 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class Department {
-	@ApiModelProperty(notes = "The Id of the department")
-	private int depId;
-	@ApiModelProperty(notes = "The department name")
-	private String depName;
-	
-	public Department(){
-		//empty constructor is needed
-	}
+    @ApiModelProperty(notes = "The Id of the department")
+    private int depId;
+    @ApiModelProperty(notes = "The department name")
+    private String depName;
 
-	public Department(int depId, String depName) {
-		super();
-		this.depId = depId;
-		this.depName = depName;
-	}
+    public Department() {
+        //empty constructor is needed
+    }
 
-	public int getDepId() {
-		return depId;
-	}
+    public Department(int depId, String depName) {
+        super();
+        this.depId = depId;
+        this.depName = depName;
+    }
 
-	public void setDepId(int depId) {
-		this.depId = depId;
-	}
+    public int getDepId() {
+        return depId;
+    }
 
-	public String getDepName() {
-		return depName;
-	}
+    public void setDepId(int depId) {
+        this.depId = depId;
+    }
 
-	public void setDepName(String depName) {
-		this.depName = depName;
-	}
+    public String getDepName() {
+        return depName;
+    }
 
-	@Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
+    public void setDepName(String depName) {
+        this.depName = depName;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

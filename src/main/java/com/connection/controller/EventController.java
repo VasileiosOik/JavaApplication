@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/event")
-@SwaggerDefinition(tags = { @Tag(name = "company", description = "Operations pertaining to see events adding units") })
+@SwaggerDefinition(tags = {@Tag(name = "company", description = "Operations pertaining to see events adding units")})
 public class EventController {
 
     private final CompanyMongoDao companyMongoDao;
@@ -25,8 +25,8 @@ public class EventController {
     }
 
     @ApiOperation(value = "View the events", response = ResponseEntity.class)
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 404, message = "No content to display") })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/getEvents", produces = "application/json")
     public ResponseEntity<Object> returnAllEvents(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
         LocalDate fromDateParsed = parseDate(fromDate);

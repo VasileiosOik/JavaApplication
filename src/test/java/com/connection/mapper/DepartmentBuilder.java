@@ -15,7 +15,7 @@ public class DepartmentBuilder {
         return this;
     }
 
-    public DepartmentBuilder withName(String depName){
+    public DepartmentBuilder withName(String depName) {
 
         this.depName = depName;
 
@@ -23,7 +23,7 @@ public class DepartmentBuilder {
 
     }
 
-    public Department build(){
+    public Department build() {
 
         Department department = new Department();
 

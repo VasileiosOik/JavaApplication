@@ -20,7 +20,7 @@ public class EmployeeBuilder {
         return this;
     }
 
-    public EmployeeBuilder withName(String name){
+    public EmployeeBuilder withName(String name) {
 
         this.name = name;
 
@@ -28,7 +28,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withLname(String lName){
+    public EmployeeBuilder withLname(String lName) {
 
         this.lName = lName;
 
@@ -36,7 +36,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withJobTitle(String jobTitle){
+    public EmployeeBuilder withJobTitle(String jobTitle) {
 
         this.jobTitle = jobTitle;
 
@@ -44,7 +44,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withHireDate(LocalDate hireDate){
+    public EmployeeBuilder withHireDate(LocalDate hireDate) {
 
         this.hireDate = hireDate;
 
@@ -52,7 +52,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withManageId(int managerId){
+    public EmployeeBuilder withManageId(int managerId) {
 
         this.managerId = managerId;
 
@@ -60,7 +60,7 @@ public class EmployeeBuilder {
 
     }
 
-    public EmployeeBuilder withDepartmentId(int departmentId){
+    public EmployeeBuilder withDepartmentId(int departmentId) {
 
         this.departmentId = departmentId;
 
@@ -68,7 +68,7 @@ public class EmployeeBuilder {
 
     }
 
-    public Employee build(){
+    public Employee build() {
 
         Employee employee = new Employee();
 

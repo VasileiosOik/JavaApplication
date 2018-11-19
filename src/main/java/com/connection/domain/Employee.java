@@ -9,38 +9,38 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import java.time.LocalDate;
 
 public class Employee {
-	@ApiModelProperty(notes = "The Employee Id")
-	private int id;
-	@ApiModelProperty(notes = "The Employee name")
-	private String name;
-	@ApiModelProperty(notes = "The Employee last name")
-	private String lName;
-	@ApiModelProperty(notes = "The Employee job title")
-	private String jobTitle;
-	@ApiModelProperty(notes = "The Employee Hire Date")
+    @ApiModelProperty(notes = "The Employee Id")
+    private int id;
+    @ApiModelProperty(notes = "The Employee name")
+    private String name;
+    @ApiModelProperty(notes = "The Employee last name")
+    private String lName;
+    @ApiModelProperty(notes = "The Employee job title")
+    private String jobTitle;
+    @ApiModelProperty(notes = "The Employee Hire Date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate hireDate;
-	@ApiModelProperty(notes = "The Employee's manager Id")
-	private int managerId;
-	@ApiModelProperty(notes = "The Employee's department Id")
-	private int departmentId;
+    private LocalDate hireDate;
+    @ApiModelProperty(notes = "The Employee's manager Id")
+    private int managerId;
+    @ApiModelProperty(notes = "The Employee's department Id")
+    private int departmentId;
 
-	public Employee() {
-		//empty constructor is needed
-	}
+    public Employee() {
+        //empty constructor is needed
+    }
 
-	public Employee(int id, String name, String lName, String jobTitle, LocalDate hireDate, int managerId,
-			int departmentId) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.lName = lName;
-		this.jobTitle = jobTitle;
-		this.hireDate = hireDate;
-		this.managerId = managerId;
-		this.departmentId = departmentId;
-	}
+    public Employee(int id, String name, String lName, String jobTitle, LocalDate hireDate, int managerId,
+                    int departmentId) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.lName = lName;
+        this.jobTitle = jobTitle;
+        this.hireDate = hireDate;
+        this.managerId = managerId;
+        this.departmentId = departmentId;
+    }
 
     public int getId() {
         return id;
@@ -99,7 +99,7 @@ public class Employee {
     }
 
     @Override
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this);
-	}
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

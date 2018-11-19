@@ -28,12 +28,12 @@ import java.util.Map;
 @Component
 public class CompanyMongoDao {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CompanyMongoDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CompanyMongoDao.class);
 
-	private static final String COMPANY = "Company";
-	private static final String CREATED_TIME = "timeCreated";
+    private static final String COMPANY = "Company";
+    private static final String CREATED_TIME = "timeCreated";
 
-	private final MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public CompanyMongoDao(MongoTemplate mongoTemplate) {
@@ -41,48 +41,49 @@ public class CompanyMongoDao {
     }
 
     public void addDepartmentToMongoDB(Department department) {
-		if (!mongoTemplate.collectionExists(COMPANY)) {
-			mongoTemplate.createCollection(COMPANY);
-		}
+        if (!mongoTemplate.collectionExists(COMPANY)) {
+            mongoTemplate.createCollection(COMPANY);
+        }
 
-		DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
-		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.append("departmentId", department.getDepId()).append("departmentName", department.getDepName())
-				.append(CREATED_TIME, new Date());
-		dbCollection.insert(basicDBObject);
-		LOG.debug("The department document has been added successfully");
-	}
+        DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
+        BasicDBObject basicDBObject = new BasicDBObject();
+        basicDBObject.append("departmentId", department.getDepId())
+                .append("departmentName", department.getDepName())
+                .append(CREATED_TIME, new Date());
+        dbCollection.insert(basicDBObject);
+        LOG.debug("The department document has been added successfully");
+    }
 
-	public void addEmployeeToMongoDB(Employee emp) {
-		if (!mongoTemplate.collectionExists(COMPANY)) {
-			mongoTemplate.createCollection(COMPANY);
-		}
+    public void addEmployeeToMongoDB(Employee emp) {
+        if (!mongoTemplate.collectionExists(COMPANY)) {
+            mongoTemplate.createCollection(COMPANY);
+        }
 
-		DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
-		BasicDBObject basicDBObject = new BasicDBObject();
-		basicDBObject.append("employeeId", emp.getId()).append("firstName", emp.getName())
-				.append("lastName", emp.getlName()).append("jobTitle", emp.getJobTitle())
-				.append("hireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+        DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
+        BasicDBObject basicDBObject = new BasicDBObject();
+        basicDBObject.append("employeeId", emp.getId()).append("firstName", emp.getName())
+                .append("lastName", emp.getlName()).append("jobTitle", emp.getJobTitle())
+                .append("hireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .append("managerId", emp.getManagerId())
-				.append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
-		dbCollection.insert(basicDBObject);
-		LOG.debug("The employee document has been added successfully");
-	}
+                .append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
+        dbCollection.insert(basicDBObject);
+        LOG.debug("The employee document has been added successfully");
+    }
 
-	public ResponseEntity<Object> returnDateBetweenDates(LocalDate fromDate, LocalDate toDate) {
-		if (!mongoTemplate.collectionExists(COMPANY)) {
-			mongoTemplate.createCollection(COMPANY);
-		}
-            Criteria criteria = this.eventsCriteria(fromDate, toDate);
-			Pageable pageable = new PageRequest(0,1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
-            Query query = Query.query(criteria).with(pageable);
-            List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
-            LOG.debug("The events are: {}", events);
-            if (!CollectionUtils.isEmpty(events)) {
-                return new ResponseEntity<>(events, HttpStatus.OK);
-            } else {
-				return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
-			}
+    public ResponseEntity<Object> returnDateBetweenDates(LocalDate fromDate, LocalDate toDate) {
+        if (!mongoTemplate.collectionExists(COMPANY)) {
+            mongoTemplate.createCollection(COMPANY);
+        }
+        Criteria criteria = this.eventsCriteria(fromDate, toDate);
+        Pageable pageable = new PageRequest(0, 1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
+        Query query = Query.query(criteria).with(pageable);
+        List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
+        LOG.debug("The events are: {}", events);
+        if (!CollectionUtils.isEmpty(events)) {
+            return new ResponseEntity<>(events, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
     }
 
     private Criteria eventsCriteria(LocalDate fromDate, LocalDate toDate) {
@@ -91,6 +92,6 @@ public class CompanyMongoDao {
         if (null != fromDate && null != toDate) {
             criteria.and(CREATED_TIME).gte(fromDate).lte(toDate);
         }
-        return  criteria;
+        return criteria;
     }
 }
