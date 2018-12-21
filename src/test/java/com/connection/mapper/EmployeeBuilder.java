@@ -24,7 +24,7 @@ public class EmployeeBuilder {
 
         this.name = name;
 
-        return this;  //By returning the builder each time, we can create a fluent interface.
+        return this;
 
     }
 

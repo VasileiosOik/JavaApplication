@@ -3,8 +3,9 @@ package com.connection.dao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
+import com.mongodb.client.MongoCollection;
 import org.apache.commons.collections.CollectionUtils;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +46,12 @@ public class CompanyMongoDao {
             mongoTemplate.createCollection(COMPANY);
         }
 
-        DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
+        MongoCollection<Document> dbCollection = mongoTemplate.getCollection(COMPANY);
         BasicDBObject basicDBObject = new BasicDBObject();
         basicDBObject.append("departmentId", department.getDepId())
                 .append("departmentName", department.getDepName())
                 .append(CREATED_TIME, new Date());
-        dbCollection.insert(basicDBObject);
+        dbCollection.insertOne(new Document(basicDBObject));
         LOG.debug("The department document has been added successfully");
     }
 
@@ -59,14 +60,14 @@ public class CompanyMongoDao {
             mongoTemplate.createCollection(COMPANY);
         }
 
-        DBCollection dbCollection = mongoTemplate.getCollection(COMPANY);
+        MongoCollection<Document> dbCollection = mongoTemplate.getCollection(COMPANY);
         BasicDBObject basicDBObject = new BasicDBObject();
         basicDBObject.append("employeeId", emp.getId()).append("firstName", emp.getName())
                 .append("lastName", emp.getlName()).append("jobTitle", emp.getJobTitle())
                 .append("hireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .append("managerId", emp.getManagerId())
                 .append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
-        dbCollection.insert(basicDBObject);
+        dbCollection.insertOne(new Document(basicDBObject));
         LOG.debug("The employee document has been added successfully");
     }
 
@@ -75,7 +76,7 @@ public class CompanyMongoDao {
             mongoTemplate.createCollection(COMPANY);
         }
         Criteria criteria = this.eventsCriteria(fromDate, toDate);
-        Pageable pageable = new PageRequest(0, 1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
+        Pageable pageable = PageRequest.of(0, 1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
         Query query = Query.query(criteria).with(pageable);
         List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
         LOG.debug("The events are: {}", events);

@@ -5,6 +5,7 @@ import com.connection.dao.CompanyMongoDao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.mapper.CompanyMapper;
+import com.connection.publisher.ActionMessagePublisher;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,14 @@ public class DefaultCompanyService implements CompanyService {
 
     private final CompanyMapper companyMapper;
 
+    private final ActionMessagePublisher actionMessagePublisher;
+
+
     @Autowired
-    public DefaultCompanyService(CompanyMongoDao companyMongoDao, CompanyMapper companyMapper) {
+    public DefaultCompanyService(CompanyMongoDao companyMongoDao, CompanyMapper companyMapper, ActionMessagePublisher actionMessagePublisher) {
         this.companyMongoDao = companyMongoDao;
         this.companyMapper = companyMapper;
+        this.actionMessagePublisher = actionMessagePublisher;
     }
 
 
@@ -124,6 +129,7 @@ public class DefaultCompanyService implements CompanyService {
         LOG.debug("The department is: {}", department);
         companyMapper.addDepartment(department);
         companyMongoDao.addDepartmentToMongoDB(department);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/company/department").buildAndExpand(department.getDepId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -157,6 +163,7 @@ public class DefaultCompanyService implements CompanyService {
         LOG.debug("The employee is: {}", employee);
         companyMapper.addEmployee(employee);
         companyMongoDao.addEmployeeToMongoDB(employee);
+        actionMessagePublisher.publish(employee);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/company/employee").buildAndExpand(employee.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);

@@ -6,12 +6,13 @@ import com.connection.domain.Employee;
 import com.connection.mapper.CompanyMapper;
 import com.connection.mapper.DepartmentBuilder;
 import com.connection.mapper.EmployeeBuilder;
+import com.connection.publisher.ActionMessagePublisher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,6 +35,9 @@ public class DefaultCompanyServiceTest {
 
     @Mock
     private CompanyMongoDao companyMongoDao;
+
+    @Mock
+    private ActionMessagePublisher actionMessagePublisher;
 
     private static final String SALES = "Sales";
 
@@ -128,6 +132,8 @@ public class DefaultCompanyServiceTest {
         Mockito.verify(companyMapper, times(1)).verifyIfEmployeeExists(1);
 
         Mockito.verify(companyMapper, times(1)).addEmployee(employee);
+
+        Mockito.verify(actionMessagePublisher, times(1)).publish(employee);
     }
 
     @Test
@@ -144,9 +150,6 @@ public class DefaultCompanyServiceTest {
 
         when(companyMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
                 .thenReturn(Collections.singletonList(employee));
-
-        when(companyMapper.changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(), anyString()))
-                .thenReturn(employee);
 
 
         defaultCompanyService.changeAnEmployeeDepartment(employee.getName(), employee.getlName(), "Research");
