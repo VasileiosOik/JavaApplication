@@ -20,7 +20,7 @@
         <sonar.tests>src/test/java</sonar.tests>
         <sonar.binaries>target/classes</sonar.binaries>
         <!-- Below property indicates the pattern of the test suite -->
-        <runSuite>**/*Suite.class</runSuite>
+        <!--<runSuite>**/*Suite.class</runSuite>-->
         <!-- Sonar-JaCoCo properties -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -154,16 +154,50 @@
 
     <build>
         <plugins>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-failsafe-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+            <!--</configuration>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>failsafe-integration-tests</id>-->
+            <!--<phase>integration-test</phase>-->
+            <!--<goals>-->
+            <!--<goal>integration-test</goal>-->
+            <!--<goal>verify</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled
+                        ${jacoco.agent.ut.arg}
+                    </argLine>
+                    <excludes>
+                        <exclude>**/*IntegrationTest*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.21.0</version>
                 <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled
+                        ${jacoco.agent.it.arg}
+                    </argLine>
+                    <includes>
+                        <include>**/*IntegrationTest*</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>failsafe-integration-tests</id>
-                        <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -203,46 +237,70 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
                 <executions>
+                    <!--<execution>-->
+                    <!--<configuration>-->
+                    <!--<destFile>${sonar.jacoco.reportPaths}</destFile>-->
+                    <!--<append>true</append>-->
+                    <!--</configuration>-->
+                    <!--<id>default-prepare-agent</id>-->
+                    <!--<goals>-->
+                    <!--<goal>prepare-agent</goal>-->
+                    <!--</goals>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                    <!--<configuration>-->
+                    <!--<destFile>${sonar.jacoco.itReportPaths}</destFile>-->
+                    <!--<append>true</append>-->
+                    <!--</configuration>-->
+                    <!--<id>default-prepare-agent-integration</id>-->
+                    <!--<goals>-->
+                    <!--<goal>prepare-agent-integration</goal>-->
+                    <!--</goals>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                    <!--<id>default-report</id>-->
+                    <!--<goals>-->
+                    <!--<goal>report</goal>-->
+                    <!--</goals>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                    <!--<id>default-report-integration</id>-->
+                    <!--<goals>-->
+                    <!--<goal>report-integration</goal>-->
+                    <!--</goals>-->
+                    <!--</execution>-->
+                    <!--<execution>-->
+                    <!--<id>default-check</id>-->
+                    <!--<goals>-->
+                    <!--<goal>check</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                    <!--<rules>-->
+                    <!--</rules>-->
+                    <!--</configuration>-->
+                    <!--</execution>-->
                     <execution>
-                        <configuration>
-                            <destFile>${sonar.jacoco.reportPaths}</destFile>
-                               <append>true</append>
-                        </configuration>
-                        <id>default-prepare-agent</id>
+                        <id>prepare-ut-agent</id>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
                         <configuration>
-                            <destFile>${sonar.jacoco.itReportPaths}</destFile>
+                            <destFile>${sonar.jacoco.reportPaths}</destFile>
+                            <propertyName>jacoco.agent.ut.arg</propertyName>
                             <append>true</append>
                         </configuration>
-                        <id>default-prepare-agent-integration</id>
+                    </execution>
+                    <execution>
+                        <id>prepare-it-agent</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report-integration</id>
-                        <goals>
-                            <goal>report-integration</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
                         <configuration>
-                            <rules>
-                            </rules>
+                            <destFile>${sonar.jacoco.itReportPaths}</destFile>
+                            <propertyName>jacoco.agent.it.arg</propertyName>
+                            <append>true</append>
                         </configuration>
                     </execution>
                 </executions>
