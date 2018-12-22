@@ -180,7 +180,7 @@
                         ${jacoco.agent.ut.arg}
                     </argLine>
                     <excludes>
-                        <exclude>**/*IntegrationTest*</exclude>
+                        <exclude>**/*IT*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -193,7 +193,7 @@
                         ${jacoco.agent.it.arg}
                     </argLine>
                     <includes>
-                        <include>**/*IntegrationTest*</include>
+                        <include>**/*IT*</include>
                     </includes>
                 </configuration>
                 <executions>
