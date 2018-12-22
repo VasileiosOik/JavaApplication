@@ -24,7 +24,7 @@
         <!-- Sonar-JaCoCo properties -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.reportPaths>
+        <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.jacoco.itReportPaths>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPaths>
     </properties>
 
@@ -216,6 +216,7 @@
                     <execution>
                         <configuration>
                             <destFile>${sonar.jacoco.itReportPaths}</destFile>
+                            <append>true</append>
                         </configuration>
                         <id>default-prepare-agent-integration</id>
                         <goals>
