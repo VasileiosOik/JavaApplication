@@ -1,4 +1,4 @@
-package com.connection.customerror;
+package com.connection.customexception;
 
 
 public class CustomErrorType {

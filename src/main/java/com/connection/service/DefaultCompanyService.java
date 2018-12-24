@@ -1,11 +1,12 @@
 package com.connection.service;
 
-import com.connection.customerror.CustomErrorType;
+import com.connection.customexception.CustomErrorType;
 import com.connection.dao.CompanyMongoDao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.mapper.CompanyMapper;
 import com.connection.publisher.ActionMessagePublisher;
+import com.connection.validation.EmployeeValidator;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,15 @@ public class DefaultCompanyService implements CompanyService {
 
     private final ActionMessagePublisher actionMessagePublisher;
 
+    private final EmployeeValidator employeeValidator;
+
 
     @Autowired
-    public DefaultCompanyService(CompanyMongoDao companyMongoDao, CompanyMapper companyMapper, ActionMessagePublisher actionMessagePublisher) {
+    public DefaultCompanyService(CompanyMongoDao companyMongoDao, CompanyMapper companyMapper, ActionMessagePublisher actionMessagePublisher, EmployeeValidator employeeValidatorvalidator) {
         this.companyMongoDao = companyMongoDao;
         this.companyMapper = companyMapper;
         this.actionMessagePublisher = actionMessagePublisher;
+        this.employeeValidator = employeeValidatorvalidator;
     }
 
 
@@ -161,6 +165,7 @@ public class DefaultCompanyService implements CompanyService {
                     HttpStatus.CONFLICT);
         }
         LOG.debug("The employee is: {}", employee);
+        employeeValidator.validate(employee);
         companyMapper.addEmployee(employee);
         companyMongoDao.addEmployeeToMongoDB(employee);
         actionMessagePublisher.publish(employee);

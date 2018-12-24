@@ -7,6 +7,7 @@ import com.connection.mapper.CompanyMapper;
 import com.connection.mapper.DepartmentBuilder;
 import com.connection.mapper.EmployeeBuilder;
 import com.connection.publisher.ActionMessagePublisher;
+import com.connection.validation.EmployeeValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,6 +39,9 @@ public class DefaultCompanyServiceTest {
 
     @Mock
     private ActionMessagePublisher actionMessagePublisher;
+
+    @Mock
+    private EmployeeValidator employeeValidator;
 
     private static final String SALES = "Sales";
 
@@ -134,6 +138,8 @@ public class DefaultCompanyServiceTest {
         Mockito.verify(companyMapper, times(1)).addEmployee(employee);
 
         Mockito.verify(actionMessagePublisher, times(1)).publish(employee);
+
+        Mockito.verify(employeeValidator, times(1)).validate(employee);
     }
 
     @Test
