@@ -52,7 +52,7 @@ public class DefaultCompanyServiceTest {
 
         when(companyMapper.showAllEmployees()).thenReturn(Collections.singletonList(new EmployeeBuilder()
                 .withName("Bill")
-                .withName("Eco")
+                .withLname("Eco")
                 .withId(1)
                 .withDepartmentId(1001)
                 .withManageId(100015)
@@ -80,7 +80,7 @@ public class DefaultCompanyServiceTest {
     public void testEmployeesInSpecificDepartment() {
         when(companyMapper.employeesInSpecificDepartment(SALES)).thenReturn(Collections.singletonList(new EmployeeBuilder()
                 .withName("Bill")
-                .withName("Eco")
+                .withLname("Eco")
                 .withId(1)
                 .withDepartmentId(1001)
                 .withManageId(100015)

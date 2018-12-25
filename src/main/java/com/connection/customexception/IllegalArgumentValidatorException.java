@@ -1,6 +1,6 @@
 package com.connection.customexception;
 
-public class NameValidatorException extends RuntimeException {
+public class IllegalArgumentValidatorException extends RuntimeException {
 
     private final String id;
 
@@ -8,12 +8,12 @@ public class NameValidatorException extends RuntimeException {
 
     private String longText;
 
-    public NameValidatorException(String id, String shortText) {
+    public IllegalArgumentValidatorException(String id, String shortText) {
         this.id = id;
         this.shortText = shortText;
     }
 
-    public NameValidatorException(String id, String shortText, String longText) {
+    public IllegalArgumentValidatorException(String id, String shortText, String longText) {
         this.id = id;
         this.shortText = shortText;
         this.longText = longText;
