@@ -16,16 +16,14 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <sonar.sources>src/main/java</sonar.sources>
-        <sonar.tests>src/test/java</sonar.tests>
-        <sonar.binaries>target/classes</sonar.binaries>
-        <!-- Below property indicates the pattern of the test suite -->
-        <runSuite>**/*Suite.class</runSuite>
-        <!-- Sonar-JaCoCo properties -->
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.jacoco.itReportPaths>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPaths>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.surefire.reportsPath>${project.build.directory}/../target/surefire-reports</sonar.surefire.reportsPath>
+        <sonar.jacoco.reportMissing.force.zero>true</sonar.jacoco.reportMissing.force.zero>
+        <!-- Enable language to disable other language analysis -->
+        <sonar.language>java</sonar.language>
+        <sonar.exclusions>src/main/resources/**</sonar.exclusions>
     </properties>
 
     <dependencies>
@@ -155,19 +153,40 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.5.0.1254</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>failsafe-integration-tests</id>
-                        <phase>integration-test</phase>
+                        <id>integration-tests</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/../classes</additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                            <forkCount>1</forkCount>
+                            <reuseForks>false</reuseForks>
+                            <useSystemClassLoader>false</useSystemClassLoader>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -202,62 +221,50 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
+                <configuration>
+                    <dumpOnExit>true</dumpOnExit>
+                    <includes>
+                        <include>org.onap.*</include>
+                    </includes>
+                    <propertyName>surefireArgLine</propertyName>
+                </configuration>
                 <executions>
                     <execution>
                         <id>pre-unit-test</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-integration-test</id>
-                        <goals>
-                            <goal>report-integration</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>merge-results</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>merge</goal>
-                        </goals>
                         <configuration>
-                            <fileSets>
-                                <fileSet>
-                                    <directory>${project.build.directory}</directory>
-                                    <includes>
-                                        <include>*.exec</include>
-                                    </includes>
-                                    <excludes>
-                                        <exclude>aggregate.exec</exclude>
-                                    </excludes>
-                                </fileSet>
-                            </fileSets>
-                            <destFile>${project.build.directory}/aggregate.exec</destFile>
+                            <destFile>${project.build.directory}/../target/jacoco.exec</destFile>
+                            <!-- <append>true</append> -->
                         </configuration>
                     </execution>
                     <execution>
-                        <id>post-merge-report</id>
-                        <phase>verify</phase>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>report</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${project.build.directory}/aggregate.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                            <destFile>${project.build.directory}/../target/jacoco-it.exec</destFile>
+                            <!-- <append>true</append> -->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                        <configuration>
+                            <fileSets>
+                                <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                                    <directory>${project.build.directory}/../target</directory>
+                                    <includes>
+                                        <include>*.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                            <destFile>${project.build.directory}/../target/jacoco-dev.exec</destFile>
                         </configuration>
                     </execution>
                 </executions>
