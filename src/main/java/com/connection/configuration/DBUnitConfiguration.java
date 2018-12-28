@@ -10,12 +10,12 @@ import javax.sql.DataSource;
 
 
 @Configuration
-public class DbUnitConfiguration {
+public class DBUnitConfiguration {
 
     private final DataSource dataSource;
 
     @Autowired
-    public DbUnitConfiguration(DataSource dataSource) {
+    public DBUnitConfiguration(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

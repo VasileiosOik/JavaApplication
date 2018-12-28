@@ -1,6 +1,6 @@
 package com.connection.dao;
 
-import com.connection.configuration.CompanyMongoDbRule;
+import com.connection.configuration.CompanyMongoDBRule;
 import com.connection.configuration.MongoDBConfiguration;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
@@ -31,7 +31,7 @@ public class CompanyMongoDaoIT {
     private CompanyMongoDao companyMongoDao;
 
     @Rule
-    public MongoDbRule remoteMongoDbRule = new CompanyMongoDbRule();
+    public MongoDbRule remoteMongoDbRule = new CompanyMongoDBRule();
 
     @Test
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)

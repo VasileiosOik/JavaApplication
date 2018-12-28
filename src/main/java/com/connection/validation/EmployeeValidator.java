@@ -32,8 +32,4 @@ public class EmployeeValidator {
         validators.forEach(p -> p.validate(employee));
     }
 
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
 }

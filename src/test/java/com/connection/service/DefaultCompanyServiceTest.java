@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -48,7 +49,7 @@ public class DefaultCompanyServiceTest {
     private static final String TECHNOLOGY = "Technology";
 
     @Test
-    public void returnAllEmployees() {
+    public void returnAllEmployees_WhenPopulated() {
 
         when(companyMapper.showAllEmployees()).thenReturn(Collections.singletonList(new EmployeeBuilder()
                 .withName("Bill")
@@ -63,6 +64,18 @@ public class DefaultCompanyServiceTest {
 
         Mockito.verify(companyMapper, times(1)).showAllEmployees();
     }
+
+    @Test
+    public void returnAllEmployeesNotPopulated_shouldResultNoDataReturned() {
+
+        when(companyMapper.showAllEmployees()).thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<Employee>> listResponseEntity = defaultCompanyService.returnAllEmployees();
+        assertEquals(HttpStatus.NOT_FOUND, listResponseEntity.getStatusCode());
+
+        Mockito.verify(companyMapper, times(1)).showAllEmployees();
+    }
+
 
     @Test
     public void returnAllDepartments() {
@@ -127,13 +140,13 @@ public class DefaultCompanyServiceTest {
                 .withJobTitle("Developer")
                 .build();
 
-        when(companyMapper.verifyIfEmployeeExists(1)).thenReturn(null);
+        when(companyMapper.verifyEmployeeExistence(1)).thenReturn(null);
 
         Mockito.doNothing().when(companyMapper).addEmployee(employee);
 
         defaultCompanyService.addNewEmployee(employee, aComponentsBuilder());
 
-        Mockito.verify(companyMapper, times(1)).verifyIfEmployeeExists(1);
+        Mockito.verify(companyMapper, times(1)).verifyEmployeeExistence(1);
 
         Mockito.verify(companyMapper, times(1)).addEmployee(employee);
 
@@ -143,7 +156,7 @@ public class DefaultCompanyServiceTest {
     }
 
     @Test
-    public void testChangeAnEmployeeDepartment() {
+    public void testChangeAnEmployeeDepartment_whenEmployeeIsManager() {
         Employee employee = new EmployeeBuilder()
                 .withName("Bill")
                 .withLname("Eco")
@@ -163,6 +176,21 @@ public class DefaultCompanyServiceTest {
         Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
         Mockito.verify(companyMapper, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
+                anyString());
+
+    }
+
+    @Test
+    public void testChangeAnEmployeeDepartment_whenEmployeeIsNotManager() {
+
+        when(companyMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
+                .thenReturn(Collections.emptyList());
+
+        defaultCompanyService.changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+
+        Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+
+        Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
                 anyString());
 
     }
@@ -190,6 +218,18 @@ public class DefaultCompanyServiceTest {
     }
 
     @Test
+    public void testGetAnEmployee_whenDoesNotExist() {
+
+
+        when(companyMapper.getAnEmployee(1)).thenReturn(null);
+
+        ResponseEntity<Object> anEmployee = defaultCompanyService.getAnEmployee(1);
+        assertEquals(HttpStatus.NOT_FOUND, anEmployee.getStatusCode());
+
+        verify(companyMapper, times(1)).getAnEmployee(1);
+    }
+
+    @Test
     public void testUpdateAnEmployee() {
 
         Employee employee = new EmployeeBuilder()
@@ -205,6 +245,17 @@ public class DefaultCompanyServiceTest {
         defaultCompanyService.updateAnEmployee(1, employee);
 
         verify(companyMapper, times(1)).updateAnEmployee(1, employee);
+
+    }
+
+    @Test
+    public void testUpdateAnEmployee_notFound() {
+
+
+        ResponseEntity<Object> employee = defaultCompanyService.updateAnEmployee(1, null);
+        assertEquals(HttpStatus.NOT_FOUND, employee.getStatusCode());
+
+        verify(companyMapper, times(0)).updateAnEmployee(1, null);
 
     }
 }

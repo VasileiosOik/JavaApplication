@@ -19,29 +19,29 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan("com.connection.*")
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@Bean
-	public Docket productApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("Swagger2")
-				.apiInfo(apiInfo())
-				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.connection.controller"))
-				.paths(regex("/company.*"))
-				.build();
-	}
+    @Bean
+    public Docket productApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("Swagger2")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.connection.controller"))
+                .paths(regex("/company.*"))
+                .build();
+    }
 
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("Spring Rest Swagger")
-				.description("Spring Rest Swagger")
-				.termsOfServiceUrl("http://springfox.io")
-				.license("Apache License Version 2.0")
-				.licenseUrl("https://github.com/springfox/springfox/blob/maste/LICENSE")
-				.version("2.0")
-				.build();
-	}
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Spring Rest Swagger")
+                .description("Spring Rest Swagger")
+                .termsOfServiceUrl("http://springfox.io")
+                .license("Apache License Version 2.0")
+                .licenseUrl("https://github.com/springfox/springfox/blob/maste/LICENSE")
+                .version("2.0")
+                .build();
+    }
 }

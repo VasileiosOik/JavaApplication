@@ -25,9 +25,7 @@ public interface CompanyMapper {
 
     int removeEmployee(@Param("id") int id);
 
-    int removeDepartment(@Param("depName") String depName);
-
-    void removeEmployeeThatIsManager();
+    void removeDepartment(@Param("depName") String depName);
 
     void updateEmployeeDataBeforeDeleteOfDepartment(@Param("depName") String depName);
 
@@ -36,12 +34,10 @@ public interface CompanyMapper {
     List<Employee> changeAnEmployeeDepartment(@Param("name") String name, @Param("lName") String lName,
                                               @Param("depName") String departmentName);
 
-    Employee changeAnEmployeeDepartmentAndCheckIfManager(@Param("name") String name, @Param("lName") String lName,
-                                                         @Param("depName") String departmentName);
+    void changeAnEmployeeDepartmentAndCheckIfManager(@Param("name") String name, @Param("lName") String lName,
+                                                     @Param("depName") String departmentName);
 
     void addEmployee(@Param("employee") Employee employee);
-
-    int managerOfADepartment(@Param("depId") int depId);
 
     int getMaxEmployeeId();
 
@@ -49,9 +45,9 @@ public interface CompanyMapper {
 
     Department verifyDepartmentExistence(@Param("depName") String depName);
 
-    Employee verifyIfEmployeeExists(@Param("id") int id);
+    Employee verifyEmployeeExistence(@Param("id") int id);
 
-    void updateEmployee(@Param("depName") String depName);
+    void updateEmployeeDepartmentId(@Param("depName") String depName);
 
     Employee getAnEmployee(@Param("id") int id);
 

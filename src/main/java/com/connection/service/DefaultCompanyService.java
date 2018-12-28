@@ -95,7 +95,7 @@ public class DefaultCompanyService implements CompanyService {
         if (companyMapper.verifyDepartmentExistence(depName) != null) {
             // because of the foreign keys constrains first you remove the
             // department and second you remove the employee
-            companyMapper.updateEmployee(depName);
+            companyMapper.updateEmployeeDepartmentId(depName);
             companyMapper.removeDepartment(depName);
             LOG.info("Department with {} name found", depName);
             return new ResponseEntity<>(companyMapper.showAllDepartments(), HttpStatus.OK);
@@ -141,7 +141,7 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee) {
-        Employee currentEmployee = companyMapper.verifyIfEmployeeExists(id);
+        Employee currentEmployee = companyMapper.verifyEmployeeExistence(id);
 
         if (currentEmployee == null) {
             LOG.debug("Unable to update. Employee with id {} not found.", id);
@@ -158,7 +158,7 @@ public class DefaultCompanyService implements CompanyService {
     @Override
     public ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
 
-        if (companyMapper.verifyIfEmployeeExists(employee.getId()) != null) {
+        if (companyMapper.verifyEmployeeExistence(employee.getId()) != null) {
             return new ResponseEntity<>(
                     new CustomErrorType(
                             "Unable to create. An employee with id " + employee.getId() + " already exist."),
@@ -175,15 +175,15 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> changeAnEmployeeDepartment(String name, String lName, String departmentName) {
+    public void changeAnEmployeeDepartment(String name, String lName, String departmentName) {
         List<Employee> listEmp = companyMapper.changeAnEmployeeDepartment(name, lName, departmentName);
 
         if (CollectionUtils.isEmpty(listEmp)) {
             companyMapper.changeAnEmployeeDepartmentAndCheckIfManager(name, lName, departmentName);
             LOG.debug("Employee data has been updated successfully!");
-            return new ResponseEntity<>(HttpStatus.OK);
+            new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(
+            new ResponseEntity<>(
                     new CustomErrorType(
                             "The current employee is a manager and cannot be transferred"),
                     HttpStatus.NOT_FOUND);
@@ -206,10 +206,10 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public ResponseEntity<Object> updateAnEmployee(int id, Employee employee) {
-        try {
+        if (null != employee) {
             companyMapper.updateAnEmployee(id, employee);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
+        } else {
             return new ResponseEntity<>(
                     new CustomErrorType(
                             "The current employee cannot be found"),
