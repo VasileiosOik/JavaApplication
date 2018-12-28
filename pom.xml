@@ -88,7 +88,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.lordofthejars/nosqlunit-mongodb -->
         <dependency>
             <groupId>com.lordofthejars</groupId>
             <artifactId>nosqlunit-mongodb</artifactId>
@@ -170,6 +170,40 @@
                     <!--</execution>-->
                 <!--</executions>-->
             <!--</plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
+                    <excludes>
+                        <exclude>**/*IntegrationTest*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled ${jacoco.agent.it.arg}</argLine>
+                    <includes>
+                        <include>**/*IntegrationTest*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -203,49 +237,30 @@
                 <version>0.8.2</version>
                 <executions>
                     <execution>
-                        <id>default-prepare-agent</id>
+                        <id>prepare-ut-agent</id>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <skip>${maven.surefire.skipTests}</skip>
-                            <propertyName>maven.surefire.argLine</propertyName>
-                            <!-- using the same dest file for both UT and IT -->
                             <destFile>${sonar.jacoco.reportPath}</destFile>
+                            <propertyName>jacoco.agent.ut.arg</propertyName>
+                            <append>true</append>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>default-prepare-agent-integration</id>
+                        <id>prepare-it-agent</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
                         <configuration>
-                            <skip>${maven.failsafe.skipTests}</skip>
-                            <propertyName>maven.failsafe.argLine</propertyName>
-                            <!-- append to the UT dest file -->
-                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                            <propertyName>jacoco.agent.it.arg</propertyName>
                             <append>true</append>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>${maven.surefire.skipTests}</skipTests>
-                    <failIfNoTests>${maven.surefire.failIfNoTests}</failIfNoTests>
-                    <!-- allow argLine to be modified by other plugins, e.g. jacoco -->
-                    <argLine>@{maven.surefire.argLine}</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <skipTests>${maven.failsafe.skipTests}</skipTests>
-                    <failIfNoTests>${maven.failsafe.failIfNoTests}</failIfNoTests>
-                    <!-- allow argLine to be modified by other plugins, e.g. jacoco -->
-                    <argLine>@{maven.failsafe.argLine}</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
