@@ -1,9 +1,9 @@
 package com.connection.controller;
 
 import com.connection.application.Application;
-import com.connection.configuration.CompanyMongoDBRule;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
+import com.lordofthejars.nosqlunit.mongodb.MongoDbConfigurationBuilder;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import io.restassured.RestAssured;
 import org.junit.Before;
@@ -39,7 +39,7 @@ public class EventControllerIT {
     }
 
     @Rule
-    public MongoDbRule remoteMongoDbRule = new CompanyMongoDBRule();
+    public MongoDbRule remoteMongoDbRule = new MongoDbRule(MongoDbConfigurationBuilder.mongoDb().databaseName("Company").port(27017).host("localhost").build());
 
     @Test
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)

@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MyBatisCompatibilityConfig {
+public class MyBatisCompatibilityConfiguration {
 
     private final SqlSessionFactory companySqlSessionFactory;
 
     @Autowired
-    public MyBatisCompatibilityConfig(SqlSessionFactory companySqlSessionFactory) {
+    public MyBatisCompatibilityConfiguration(SqlSessionFactory companySqlSessionFactory) {
         this.companySqlSessionFactory = companySqlSessionFactory;
     }
 

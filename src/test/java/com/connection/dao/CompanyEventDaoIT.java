@@ -1,9 +1,9 @@
 package com.connection.dao;
 
-import com.connection.configuration.CompanyMongoDBRule;
 import com.connection.configuration.MongoDBConfiguration;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
+import com.lordofthejars.nosqlunit.mongodb.MongoDbConfigurationBuilder;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class CompanyEventDaoIT {
     private CompanyEventDao companyEventDao;
 
     @Rule
-    public MongoDbRule remoteMongoDbRule = new CompanyMongoDBRule();
+    public MongoDbRule remoteMongoDbRule = new MongoDbRule(MongoDbConfigurationBuilder.mongoDb().databaseName("Company").port(27017).host("localhost").build());
 
     @Test
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
