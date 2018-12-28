@@ -1,12 +1,12 @@
 package com.connection.service;
 
-import com.connection.dao.CompanyMongoDao;
+import com.connection.dao.CompanyDao;
+import com.connection.dao.CompanyEventDao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
-import com.connection.mapper.CompanyMapper;
 import com.connection.mapper.DepartmentBuilder;
 import com.connection.mapper.EmployeeBuilder;
-import com.connection.publisher.ActionMessagePublisher;
+import com.connection.publisher.CompanyMessagePublisher;
 import com.connection.validation.EmployeeValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,13 +33,13 @@ public class DefaultCompanyServiceTest {
     private DefaultCompanyService defaultCompanyService;
 
     @Mock
-    private CompanyMapper companyMapper;
+    private CompanyDao companyDao;
 
     @Mock
-    private CompanyMongoDao companyMongoDao;
+    private CompanyEventDao companyEventDao;
 
     @Mock
-    private ActionMessagePublisher actionMessagePublisher;
+    private CompanyMessagePublisher companyMessagePublisher;
 
     @Mock
     private EmployeeValidator employeeValidator;
@@ -51,7 +51,7 @@ public class DefaultCompanyServiceTest {
     @Test
     public void returnAllEmployees_WhenPopulated() {
 
-        when(companyMapper.showAllEmployees()).thenReturn(Collections.singletonList(new EmployeeBuilder()
+        when(companyDao.getEmployees()).thenReturn(Collections.singletonList(new EmployeeBuilder()
                 .withName("Bill")
                 .withLname("Eco")
                 .withId(1)
@@ -62,36 +62,36 @@ public class DefaultCompanyServiceTest {
 
         defaultCompanyService.returnAllEmployees();
 
-        Mockito.verify(companyMapper, times(1)).showAllEmployees();
+        Mockito.verify(companyDao, times(1)).getEmployees();
     }
 
     @Test
     public void returnAllEmployeesNotPopulated_shouldResultNoDataReturned() {
 
-        when(companyMapper.showAllEmployees()).thenReturn(Collections.emptyList());
+        when(companyDao.getEmployees()).thenReturn(Collections.emptyList());
 
         ResponseEntity<List<Employee>> listResponseEntity = defaultCompanyService.returnAllEmployees();
         assertEquals(HttpStatus.NOT_FOUND, listResponseEntity.getStatusCode());
 
-        Mockito.verify(companyMapper, times(1)).showAllEmployees();
+        Mockito.verify(companyDao, times(1)).getEmployees();
     }
 
 
     @Test
     public void returnAllDepartments() {
 
-        when(companyMapper.showAllDepartments()).thenReturn(Collections.singletonList(new DepartmentBuilder()
+        when(companyDao.getDepartments()).thenReturn(Collections.singletonList(new DepartmentBuilder()
                 .withId(1005)
                 .withName("Finance").build()));
 
         defaultCompanyService.returnAllDepartments();
 
-        Mockito.verify(companyMapper, times(1)).showAllDepartments();
+        Mockito.verify(companyDao, times(1)).getDepartments();
     }
 
     @Test
     public void testEmployeesInSpecificDepartment() {
-        when(companyMapper.employeesInSpecificDepartment(SALES)).thenReturn(Collections.singletonList(new EmployeeBuilder()
+        when(companyDao.getEmployeesInASpecificDepartment(SALES)).thenReturn(Collections.singletonList(new EmployeeBuilder()
                 .withName("Bill")
                 .withLname("Eco")
                 .withId(1)
@@ -103,24 +103,24 @@ public class DefaultCompanyServiceTest {
         ResponseEntity<Object> employeesInASpecificDepartment = defaultCompanyService.getEmployeesInASpecificDepartment(SALES);
         assertEquals(HttpStatus.OK, employeesInASpecificDepartment.getStatusCode());
 
-        Mockito.verify(companyMapper, times(1)).employeesInSpecificDepartment(SALES);
+        Mockito.verify(companyDao, times(1)).getEmployeesInASpecificDepartment(SALES);
     }
 
     @Test
     public void testAddDepartment() {
         Department department = new DepartmentBuilder().withId(1003).withName(TECHNOLOGY).build();
 
-        Mockito.doNothing().when(companyMapper).addDepartment(department);
+        Mockito.doNothing().when(companyDao).addDepartment(department);
 
-        when(companyMapper.verifyDepartmentExistence(TECHNOLOGY)).thenReturn(null);
+        when(companyDao.verifyDepartmentExistence(TECHNOLOGY)).thenReturn(null);
 
-        doNothing().when(companyMongoDao).addDepartmentToMongoDB(department);
+        doNothing().when(companyEventDao).addDepartmentToMongoDB(department);
 
         defaultCompanyService.addNewDepartment(department, aComponentsBuilder());
 
-        Mockito.verify(companyMapper, times(1)).addDepartment(department);
-        Mockito.verify(companyMongoDao, times(1)).addDepartmentToMongoDB(department);
-        Mockito.verify(companyMapper, times(1)).verifyDepartmentExistence(department.getDepName());
+        Mockito.verify(companyDao, times(1)).addDepartment(department);
+        Mockito.verify(companyEventDao, times(1)).addDepartmentToMongoDB(department);
+        Mockito.verify(companyDao, times(1)).verifyDepartmentExistence(department.getDepName());
     }
 
     private UriComponentsBuilder aComponentsBuilder() {
@@ -140,17 +140,17 @@ public class DefaultCompanyServiceTest {
                 .withJobTitle("Developer")
                 .build();
 
-        when(companyMapper.verifyEmployeeExistence(1)).thenReturn(null);
+        when(companyDao.verifyEmployeeExistence(1)).thenReturn(null);
 
-        Mockito.doNothing().when(companyMapper).addEmployee(employee);
+        Mockito.doNothing().when(companyDao).addEmployee(employee);
 
         defaultCompanyService.addNewEmployee(employee, aComponentsBuilder());
 
-        Mockito.verify(companyMapper, times(1)).verifyEmployeeExistence(1);
+        Mockito.verify(companyDao, times(1)).verifyEmployeeExistence(1);
 
-        Mockito.verify(companyMapper, times(1)).addEmployee(employee);
+        Mockito.verify(companyDao, times(1)).addEmployee(employee);
 
-        Mockito.verify(actionMessagePublisher, times(1)).publish(employee);
+        Mockito.verify(companyMessagePublisher, times(1)).publish(employee);
 
         Mockito.verify(employeeValidator, times(1)).validate(employee);
     }
@@ -167,15 +167,15 @@ public class DefaultCompanyServiceTest {
                 .withJobTitle("Developer")
                 .build();
 
-        when(companyMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
+        when(companyDao.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
                 .thenReturn(Collections.singletonList(employee));
 
 
         defaultCompanyService.changeAnEmployeeDepartment(employee.getName(), employee.getlName(), "Research");
 
-        Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+        Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-        Mockito.verify(companyMapper, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
+        Mockito.verify(companyDao, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
                 anyString());
 
     }
@@ -183,14 +183,14 @@ public class DefaultCompanyServiceTest {
     @Test
     public void testChangeAnEmployeeDepartment_whenEmployeeIsNotManager() {
 
-        when(companyMapper.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
+        when(companyDao.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
                 .thenReturn(Collections.emptyList());
 
         defaultCompanyService.changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-        Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
+        Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-        Mockito.verify(companyMapper, times(1)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
+        Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
                 anyString());
 
     }
@@ -209,11 +209,11 @@ public class DefaultCompanyServiceTest {
                 .withJobTitle("Developer")
                 .build();
 
-        when(companyMapper.getAnEmployee(1)).thenReturn(employee);
+        when(companyDao.getAnEmployeeById(1)).thenReturn(employee);
 
         defaultCompanyService.getAnEmployee(1);
 
-        verify(companyMapper, times(1)).getAnEmployee(1);
+        verify(companyDao, times(1)).getAnEmployeeById(1);
 
     }
 
@@ -221,12 +221,12 @@ public class DefaultCompanyServiceTest {
     public void testGetAnEmployee_whenDoesNotExist() {
 
 
-        when(companyMapper.getAnEmployee(1)).thenReturn(null);
+        when(companyDao.getAnEmployeeById(1)).thenReturn(null);
 
         ResponseEntity<Object> anEmployee = defaultCompanyService.getAnEmployee(1);
         assertEquals(HttpStatus.NOT_FOUND, anEmployee.getStatusCode());
 
-        verify(companyMapper, times(1)).getAnEmployee(1);
+        verify(companyDao, times(1)).getAnEmployeeById(1);
     }
 
     @Test
@@ -244,7 +244,7 @@ public class DefaultCompanyServiceTest {
 
         defaultCompanyService.updateAnEmployee(1, employee);
 
-        verify(companyMapper, times(1)).updateAnEmployee(1, employee);
+        verify(companyDao, times(1)).updateAnEmployee(1, employee);
 
     }
 
@@ -255,7 +255,7 @@ public class DefaultCompanyServiceTest {
         ResponseEntity<Object> employee = defaultCompanyService.updateAnEmployee(1, null);
         assertEquals(HttpStatus.NOT_FOUND, employee.getStatusCode());
 
-        verify(companyMapper, times(0)).updateAnEmployee(1, null);
+        verify(companyDao, times(0)).updateAnEmployee(1, null);
 
     }
 }

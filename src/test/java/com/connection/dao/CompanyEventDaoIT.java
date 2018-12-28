@@ -22,13 +22,13 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CompanyMongoDao.class, MongoDBConfiguration.class})
+@SpringBootTest(classes = {CompanyEventDao.class, MongoDBConfiguration.class})
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
-public class CompanyMongoDaoIT {
+public class CompanyEventDaoIT {
 
     @Autowired
-    private CompanyMongoDao companyMongoDao;
+    private CompanyEventDao companyEventDao;
 
     @Rule
     public MongoDbRule remoteMongoDbRule = new CompanyMongoDBRule();
@@ -37,7 +37,7 @@ public class CompanyMongoDaoIT {
     @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
     public void testReturnDateBetweenDates() {
 
-        ResponseEntity<Object> dateBetweenDates = companyMongoDao.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
+        ResponseEntity<Object> dateBetweenDates = companyEventDao.returnDateBetweenDates(getMockDateStart(), getMockDateEnd());
         assertEquals(200, dateBetweenDates.getStatusCode().value());
     }
 

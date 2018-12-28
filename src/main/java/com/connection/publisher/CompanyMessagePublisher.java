@@ -12,19 +12,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ActionMessagePublisher {
+public class CompanyMessagePublisher {
 
     private final MessageCreator messageCreator;
 
     private final MessagePublisher<CustomMessage> messagePublisher;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActionMessagePublisher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CompanyMessagePublisher.class);
 
     @Value("${ext.received.event}")
     private String event;
 
     @Autowired
-    public ActionMessagePublisher(MessageCreator messageCreator, MessagePublisher<CustomMessage> messagePublisher) {
+    public CompanyMessagePublisher(MessageCreator messageCreator, MessagePublisher<CustomMessage> messagePublisher) {
         this.messageCreator = messageCreator;
         this.messagePublisher = messagePublisher;
     }

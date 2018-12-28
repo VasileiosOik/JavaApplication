@@ -1,11 +1,11 @@
 package com.connection.service;
 
 import com.connection.customexception.CustomErrorType;
-import com.connection.dao.CompanyMongoDao;
+import com.connection.dao.CompanyDao;
+import com.connection.dao.CompanyEventDao;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
-import com.connection.mapper.CompanyMapper;
-import com.connection.publisher.ActionMessagePublisher;
+import com.connection.publisher.CompanyMessagePublisher;
 import com.connection.validation.EmployeeValidator;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -25,27 +25,27 @@ public class DefaultCompanyService implements CompanyService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultCompanyService.class);
 
-    private final CompanyMongoDao companyMongoDao;
+    private final CompanyEventDao companyEventDao;
 
-    private final CompanyMapper companyMapper;
+    private final CompanyDao companyDao;
 
-    private final ActionMessagePublisher actionMessagePublisher;
+    private final CompanyMessagePublisher companyMessagePublisher;
 
     private final EmployeeValidator employeeValidator;
 
 
     @Autowired
-    public DefaultCompanyService(CompanyMongoDao companyMongoDao, CompanyMapper companyMapper, ActionMessagePublisher actionMessagePublisher, EmployeeValidator employeeValidatorvalidator) {
-        this.companyMongoDao = companyMongoDao;
-        this.companyMapper = companyMapper;
-        this.actionMessagePublisher = actionMessagePublisher;
+    public DefaultCompanyService(CompanyEventDao companyEventDao, CompanyDao companyDao, CompanyMessagePublisher companyMessagePublisher, EmployeeValidator employeeValidatorvalidator) {
+        this.companyEventDao = companyEventDao;
+        this.companyDao = companyDao;
+        this.companyMessagePublisher = companyMessagePublisher;
         this.employeeValidator = employeeValidatorvalidator;
     }
 
 
     @Override
     public ResponseEntity<List<Employee>> returnAllEmployees() {
-        List<Employee> employees = companyMapper.showAllEmployees();
+        List<Employee> employees = companyDao.getEmployees();
 
         if (CollectionUtils.isEmpty(employees)) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
@@ -55,7 +55,7 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public ResponseEntity<List<Department>> returnAllDepartments() {
-        List<Department> departments = companyMapper.showAllDepartments();
+        List<Department> departments = companyDao.getDepartments();
 
         if (CollectionUtils.isEmpty(departments)) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class DefaultCompanyService implements CompanyService {
     @Override
     public ResponseEntity<Object> getEmployeesInASpecificDepartment(String depName) {
         LOG.info("Fetching Employees that work in the {} department", depName);
-        List<Employee> employees = companyMapper.employeesInSpecificDepartment(depName);
+        List<Employee> employees = companyDao.getEmployeesInASpecificDepartment(depName);
 
         if (CollectionUtils.isEmpty(employees)) {
             return new ResponseEntity<>(
@@ -79,7 +79,7 @@ public class DefaultCompanyService implements CompanyService {
     @Override
     public ResponseEntity<Object> returnEmployeesByNumOfYearsWorked(int number) {
         LOG.info("Fetching Employees with {} years of employment ", number);
-        List<Employee> employees = companyMapper.getEmployeesByNumOfYearsWorked(number);
+        List<Employee> employees = companyDao.getEmployeesByNumOfYearsWorked(number);
 
         if (CollectionUtils.isEmpty(employees)) {
             return new ResponseEntity<>(new CustomErrorType("Employees with " + number + "of years worked not found"),
@@ -92,13 +92,13 @@ public class DefaultCompanyService implements CompanyService {
     public ResponseEntity<Object> deleteDepartment(String depName) {
         LOG.info("Fetching and Deleting Department with name {}", depName);
 
-        if (companyMapper.verifyDepartmentExistence(depName) != null) {
+        if (companyDao.verifyDepartmentExistence(depName) != null) {
             // because of the foreign keys constrains first you remove the
             // department and second you remove the employee
-            companyMapper.updateEmployeeDepartmentId(depName);
-            companyMapper.removeDepartment(depName);
+            companyDao.updateEmployeeDepartmentId(depName);
+            companyDao.deleteDepartment(depName);
             LOG.info("Department with {} name found", depName);
-            return new ResponseEntity<>(companyMapper.showAllDepartments(), HttpStatus.OK);
+            return new ResponseEntity<>(companyDao.getDepartments(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(
                     new CustomErrorType("Unable to delete. Department with name " + depName + " is not there."),
@@ -110,9 +110,9 @@ public class DefaultCompanyService implements CompanyService {
     public ResponseEntity<Object> deleteEmployee(int id) {
         LOG.info("Fetching and Deleting employee with id {}", id);
 
-        if (companyMapper.removeEmployee(id) > 0) {
+        if (companyDao.deleteEmployee(id) > 0) {
             LOG.info("Employee with {} id found", id);
-            return new ResponseEntity<>(companyMapper.showAllEmployees(), HttpStatus.OK);
+            return new ResponseEntity<>(companyDao.getEmployees(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new CustomErrorType("Unable to delete employee with id " + id + " not found."),
                     HttpStatus.NOT_FOUND);
@@ -123,7 +123,7 @@ public class DefaultCompanyService implements CompanyService {
     public ResponseEntity<Object> addNewDepartment(Department department, UriComponentsBuilder ucBuilder) {
         LOG.info("Creating Department : {}", department);
 
-        if (companyMapper.verifyDepartmentExistence(department.getDepName()) != null) {
+        if (companyDao.verifyDepartmentExistence(department.getDepName()) != null) {
             LOG.debug("Unable to create. A department with name {} already exist", department.getDepName());
             return new ResponseEntity<>(
                     new CustomErrorType(
@@ -131,8 +131,8 @@ public class DefaultCompanyService implements CompanyService {
                     HttpStatus.CONFLICT);
         }
         LOG.debug("The department is: {}", department);
-        companyMapper.addDepartment(department);
-        companyMongoDao.addDepartmentToMongoDB(department);
+        companyDao.addDepartment(department);
+        companyEventDao.addDepartmentToMongoDB(department);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/company/department").buildAndExpand(department.getDepId()).toUri());
@@ -141,7 +141,7 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee) {
-        Employee currentEmployee = companyMapper.verifyEmployeeExistence(id);
+        Employee currentEmployee = companyDao.verifyEmployeeExistence(id);
 
         if (currentEmployee == null) {
             LOG.debug("Unable to update. Employee with id {} not found.", id);
@@ -151,14 +151,14 @@ public class DefaultCompanyService implements CompanyService {
         LOG.info("Updating Employee with id {}", id);
         currentEmployee.setJobTitle(employee.getJobTitle());
 
-        companyMapper.changeEmployeeJobTitle(employee.getName(), employee.getlName(), currentEmployee.getJobTitle());
+        companyDao.changeEmployeeJobTitle(employee.getName(), employee.getlName(), currentEmployee.getJobTitle());
         return new ResponseEntity<>(currentEmployee, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
 
-        if (companyMapper.verifyEmployeeExistence(employee.getId()) != null) {
+        if (companyDao.verifyEmployeeExistence(employee.getId()) != null) {
             return new ResponseEntity<>(
                     new CustomErrorType(
                             "Unable to create. An employee with id " + employee.getId() + " already exist."),
@@ -166,9 +166,9 @@ public class DefaultCompanyService implements CompanyService {
         }
         LOG.debug("The employee is: {}", employee);
         employeeValidator.validate(employee);
-        companyMapper.addEmployee(employee);
-        companyMongoDao.addEmployeeToMongoDB(employee);
-        actionMessagePublisher.publish(employee);
+        companyDao.addEmployee(employee);
+        companyEventDao.addEmployeeToMongoDB(employee);
+        companyMessagePublisher.publish(employee);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/company/employee").buildAndExpand(employee.getId()).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -176,10 +176,10 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public void changeAnEmployeeDepartment(String name, String lName, String departmentName) {
-        List<Employee> listEmp = companyMapper.changeAnEmployeeDepartment(name, lName, departmentName);
+        List<Employee> listEmp = companyDao.changeAnEmployeeDepartment(name, lName, departmentName);
 
         if (CollectionUtils.isEmpty(listEmp)) {
-            companyMapper.changeAnEmployeeDepartmentAndCheckIfManager(name, lName, departmentName);
+            companyDao.changeAnEmployeeDepartmentAndCheckIfManager(name, lName, departmentName);
             LOG.debug("Employee data has been updated successfully!");
             new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -192,7 +192,7 @@ public class DefaultCompanyService implements CompanyService {
 
     @Override
     public ResponseEntity<Object> getAnEmployee(int id) {
-        Employee anEmployee = companyMapper.getAnEmployee(id);
+        Employee anEmployee = companyDao.getAnEmployeeById(id);
         if (null != anEmployee) {
             LOG.debug("Retrieved einai: [{}]", anEmployee);
             return new ResponseEntity<>(anEmployee, HttpStatus.OK);
@@ -207,7 +207,7 @@ public class DefaultCompanyService implements CompanyService {
     @Override
     public ResponseEntity<Object> updateAnEmployee(int id, Employee employee) {
         if (null != employee) {
-            companyMapper.updateAnEmployee(id, employee);
+            companyDao.updateAnEmployee(id, employee);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(

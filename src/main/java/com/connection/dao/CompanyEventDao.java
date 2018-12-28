@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class CompanyMongoDao {
+public class CompanyEventDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CompanyMongoDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CompanyEventDao.class);
 
     private static final String COMPANY = "Company";
     private static final String CREATED_TIME = "timeCreated";
@@ -37,7 +37,7 @@ public class CompanyMongoDao {
     private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public CompanyMongoDao(MongoTemplate mongoTemplate) {
+    public CompanyEventDao(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 

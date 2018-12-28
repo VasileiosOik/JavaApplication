@@ -1,6 +1,6 @@
 package com.connection.controller;
 
-import com.connection.dao.CompanyMongoDao;
+import com.connection.dao.CompanyEventDao;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import java.time.format.DateTimeFormatter;
 @SwaggerDefinition(tags = {@Tag(name = "company", description = "Operations pertaining to see events adding units")})
 public class EventController {
 
-    private final CompanyMongoDao companyMongoDao;
+    private final CompanyEventDao companyEventDao;
 
     @Autowired
-    public EventController(CompanyMongoDao companyMongoDao) {
-        this.companyMongoDao = companyMongoDao;
+    public EventController(CompanyEventDao companyEventDao) {
+        this.companyEventDao = companyEventDao;
     }
 
     @ApiOperation(value = "View the events", response = ResponseEntity.class)
@@ -31,7 +31,7 @@ public class EventController {
     public ResponseEntity<Object> returnAllEvents(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
         LocalDate fromDateParsed = parseDate(fromDate);
         LocalDate toDateParsed = parseDate(toDate);
-        return companyMongoDao.returnDateBetweenDates(fromDateParsed, toDateParsed);
+        return companyEventDao.returnDateBetweenDates(fromDateParsed, toDateParsed);
     }
 
     private LocalDate parseDate(String date) {

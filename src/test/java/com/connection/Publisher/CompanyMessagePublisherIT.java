@@ -3,7 +3,7 @@ package com.connection.Publisher;
 import com.connection.application.Application;
 import com.connection.domain.Employee;
 import com.connection.mapper.EmployeeBuilder;
-import com.connection.publisher.ActionMessagePublisher;
+import com.connection.publisher.CompanyMessagePublisher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,17 +23,17 @@ import java.time.Month;
 @SpringBootTest(classes = Application.class)
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
-public class ActionMessagePublisherIT {
+public class CompanyMessagePublisherIT {
 
     @Autowired
-    private ActionMessagePublisher actionMessagePublisher;
+    private CompanyMessagePublisher companyMessagePublisher;
 
     @Autowired
     private AmqpAdmin amqpAdmin;
 
     @Before
     public void setUp() {
-        actionMessagePublisher.setEvent("test.event");
+        companyMessagePublisher.setEvent("test.event");
         amqpAdmin.purgeQueue("simple.queue.bill", false);
     }
 
@@ -53,6 +53,6 @@ public class ActionMessagePublisherIT {
                 .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
                 .withJobTitle("Developer").build();
 
-        actionMessagePublisher.publish(employee);
+        companyMessagePublisher.publish(employee);
     }
 }
