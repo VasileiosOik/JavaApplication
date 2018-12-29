@@ -1,12 +1,12 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Confi 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<settings>
-		<setting name="jdbcTypeForNull" value="NULL" />
-	</settings>
-	<typeAliases>
-		<package name="com.connection.domain" />
-	</typeAliases>
-	<mappers>
-		<mapper resource="mappers/mapper.xml" />
-	</mappers>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+    <typeAliases>
+        <package name="com.connection.domain"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mappers/mapper.xml"/>
+    </mappers>
 </configuration>

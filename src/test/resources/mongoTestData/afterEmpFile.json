@@ -1,13 +1,13 @@
 {
-  "Company": {
-
-  "employeeId": 100015,
-  "firstName": "Alex",
-  "lastName": "Tso",
-  "jobTitle": "Tester",
-  "hireDate": "2016-05-29",
-  "managerId": 100004,
-  "departmentId": 1003
-}
-
+  "Company": [
+    {
+      "employeeId": 100015,
+      "firstName": "Alex",
+      "lastName": "dean",
+      "jobTitle": "Tester",
+      "hireDate": "2016-05-29",
+      "managerId": 100004,
+      "departmentId": 1003
+    }
+  ]
 }

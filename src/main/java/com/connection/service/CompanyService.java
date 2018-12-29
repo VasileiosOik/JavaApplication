@@ -9,27 +9,27 @@ import java.util.List;
 
 public interface CompanyService {
 
-    ResponseEntity<List<Employee>> returnAllEmployees();
+    ResponseEntity<List<Employee>> getEmployees();
 
-    ResponseEntity<List<Department>> returnAllDepartments();
+    ResponseEntity<List<Department>> getDepartments();
 
     ResponseEntity<Object> getEmployeesInASpecificDepartment(String depName);
 
-    ResponseEntity<Object> returnEmployeesByNumOfYearsWorked(int number);
+    ResponseEntity<Object> getEmployeesByNumOfYearsWorked(int number);
 
     ResponseEntity<Object> deleteDepartment(String depName);
 
     ResponseEntity<Object> deleteEmployee(int id);
 
-    ResponseEntity<Object> addNewDepartment(Department department, UriComponentsBuilder ucBuilder);
+    ResponseEntity<Object> addDepartment(Department department, UriComponentsBuilder ucBuilder);
 
     ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee);
 
-    ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder);
+    ResponseEntity<Object> addEmployee(Employee employee, UriComponentsBuilder ucBuilder);
 
     void changeAnEmployeeDepartment(String name, String lName, String departmentName);
 
-    ResponseEntity<Object> getAnEmployee(int id);
+    ResponseEntity<Object> getAnEmployeeById(int id);
 
     ResponseEntity<Object> updateAnEmployee(int id, Employee employee);
 }

@@ -44,7 +44,7 @@ public class DefaultCompanyService implements CompanyService {
 
 
     @Override
-    public ResponseEntity<List<Employee>> returnAllEmployees() {
+    public ResponseEntity<List<Employee>> getEmployees() {
         List<Employee> employees = companyDao.getEmployees();
 
         if (CollectionUtils.isEmpty(employees)) {
@@ -54,7 +54,7 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<List<Department>> returnAllDepartments() {
+    public ResponseEntity<List<Department>> getDepartments() {
         List<Department> departments = companyDao.getDepartments();
 
         if (CollectionUtils.isEmpty(departments)) {
@@ -77,7 +77,7 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> returnEmployeesByNumOfYearsWorked(int number) {
+    public ResponseEntity<Object> getEmployeesByNumOfYearsWorked(int number) {
         LOG.info("Fetching Employees with {} years of employment ", number);
         List<Employee> employees = companyDao.getEmployeesByNumOfYearsWorked(number);
 
@@ -120,7 +120,7 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> addNewDepartment(Department department, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> addDepartment(Department department, UriComponentsBuilder ucBuilder) {
         LOG.info("Creating Department : {}", department);
 
         if (companyDao.verifyDepartmentExistence(department.getDepName()) != null) {
@@ -143,7 +143,7 @@ public class DefaultCompanyService implements CompanyService {
     public ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee) {
         Employee currentEmployee = companyDao.verifyEmployeeExistence(id);
 
-        if (currentEmployee == null) {
+        if (companyDao.verifyEmployeeExistence(id)== null) {
             LOG.debug("Unable to update. Employee with id {} not found.", id);
             return new ResponseEntity<>(new CustomErrorType("Unable to update. Employee with id " + id + " not found."),
                     HttpStatus.NOT_FOUND);
@@ -156,7 +156,7 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> addNewEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> addEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
 
         if (companyDao.verifyEmployeeExistence(employee.getId()) != null) {
             return new ResponseEntity<>(
@@ -191,15 +191,15 @@ public class DefaultCompanyService implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> getAnEmployee(int id) {
+    public ResponseEntity<Object> getAnEmployeeById(int id) {
         Employee anEmployee = companyDao.getAnEmployeeById(id);
         if (null != anEmployee) {
-            LOG.debug("Retrieved einai: [{}]", anEmployee);
+            LOG.debug("Retrieved: [{}]", anEmployee);
             return new ResponseEntity<>(anEmployee, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(
                     new CustomErrorType(
-                            "The current employee cannot be found"),
+                            "The employee cannot be found"),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -212,7 +212,7 @@ public class DefaultCompanyService implements CompanyService {
         } else {
             return new ResponseEntity<>(
                     new CustomErrorType(
-                            "The current employee cannot be found"),
+                            "The employee cannot be found"),
                     HttpStatus.NOT_FOUND);
         }
     }

@@ -60,7 +60,7 @@ public class DefaultCompanyServiceTest {
                 .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
                 .withJobTitle("Developer").build()));
 
-        defaultCompanyService.returnAllEmployees();
+        defaultCompanyService.getEmployees();
 
         Mockito.verify(companyDao, times(1)).getEmployees();
     }
@@ -70,7 +70,7 @@ public class DefaultCompanyServiceTest {
 
         when(companyDao.getEmployees()).thenReturn(Collections.emptyList());
 
-        ResponseEntity<List<Employee>> listResponseEntity = defaultCompanyService.returnAllEmployees();
+        ResponseEntity<List<Employee>> listResponseEntity = defaultCompanyService.getEmployees();
         assertEquals(HttpStatus.NOT_FOUND, listResponseEntity.getStatusCode());
 
         Mockito.verify(companyDao, times(1)).getEmployees();
@@ -84,7 +84,7 @@ public class DefaultCompanyServiceTest {
                 .withId(1005)
                 .withName("Finance").build()));
 
-        defaultCompanyService.returnAllDepartments();
+        defaultCompanyService.getDepartments();
 
         Mockito.verify(companyDao, times(1)).getDepartments();
     }
@@ -116,7 +116,7 @@ public class DefaultCompanyServiceTest {
 
         doNothing().when(companyEventDao).addDepartmentToMongoDB(department);
 
-        defaultCompanyService.addNewDepartment(department, aComponentsBuilder());
+        defaultCompanyService.addDepartment(department, aComponentsBuilder());
 
         Mockito.verify(companyDao, times(1)).addDepartment(department);
         Mockito.verify(companyEventDao, times(1)).addDepartmentToMongoDB(department);
@@ -144,7 +144,7 @@ public class DefaultCompanyServiceTest {
 
         Mockito.doNothing().when(companyDao).addEmployee(employee);
 
-        defaultCompanyService.addNewEmployee(employee, aComponentsBuilder());
+        defaultCompanyService.addEmployee(employee, aComponentsBuilder());
 
         Mockito.verify(companyDao, times(1)).verifyEmployeeExistence(1);
 
@@ -211,7 +211,7 @@ public class DefaultCompanyServiceTest {
 
         when(companyDao.getAnEmployeeById(1)).thenReturn(employee);
 
-        defaultCompanyService.getAnEmployee(1);
+        defaultCompanyService.getAnEmployeeById(1);
 
         verify(companyDao, times(1)).getAnEmployeeById(1);
 
@@ -223,7 +223,7 @@ public class DefaultCompanyServiceTest {
 
         when(companyDao.getAnEmployeeById(1)).thenReturn(null);
 
-        ResponseEntity<Object> anEmployee = defaultCompanyService.getAnEmployee(1);
+        ResponseEntity<Object> anEmployee = defaultCompanyService.getAnEmployeeById(1);
         assertEquals(HttpStatus.NOT_FOUND, anEmployee.getStatusCode());
 
         verify(companyDao, times(1)).getAnEmployeeById(1);

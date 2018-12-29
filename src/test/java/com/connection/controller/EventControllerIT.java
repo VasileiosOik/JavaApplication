@@ -42,7 +42,7 @@ public class EventControllerIT {
     public MongoDbRule remoteMongoDbRule = new MongoDbRule(MongoDbConfigurationBuilder.mongoDb().databaseName("Company").port(27017).host("localhost").build());
 
     @Test
-    @UsingDataSet(locations = "/mongoTestData/unitsJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
+    @UsingDataSet(locations = "/mongoTestData/datesJsonFile.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
     public void returnDateBetweenDates(){
 
         given()

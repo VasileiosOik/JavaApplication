@@ -42,7 +42,7 @@ public class CompanyMapperIT {
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testShowAllEmployees() {
-        List<Employee> employees = companyMapper.showAllEmployees();
+        List<Employee> employees = companyMapper.getAllEmployees();
         LOG.debug("The employees are: {}", employees);
         assertNotNull(employees);
         assertTrue(!employees.isEmpty());
@@ -61,7 +61,7 @@ public class CompanyMapperIT {
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testShowAllDepartments() {
-        List<Department> departments = companyMapper.showAllDepartments();
+        List<Department> departments = companyMapper.getAllDepartments();
         LOG.debug("The departments are: {}", departments);
         assertNotNull(departments);
         assertTrue(!departments.isEmpty());
@@ -71,7 +71,7 @@ public class CompanyMapperIT {
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testEmployeesInSpecificDepartment() {
-        List<Employee> employees = companyMapper.employeesInSpecificDepartment("Technology");
+        List<Employee> employees = companyMapper.getEmployeesInSpecificDepartment("Technology");
         LOG.debug("The employees in the specific department are: {}", employees);
         assertEquals(3, employees.size());
         assertTrue(!employees.isEmpty());
@@ -159,7 +159,7 @@ public class CompanyMapperIT {
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testAddEmployee() {
         companyMapper.addEmployee(getEmployee());
-        List<Employee> employees = companyMapper.showAllEmployees();
+        List<Employee> employees = companyMapper.getAllEmployees();
         assertEquals(15, employees.size());
     }
 
@@ -175,7 +175,7 @@ public class CompanyMapperIT {
     private Employee getEmployee() {
         Employee emp = new Employee();
         emp.setName("Alex");
-        emp.setlName("Tso");
+        emp.setlName("dean");
         emp.setId((companyMapper.getMaxEmployeeId() + 1));
         emp.setJobTitle("Tester");
         emp.setDepartmentId(1003);

@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface CompanyMapper {
 
-    List<Employee> showAllEmployees();
+    List<Employee> getAllEmployees();
 
-    List<Department> showAllDepartments();
+    List<Department> getAllDepartments();
 
-    List<Employee> employeesInSpecificDepartment(@Param("depName") String depName);
+    List<Employee> getEmployeesInSpecificDepartment(@Param("depName") String depName);
 
     List<Employee> getAllEmployeesByTheirManager(@Param("name") String name, @Param("lName") String lName);
 

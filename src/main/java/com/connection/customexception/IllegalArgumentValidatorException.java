@@ -6,12 +6,8 @@ public class IllegalArgumentValidatorException extends RuntimeException {
 
     private final String shortText;
 
-    private String longText;
+    private final String longText;
 
-    public IllegalArgumentValidatorException(String id, String shortText) {
-        this.id = id;
-        this.shortText = shortText;
-    }
 
     public IllegalArgumentValidatorException(String id, String shortText, String longText) {
         this.id = id;

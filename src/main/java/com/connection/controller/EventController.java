@@ -28,10 +28,10 @@ public class EventController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/getEvents", produces = "application/json")
-    public ResponseEntity<Object> returnAllEvents(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
+    public ResponseEntity<Object> getAllEventsBetweenDates(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
         LocalDate fromDateParsed = parseDate(fromDate);
         LocalDate toDateParsed = parseDate(toDate);
-        return companyEventDao.returnDateBetweenDates(fromDateParsed, toDateParsed);
+        return companyEventDao.getEventsBetweenDates(fromDateParsed, toDateParsed);
     }
 
     private LocalDate parseDate(String date) {

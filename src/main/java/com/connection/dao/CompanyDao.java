@@ -18,17 +18,16 @@ public class CompanyDao {
         this.companyMapper = companyMapper;
     }
 
-
     public List<Employee> getEmployees() {
-        return companyMapper.showAllEmployees();
+        return companyMapper.getAllEmployees();
     }
 
     public List<Department> getDepartments() {
-        return companyMapper.showAllDepartments();
+        return companyMapper.getAllDepartments();
     }
 
     public List<Employee> getEmployeesInASpecificDepartment(String departmentName) {
-        return companyMapper.employeesInSpecificDepartment(departmentName);
+        return companyMapper.getEmployeesInSpecificDepartment(departmentName);
     }
 
     public List<Employee> getEmployeesByNumOfYearsWorked(int workedYears) {

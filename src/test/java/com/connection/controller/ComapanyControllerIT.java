@@ -48,7 +48,7 @@ public class ComapanyControllerIT {
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
-	public void testGetAllEmployees() {
+	public void getAllEmployees() {
 
 		given()
                 .contentType(APPLICATION_JSON)
@@ -363,7 +363,7 @@ public class ComapanyControllerIT {
                 .withId(100015)
                 .withJobTitle("Tester")
                 .withName("Alex")
-                .withLname("Tso")
+                .withLname("dean")
                 .withManageId(100004);
         return employeeBuilder.build();
     }

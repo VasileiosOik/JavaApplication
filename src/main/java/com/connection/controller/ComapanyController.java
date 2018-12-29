@@ -26,16 +26,16 @@ public class ComapanyController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/employees", produces = "application/json")
-    public ResponseEntity<List<Employee>> returnAllEmployees() {
-        return companyService.returnAllEmployees();
+    public ResponseEntity<List<Employee>> getEmployees() {
+        return companyService.getEmployees();
     }
 
     @ApiOperation(value = "View the list of available Departments", response = ResponseEntity.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/departments", produces = "application/json")
-    public ResponseEntity<List<Department>> returnAllDepartments() {
-        return companyService.returnAllDepartments();
+    public ResponseEntity<List<Department>> getDepartments() {
+        return companyService.getDepartments();
     }
 
     @ApiOperation(value = "View the list of available employees in a specific department", response = ResponseEntity.class)
@@ -50,8 +50,8 @@ public class ComapanyController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/employees/{number}", produces = "application/json")
-    public ResponseEntity<Object> returnEmployeesByNumOfYearsWorked(@PathVariable("number") int number) {
-        return companyService.returnEmployeesByNumOfYearsWorked(number);
+    public ResponseEntity<Object> getEmployeesByNumOfYearsWorked(@PathVariable("number") int number) {
+        return companyService.getEmployeesByNumOfYearsWorked(number);
     }
 
     @ApiOperation(value = "Delete a department", response = ResponseEntity.class)
@@ -74,8 +74,8 @@ public class ComapanyController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Successfully created"),
             @ApiResponse(code = 409, message = "Already exists")})
     @PostMapping(value = "/department", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> addNewDepartment(@RequestBody Department department, UriComponentsBuilder ucBuilder) {
-        return companyService.addNewDepartment(department, ucBuilder);
+    public ResponseEntity<Object> addDepartment(@RequestBody Department department, UriComponentsBuilder ucBuilder) {
+        return companyService.addDepartment(department, ucBuilder);
     }
 
     @ApiOperation(value = "Update the job title of an employee", response = ResponseEntity.class)
@@ -90,20 +90,20 @@ public class ComapanyController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Successfully created"),
             @ApiResponse(code = 409, message = "Already exists")})
     @PostMapping(value = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> addNewEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder) {
-        return companyService.addNewEmployee(employee, ucBuilder);
+    public ResponseEntity<Object> addEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder) {
+        return companyService.addEmployee(employee, ucBuilder);
     }
 
-    @ApiOperation(value = "Get an Employee back", response = ResponseEntity.class)
+    @ApiOperation(value = "Get an Employee by searching with id", response = ResponseEntity.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved"),
             @ApiResponse(code = 404, message = "Not found")})
     @GetMapping(value = "/oneemployee/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAnEmployee(@PathVariable("id") int id) {
-        return companyService.getAnEmployee(id);
+    public ResponseEntity<Object> getAnEmployeeById(@PathVariable("id") int id) {
+        return companyService.getAnEmployeeById(id);
     }
 
-    @ApiOperation(value = "Get n Employee back", response = ResponseEntity.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved"),
+    @ApiOperation(value = "Update Employee information", response = ResponseEntity.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated"),
             @ApiResponse(code = 404, message = "Not found")})
     @PutMapping(value = "/updateemployee/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateAnEmployee(@PathVariable("id") int id, @RequestBody Employee employee) {

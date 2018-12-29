@@ -19,7 +19,7 @@
         <result property="depName" column="NAME"/>
     </resultMap>
 
-    <select id="showAllEmployees" resultMap="employeeResults">
+    <select id="getAllEmployees" resultMap="employeeResults">
         SELECT *
         FROM Employee e
     </select>
@@ -31,12 +31,12 @@
     </select>
 
 
-    <select id="showAllDepartments" resultMap="departmentResults">
+    <select id="getAllDepartments" resultMap="departmentResults">
         SELECT *
         FROM Department d
     </select>
 
-    <select id="employeesInSpecificDepartment" resultMap="employeeResults"
+    <select id="getEmployeesInSpecificDepartment" resultMap="employeeResults"
             parameterType="String">
         SELECT e.ID,
                e.FIRST_NAME,

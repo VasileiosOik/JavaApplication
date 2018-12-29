@@ -4,7 +4,6 @@ import com.connection.customexception.IllegalArgumentValidatorException;
 import com.connection.domain.Employee;
 import com.connection.mapper.EmployeeBuilder;
 import com.connection.validation.EmployeeValidator;
-import com.connection.validation.JobTitleValidator;
 import com.connection.validation.Validator;
 import org.junit.Test;
 import org.junit.runner.RunWith;

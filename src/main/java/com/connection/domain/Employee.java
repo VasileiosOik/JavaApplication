@@ -9,15 +9,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import java.time.LocalDate;
 
 public class Employee {
-    @ApiModelProperty(notes = "The Employee Id")
+    @ApiModelProperty(notes = "The Employee's Id")
     private int id;
-    @ApiModelProperty(notes = "The Employee name")
+    @ApiModelProperty(notes = "The Employee's name")
     private String name;
     @ApiModelProperty(notes = "The Employee last name")
     private String lName;
-    @ApiModelProperty(notes = "The Employee job title")
+    @ApiModelProperty(notes = "The Employee's job title")
     private String jobTitle;
-    @ApiModelProperty(notes = "The Employee Hire Date")
+    @ApiModelProperty(notes = "The Employee's Hire Date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate hireDate;

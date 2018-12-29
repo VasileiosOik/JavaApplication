@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class Department {
-    @ApiModelProperty(notes = "The Id of the department")
+    @ApiModelProperty(notes = "The department's id")
     private int depId;
-    @ApiModelProperty(notes = "The department name")
+    @ApiModelProperty(notes = "The department's name")
     private String depName;
 
     public Department() {
