@@ -5,7 +5,6 @@ import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.mapper.DepartmentBuilder;
 import com.connection.mapper.EmployeeBuilder;
-import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbConfigurationBuilder;
@@ -46,7 +45,7 @@ public class CompanyEventDaoIT {
     public void addEmployeeToMongoDB() {
         Employee employee = new EmployeeBuilder()
                 .withDepartmentId(1003)
-                .withHireDate(LocalDate.of(2016, Month.MAY, 29))
+                .withHireDate(LocalDate.of(2016, Month.DECEMBER, 29))
                 .withId(100015)
                 .withJobTitle("Tester")
                 .withName("Alex")

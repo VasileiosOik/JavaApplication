@@ -50,7 +50,7 @@ public class CompanyEventDao {
         BasicDBObject basicDBObject = new BasicDBObject();
         basicDBObject.append("departmentId", department.getDepId())
                 .append("departmentName", department.getDepName())
-                .append(CREATED_TIME, new Date());
+                .append(CREATED_TIME, Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         dbCollection.insertOne(new Document(basicDBObject));
         LOG.debug("The department document has been added successfully");
     }
@@ -66,7 +66,7 @@ public class CompanyEventDao {
                 .append("lastName", emp.getlName()).append("jobTitle", emp.getJobTitle())
                 .append("hireDate", Date.from(emp.getHireDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .append("managerId", emp.getManagerId())
-                .append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, new Date());
+                .append("departmentId", emp.getDepartmentId()).append(CREATED_TIME, Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         dbCollection.insertOne(new Document(basicDBObject));
         LOG.debug("The employee document has been added successfully");
     }

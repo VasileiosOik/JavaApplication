@@ -5,9 +5,10 @@
       "firstName": "Alex",
       "lastName": "dean",
       "jobTitle": "Tester",
-      "hireDate": "2016-05-29",
+      "hireDate": ISODate("2016-12-29T00:00:00.000Z"),
       "managerId": 100004,
-      "departmentId": 1003
+      "departmentId": 1003,
+      "timeCreated": ISODate("2018-12-29T00:00:00.000Z")
     }
   ]
 }
