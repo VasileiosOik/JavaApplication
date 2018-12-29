@@ -5,6 +5,7 @@ import com.connection.domain.Employee;
 import com.connection.mapper.EmployeeBuilder;
 import com.connection.validation.EmployeeValidator;
 import com.connection.validation.Validator;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -65,5 +66,22 @@ public class EmployeeValidatorTest {
 
         employeeValidator.validate(employee);
 
+    }
+
+    @Test
+    public void validEmployeeFields_resultsInPassingValidation() {
+        employeeValidator.setupValidators();
+
+        Employee employee = new EmployeeBuilder()
+                .withName("Bill")
+                .withLname("Eco")
+                .withId(1)
+                .withDepartmentId(1001)
+                .withManageId(100015)
+                .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
+                .withJobTitle("Tester").build();
+
+        Assertions.assertThatCode(() -> employeeValidator.validate(employee))
+                .doesNotThrowAnyException();
     }
 }

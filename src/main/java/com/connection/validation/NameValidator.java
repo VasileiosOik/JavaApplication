@@ -9,6 +9,5 @@ public class NameValidator implements Validator {
         if (employee.getName().matches((".*\\d+.*"))) {
             throw new IllegalArgumentValidatorException("1", "Wrong name", "Name cannot contain numbers");
         }
-
     }
 }

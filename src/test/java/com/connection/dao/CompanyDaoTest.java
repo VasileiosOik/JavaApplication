@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyDaoTest {
 
+
     @InjectMocks
     private CompanyDao companyDao;
 
@@ -29,6 +30,8 @@ public class CompanyDaoTest {
     private CompanyMapper companyMapper;
 
     private static final String SALES = "Sales";
+
+    private static final int NUM_OF_YEARS = 10;
 
     @Test
     public void getAllEmployees() {
@@ -71,6 +74,35 @@ public class CompanyDaoTest {
         assertEquals(1, employeesInASpecificDepartment.size());
 
         Mockito.verify(companyMapper, times(1)).getEmployeesInSpecificDepartment(SALES);
+    }
+
+    @Test
+    public void getEmployeesByNumOfYearsWorked() {
+        when(companyMapper.getEmployeesByNumOfYearsWorked(NUM_OF_YEARS)).thenReturn(Collections.singletonList(new EmployeeBuilder()
+                .withName("Bill")
+                .withLname("Eco")
+                .withId(1)
+                .withDepartmentId(1001)
+                .withManageId(100015)
+                .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
+                .withJobTitle("Developer").build()));
+
+        List<Employee> employees = companyDao.getEmployeesByNumOfYearsWorked(NUM_OF_YEARS);
+        assertEquals(1, employees.size());
+
+        Mockito.verify(companyMapper, times(1)).getEmployeesByNumOfYearsWorked(NUM_OF_YEARS);
+    }
+
+    @Test
+    public void deleteDepartment() {
+        companyDao.deleteDepartment(SALES);
+        verify(companyMapper, times(1)).removeDepartment(SALES);
+    }
+
+    @Test
+    public void deleteEmployee() {
+        companyDao.deleteEmployee(anyInt());
+        verify(companyMapper, times(1)).removeEmployee(anyInt());
     }
 
 }
