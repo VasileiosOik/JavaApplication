@@ -13,12 +13,6 @@ public class Department {
         //empty constructor is needed
     }
 
-    public Department(int depId, String depName) {
-        super();
-        this.depId = depId;
-        this.depName = depName;
-    }
-
     public int getDepId() {
         return depId;
     }

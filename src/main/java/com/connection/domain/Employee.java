@@ -30,18 +30,6 @@ public class Employee {
         //empty constructor is needed
     }
 
-    public Employee(int id, String name, String lName, String jobTitle, LocalDate hireDate, int managerId,
-                    int departmentId) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.lName = lName;
-        this.jobTitle = jobTitle;
-        this.hireDate = hireDate;
-        this.managerId = managerId;
-        this.departmentId = departmentId;
-    }
-
     public int getId() {
         return id;
     }
