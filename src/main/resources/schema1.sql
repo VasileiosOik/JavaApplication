@@ -1,8 +1,8 @@
 DROP SCHEMA IF EXISTS testdb1;
 CREATE SCHEMA testdb1;
 
-#GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'%' IDENTIFIED BY 'root';
-#GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'%' IDENTIFIED BY 'root88Bill@';
+GRANT ALL PRIVILEGES ON testdb1.* TO 'root'@'localhost' IDENTIFIED BY 'root88Bill@';
 
 use testdb1;
 

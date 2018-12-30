@@ -1,2 +1,2 @@
-FROM mongo:3.4
+FROM rabbitmq
 MAINTAINER Bill

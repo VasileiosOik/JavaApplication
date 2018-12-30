@@ -1,49 +1,65 @@
 version: '3'
 services:
-#The application
+  #The application
   springappserver:
     build:
       context: .
       dockerfile: springapp.dockerfile
     ports:
-    - 8081:8081
+      - 8081:8081
     networks:
-    - all
+      - all
     volumes:
-    - .:/vol/development
+      - .:/vol/development
     depends_on:
-    - mysqldbserver
-    - mongodbserver
-#The MongoDB server
+      - mysqldbserver
+      - mongodbserver
+      - rabbitmqserver
+  #The rabbitmq server
+  rabbitmqserver:
+    build:
+      context: .
+      dockerfile: rabbitmq.dockerfile
+    ports:
+      - "5673:5673"
+      - "15673:15673"
+    networks:
+      - all
+    volumes:
+      - .:/rabbitmq_data/data
+    container_name: rabbitmqserver
+  #The MongoDB server
   mongodbserver:
     build:
       context: .
       dockerfile: mongodb.dockerfile
     ports:
-    - 27018:27018
+      - "27019:27019"
+      - "28019:28019"
     networks:
-    - all
+      - all
     environment:
       MONGODB_DATABASE: Company
-      MONGODB_HOST: 192.168.99.100
+      MONGODB_HOST: 127.0.0.1
       MONGODB_PORT: 27018
     volumes:
-    - /app/hdp/mongo/data:/data/db
+      - ./data/db:/data/db
     container_name: mongodbserver
-#The MySQL server
+  #The MySQL server
   mysqldbserver:
     build:
       context: .
       dockerfile: mysqldb.dockerfile
     ports:
-    - 3307:3307
+      - 3307:3307
     networks:
-    - all
+      - all
     environment:
       MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root88Bill@
+      MYSQL_ROOT_PASSWORD: root88Bill@
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     container_name: mysqldbserver
 networks:
   all:
+
