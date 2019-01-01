@@ -4,6 +4,10 @@ import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.mapper.CompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +22,7 @@ public class CompanyDao {
         this.companyMapper = companyMapper;
     }
 
+    @Cacheable(value = "allEmployeesCache", unless = "#result.size() == 0")
     public List<Employee> getEmployees() {
         return companyMapper.getAllEmployees();
     }
@@ -50,6 +55,12 @@ public class CompanyDao {
         return companyMapper.verifyEmployeeExistence(id);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "employeeCache", key = "#id"),
+                    @CacheEvict(value = "allEmployeesCache", allEntries = true)
+            }
+    )
     public int deleteEmployee(int id) {
         return companyMapper.removeEmployee(id);
     }
@@ -62,6 +73,10 @@ public class CompanyDao {
         companyMapper.changeEmployeeJobTitle(name, lastName, jobTitle);
     }
 
+    @Caching(
+            put = {@CachePut(value = "employeeCache", key = "#employee.id")},
+            evict = {@CacheEvict(value = "allEmployeesCache", allEntries = true)}
+    )
     public void addEmployee(Employee employee) {
         companyMapper.addEmployee(employee);
     }

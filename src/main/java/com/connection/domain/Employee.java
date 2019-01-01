@@ -6,9 +6,10 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Employee {
+public class Employee implements Serializable {
     @ApiModelProperty(notes = "The Employee's Id")
     private int id;
     @ApiModelProperty(notes = "The Employee's name")
