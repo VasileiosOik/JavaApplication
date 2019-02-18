@@ -167,6 +167,7 @@ public class DefaultCompanyService implements CompanyService {
         LOG.debug("The employee is: {}", employee);
         employeeValidator.validate(employee);
         companyDao.addEmployee(employee);
+        LOG.info("Adding employee with id {}", employee.getId());
         companyEventDao.addEmployeeToMongoDB(employee);
         companyMessagePublisher.publish(employee);
         HttpHeaders headers = new HttpHeaders();

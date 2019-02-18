@@ -34,12 +34,12 @@ public class CompanyMessagePublisherIT {
     @Before
     public void setUp() {
         companyMessagePublisher.setEvent("test.event");
-        amqpAdmin.purgeQueue("simple.queue.bill", false);
+        amqpAdmin.purgeQueue("man.queue", false);
     }
 
     @After
     public void clearUp() {
-        amqpAdmin.purgeQueue("simple.queue.bill", false);
+        amqpAdmin.purgeQueue("man.queue", false);
     }
 
     @Test

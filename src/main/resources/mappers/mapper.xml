@@ -188,7 +188,7 @@
           AND e.DEPARTMENT_ID = #{departmentId}
     </select>
 
-    <insert id="addEmployee" parameterType="Employee">
+    <insert id="addEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO Employee
         (ID,
          FIRST_NAME,
