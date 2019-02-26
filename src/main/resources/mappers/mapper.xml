@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.connection.mapper.CompanyMapper">
 
-    <resultMap id="employeeResults" type="Employee">
+    <resultMap id="employeeResults" type="com.connection.domain.Employee">
         <result property="id" column="ID"/>
         <result property="name" column="FIRST_NAME"/>
         <result property="lName" column="LAST_NAME"/>
@@ -14,7 +14,7 @@
     </resultMap>
 
 
-    <resultMap id="departmentResults" type="Department">
+    <resultMap id="departmentResults" type="com.connection.domain.Department">
         <result property="depId" column="ID"/>
         <result property="depName" column="NAME"/>
     </resultMap>
@@ -109,19 +109,6 @@
         WHERE ID = #{id}
     </delete>
 
-    <delete id="">
-        UPDATE
-            Employee e
-        SET e.MANAGER_ID= null
-        WHERE e.MANAGER_ID =
-              (SELECT DISTINCT e1.MANAGER_ID
-               FROM Employee e1
-               WHERE e1.MANAGER_ID NOT IN
-                     (SELECT e2.id
-                      FROM Employee e2
-                      WHERE e2.id IS NOT NULL))
-    </delete>
-
     <delete id="updateEmployeeDataBeforeDeleteOfDepartment"
             parameterType="String">
         UPDATE
@@ -139,7 +126,7 @@
         WHERE name = #{depName}
     </delete>
 
-    <insert id="addDepartment" parameterType="Department">
+    <insert id="addDepartment" parameterType="com.connection.domain.Department">
         INSERT
         INTO Department
         (ID,
@@ -180,15 +167,7 @@
           AND e.LAST_NAME = #{lName}
     </update>
 
-    <select id="managerFound" resultType="int">
-        SELECT e.FIRST_NAME,
-               e.LAST_NAME
-        FROM Employee e
-        WHERE e.ID = #{id}
-          AND e.DEPARTMENT_ID = #{departmentId}
-    </select>
-
-    <insert id="addEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+    <insert id="addEmployee" parameterType="com.connection.domain.Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO Employee
         (ID,
          FIRST_NAME,
@@ -241,16 +220,6 @@
         SELECT *
         FROM Employee e
         WHERE e.ID = #{id}
-    </select>
-
-    <select id="managerOfADepartment" parameterType="int"
-            resultType="int">
-        select e.manager_id
-        from Employee e
-        where e.manager_id is not null
-          and department_id = #{depId}
-        group by e.manager_id
-        having count(e.manager_id) > 1
     </select>
 
 </mapper>

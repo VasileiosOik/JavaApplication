@@ -3,11 +3,10 @@ package com.connection.mapper;
 import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface CompanyMapper {
 
     List<Employee> getAllEmployees();
