@@ -1,5 +1,6 @@
 package com.connection.service;
 
+import com.connection.customexception.NotFoundException;
 import com.connection.dao.CompanyDao;
 import com.connection.dao.CompanyEventDao;
 import com.connection.domain.Department;
@@ -14,8 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ import java.time.Month;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -65,13 +64,13 @@ public class DefaultCompanyServiceTest {
         Mockito.verify(companyDao, times(1)).getEmployees();
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void returnAllEmployeesNotPopulated_shouldResultNoDataReturned() {
 
         when(companyDao.getEmployees()).thenReturn(Collections.emptyList());
 
-        ResponseEntity<List<Employee>> listResponseEntity = defaultCompanyService.getEmployees();
-        assertEquals(HttpStatus.NOT_FOUND, listResponseEntity.getStatusCode());
+        List<Employee> listResponseEntity = defaultCompanyService.getEmployees();
+        assertEquals(0, listResponseEntity.size());
 
         Mockito.verify(companyDao, times(1)).getEmployees();
     }
@@ -100,8 +99,8 @@ public class DefaultCompanyServiceTest {
                 .withHireDate(LocalDate.of(1988, Month.OCTOBER, 23))
                 .withJobTitle("Developer").build()));
 
-        ResponseEntity<Object> employeesInASpecificDepartment = defaultCompanyService.getEmployeesInASpecificDepartment(SALES);
-        assertEquals(HttpStatus.OK, employeesInASpecificDepartment.getStatusCode());
+        List<Employee> employeesInASpecificDepartment = defaultCompanyService.getEmployeesInASpecificDepartment(SALES);
+        assertEquals(1, employeesInASpecificDepartment.size());
 
         Mockito.verify(companyDao, times(1)).getEmployeesInASpecificDepartment(SALES);
     }
@@ -175,12 +174,9 @@ public class DefaultCompanyServiceTest {
 
         Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
-        Mockito.verify(companyDao, times(0)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
-                anyString());
-
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testChangeAnEmployeeDepartment_whenEmployeeIsNotManager() {
 
         when(companyDao.changeAnEmployeeDepartment(anyString(), anyString(), anyString()))
@@ -189,10 +185,6 @@ public class DefaultCompanyServiceTest {
         defaultCompanyService.changeAnEmployeeDepartment(anyString(), anyString(), anyString());
 
         Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartment(anyString(), anyString(), anyString());
-
-        Mockito.verify(companyDao, times(1)).changeAnEmployeeDepartmentAndCheckIfManager(anyString(), anyString(),
-                anyString());
-
     }
 
 
@@ -217,14 +209,14 @@ public class DefaultCompanyServiceTest {
 
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testGetAnEmployee_whenDoesNotExist() {
 
 
         when(companyDao.getAnEmployeeById(1)).thenReturn(null);
 
-        ResponseEntity<Object> anEmployee = defaultCompanyService.getAnEmployeeById(1);
-        assertEquals(HttpStatus.NOT_FOUND, anEmployee.getStatusCode());
+        Employee anEmployee = defaultCompanyService.getAnEmployeeById(1);
+        assertNull(anEmployee);
 
         verify(companyDao, times(1)).getAnEmployeeById(1);
     }
@@ -248,12 +240,11 @@ public class DefaultCompanyServiceTest {
 
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void testUpdateAnEmployee_notFound() {
 
-
-        ResponseEntity<Object> employee = defaultCompanyService.updateAnEmployee(1, null);
-        assertEquals(HttpStatus.NOT_FOUND, employee.getStatusCode());
+        Employee employee = defaultCompanyService.updateAnEmployee(1, null);
+        assertNotNull(employee);
 
         verify(companyDao, times(0)).updateAnEmployee(1, null);
 

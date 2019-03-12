@@ -1,6 +1,7 @@
 package com.connection.service;
 
-import com.connection.customexception.CustomErrorType;
+import com.connection.customexception.AlreadyCreatedException;
+import com.connection.customexception.NotFoundException;
 import com.connection.dao.CompanyDao;
 import com.connection.dao.CompanyEventDao;
 import com.connection.domain.Department;
@@ -11,13 +12,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -44,52 +41,49 @@ public class DefaultCompanyService implements CompanyService {
 
 
     @Override
-    public ResponseEntity<List<Employee>> getEmployees() {
+    public List<Employee> getEmployees() {
         List<Employee> employees = companyDao.getEmployees();
 
         if (CollectionUtils.isEmpty(employees)) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employees");
         }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        return employees;
     }
 
     @Override
-    public ResponseEntity<List<Department>> getDepartments() {
+    public List<Department> getDepartments() {
         List<Department> departments = companyDao.getDepartments();
 
         if (CollectionUtils.isEmpty(departments)) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Dpartments");
         }
-        return new ResponseEntity<>(departments, HttpStatus.OK);
+        return departments;
     }
 
     @Override
-    public ResponseEntity<Object> getEmployeesInASpecificDepartment(String depName) {
+    public List<Employee> getEmployeesInASpecificDepartment(String depName) {
         LOG.info("Fetching Employees that work in the {} department", depName);
         List<Employee> employees = companyDao.getEmployeesInASpecificDepartment(depName);
 
         if (CollectionUtils.isEmpty(employees)) {
-            return new ResponseEntity<>(
-                    new CustomErrorType("Employees in the department " + depName + " cannot be found"),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employees in Specific Department not found");
         }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        return employees;
     }
 
     @Override
-    public ResponseEntity<Object> getEmployeesByNumOfYearsWorked(int number) {
+    public List<Employee> getEmployeesByNumOfYearsWorked(int number) {
         LOG.info("Fetching Employees with {} years of employment ", number);
         List<Employee> employees = companyDao.getEmployeesByNumOfYearsWorked(number);
 
         if (CollectionUtils.isEmpty(employees)) {
-            return new ResponseEntity<>(new CustomErrorType("Employees with " + number + "of years worked not found"),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employees that worked years");
         }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        return employees;
     }
 
     @Override
-    public ResponseEntity<Object> deleteDepartment(String depName) {
+    public List<Department> deleteDepartment(String depName) {
         LOG.info("Fetching and Deleting Department with name {}", depName);
 
         if (companyDao.verifyDepartmentExistence(depName) != null) {
@@ -98,71 +92,58 @@ public class DefaultCompanyService implements CompanyService {
             companyDao.updateEmployeeDepartmentId(depName);
             companyDao.deleteDepartment(depName);
             LOG.info("Department with {} name found", depName);
-            return new ResponseEntity<>(companyDao.getDepartments(), HttpStatus.OK);
+            return companyDao.getDepartments();
         } else {
-            return new ResponseEntity<>(
-                    new CustomErrorType("Unable to delete. Department with name " + depName + " is not there."),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Department Not Found");
         }
     }
 
     @Override
-    public ResponseEntity<Object> deleteEmployee(int id) {
+    public List<Employee> deleteEmployee(int id) {
         LOG.info("Fetching and Deleting employee with id {}", id);
 
         if (companyDao.deleteEmployee(id) > 0) {
             LOG.info("Employee with {} id found", id);
-            return new ResponseEntity<>(companyDao.getEmployees(), HttpStatus.OK);
+            return companyDao.getEmployees();
         } else {
-            return new ResponseEntity<>(new CustomErrorType("Unable to delete employee with id " + id + " not found."),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employee to Delete Not Found");
         }
     }
 
     @Override
-    public ResponseEntity<Object> addDepartment(Department department, UriComponentsBuilder ucBuilder) {
+    public Department addDepartment(Department department, UriComponentsBuilder ucBuilder) {
         LOG.info("Creating Department : {}", department);
 
         if (companyDao.verifyDepartmentExistence(department.getDepName()) != null) {
             LOG.debug("Unable to create. A department with name {} already exist", department.getDepName());
-            return new ResponseEntity<>(
-                    new CustomErrorType(
-                            "Unable to create. A department with name " + department.getDepName() + " already exist."),
-                    HttpStatus.CONFLICT);
+            throw new AlreadyCreatedException(department.getDepName());
         }
         LOG.debug("The department is: {}", department);
         companyDao.addDepartment(department);
         companyEventDao.addDepartmentToMongoDB(department);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/company/department").buildAndExpand(department.getDepId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return department;
     }
 
     @Override
-    public ResponseEntity<Object> updateEmployeeJobTitle(int id, Employee employee) {
+    public Employee updateEmployeeJobTitle(int id, Employee employee) {
         Employee currentEmployee = companyDao.verifyEmployeeExistence(id);
 
-        if (companyDao.verifyEmployeeExistence(id)== null) {
+        if (companyDao.verifyEmployeeExistence(id) == null) {
             LOG.debug("Unable to update. Employee with id {} not found.", id);
-            return new ResponseEntity<>(new CustomErrorType("Unable to update. Employee with id " + id + " not found."),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employee Not Found");
         }
         LOG.info("Updating Employee with id {}", id);
         currentEmployee.setJobTitle(employee.getJobTitle());
 
         companyDao.changeEmployeeJobTitle(employee.getName(), employee.getlName(), currentEmployee.getJobTitle());
-        return new ResponseEntity<>(currentEmployee, HttpStatus.OK);
+        return currentEmployee;
     }
 
     @Override
-    public ResponseEntity<Object> addEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
+    public Employee addEmployee(Employee employee, UriComponentsBuilder ucBuilder) {
 
         if (companyDao.verifyEmployeeExistence(employee.getId()) != null) {
-            return new ResponseEntity<>(
-                    new CustomErrorType(
-                            "Unable to create. An employee with id " + employee.getId() + " already exist."),
-                    HttpStatus.CONFLICT);
+            throw new AlreadyCreatedException(String.valueOf(employee.getId()));
         }
         LOG.debug("The employee is: {}", employee);
         employeeValidator.validate(employee);
@@ -170,51 +151,39 @@ public class DefaultCompanyService implements CompanyService {
         LOG.info("Adding employee with id {}", employee.getId());
         companyEventDao.addEmployeeToMongoDB(employee);
         companyMessagePublisher.publish(employee);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/company/employee").buildAndExpand(employee.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return employee;
     }
 
     @Override
     public void changeAnEmployeeDepartment(String name, String lName, String departmentName) {
         List<Employee> listEmp = companyDao.changeAnEmployeeDepartment(name, lName, departmentName);
 
-        if (CollectionUtils.isEmpty(listEmp)) {
+        if (!CollectionUtils.isEmpty(listEmp)) {
             companyDao.changeAnEmployeeDepartmentAndCheckIfManager(name, lName, departmentName);
             LOG.debug("Employee data has been updated successfully!");
-            new ResponseEntity<>(HttpStatus.OK);
         } else {
-            new ResponseEntity<>(
-                    new CustomErrorType(
-                            "The current employee is a manager and cannot be transferred"),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("The current employee is a manager and cannot be transferred");
         }
     }
 
     @Override
-    public ResponseEntity<Object> getAnEmployeeById(int id) {
+    public Employee getAnEmployeeById(int id) {
         Employee anEmployee = companyDao.getAnEmployeeById(id);
         if (null != anEmployee) {
             LOG.debug("Retrieved: [{}]", anEmployee);
-            return new ResponseEntity<>(anEmployee, HttpStatus.OK);
+            return anEmployee;
         } else {
-            return new ResponseEntity<>(
-                    new CustomErrorType(
-                            "The employee cannot be found"),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("The employee cannot be found");
         }
     }
 
     @Override
-    public ResponseEntity<Object> updateAnEmployee(int id, Employee employee) {
+    public Employee updateAnEmployee(int id, Employee employee) {
         if (null != employee) {
             companyDao.updateAnEmployee(id, employee);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return employee;
         } else {
-            return new ResponseEntity<>(
-                    new CustomErrorType(
-                            "The employee cannot be found"),
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Employee Not Found");
         }
     }
 }
