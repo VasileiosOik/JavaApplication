@@ -58,7 +58,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: root88Bill@
       MYSQL_ROOT_PASSWORD: root88Bill@
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     container_name: mysqldbserver
 networks:
   all:

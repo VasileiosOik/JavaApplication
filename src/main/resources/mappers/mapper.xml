@@ -126,7 +126,7 @@
         WHERE name = #{depName}
     </delete>
 
-    <insert id="addDepartment" parameterType="com.connection.domain.Department">
+    <insert id="addDepartment" parameterType="com.connection.domain.Department" useGeneratedKeys="true" keyProperty="depId" keyColumn="ID">
         INSERT
         INTO Department
         (ID,
