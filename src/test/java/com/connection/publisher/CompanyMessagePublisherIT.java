@@ -1,9 +1,8 @@
-package com.connection.Publisher;
+package com.connection.publisher;
 
 import com.connection.application.Application;
 import com.connection.domain.Employee;
 import com.connection.mapper.EmployeeBuilder;
-import com.connection.publisher.CompanyMessagePublisher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class CompanyMessagePublisherIT {
     public void clearUp() {
         amqpAdmin.purgeQueue("man.queue", false);
     }
-
+//not completed yet
     @Test
     public void sendMessageToQueue() {
         Employee employee = new EmployeeBuilder()
