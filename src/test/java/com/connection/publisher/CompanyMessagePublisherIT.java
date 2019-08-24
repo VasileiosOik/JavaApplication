@@ -5,6 +5,7 @@ import com.connection.domain.Employee;
 import com.connection.mapper.EmployeeBuilder;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -42,6 +43,7 @@ public class CompanyMessagePublisherIT {
     }
 //not completed yet
     @Test
+    @Ignore
     public void sendMessageToQueue() {
         Employee employee = new EmployeeBuilder()
                 .withName("Bill")

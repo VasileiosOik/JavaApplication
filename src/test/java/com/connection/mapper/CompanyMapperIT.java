@@ -45,7 +45,7 @@ public class CompanyMapperIT {
         List<Employee> employees = companyMapper.getAllEmployees();
         LOG.debug("The employees are: {}", employees);
         assertNotNull(employees);
-        assertTrue(!employees.isEmpty());
+        assertFalse(employees.isEmpty());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CompanyMapperIT {
         List<Department> departments = companyMapper.getAllDepartments();
         LOG.debug("The departments are: {}", departments);
         assertNotNull(departments);
-        assertTrue(!departments.isEmpty());
+        assertFalse(departments.isEmpty());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CompanyMapperIT {
         List<Employee> employees = companyMapper.getEmployeesInSpecificDepartment("Technology");
         LOG.debug("The employees in the specific department are: {}", employees);
         assertEquals(3, employees.size());
-        assertTrue(!employees.isEmpty());
+        assertFalse(employees.isEmpty());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class CompanyMapperIT {
         LOG.info("Employees by their manager list: {}", emp);
         assertNotNull(employees);
         assertEquals(2, employees.size());
-        assertTrue(!employees.isEmpty());
+        assertFalse(employees.isEmpty());
         assertEquals("Nigel", employees.get(0).getName());
         assertEquals("Pentland", employees.get(0).getlName());
         assertEquals("Petra", employees.get(1).getName());
@@ -101,9 +101,11 @@ public class CompanyMapperIT {
         List<Employee> employees = companyMapper.getEmployeesByNumOfYearsWorked(20);
         LOG.debug("The employees are: {}", employees);
         assertNotNull(employees);
-        assertEquals(2, employees.size());
+        assertEquals(3, employees.size());
         assertEquals("Kevin", employees.get(0).getName());
-        assertEquals("Withers", employees.get(0).getlName());
+        assertEquals("Tracey", employees.get(1).getName());
+        assertEquals("Matthew", employees.get(2).getName());
+
     }
 
     @Test

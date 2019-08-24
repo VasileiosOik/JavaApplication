@@ -32,7 +32,7 @@
 
 
     <select id="getAllDepartments" resultMap="departmentResults">
-        SELECT *
+        SELECT d.ID, d.NAME
         FROM Department d
     </select>
 
@@ -135,7 +135,7 @@
                 #{department.depName})
     </insert>
 
-    <select id="changeAnEmployeeDepartment" parameterType="String">
+    <select id="changeAnEmployeeDepartment" parameterType="String" resultType="com.connection.domain.Employee">
         SELECT e.id
         FROM Employee e
         WHERE e.FIRST_NAME = #{name}
