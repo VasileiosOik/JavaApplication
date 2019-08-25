@@ -10,7 +10,7 @@ services:
     networks:
       - all
     volumes:
-      - .:/vol/development
+      - /vol/development
     depends_on:
       - mysqldbserver
       - mongodbserver
@@ -40,10 +40,9 @@ services:
       - all
     environment:
       MONGODB_DATABASE: Company
-      MONGODB_HOST: 127.0.0.1
-      MONGODB_PORT: 27018
+      MONGODB_PORT: 27019
     volumes:
-      - ./data/db:/data/db
+      - ./data/db:/var/micro-data/mongodb/data/db
     container_name: mongodbserver
   #The MySQL server
   mysqldbserver:
