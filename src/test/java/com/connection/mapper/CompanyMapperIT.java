@@ -101,10 +101,10 @@ public class CompanyMapperIT {
         List<Employee> employees = companyMapper.getEmployeesByNumOfYearsWorked(20);
         LOG.debug("The employees are: {}", employees);
         assertNotNull(employees);
-        assertEquals(3, employees.size());
+        assertEquals(4, employees.size());
         assertEquals("Kevin", employees.get(0).getName());
         assertEquals("Tracey", employees.get(1).getName());
-        assertEquals("Matthew", employees.get(2).getName());
+        assertEquals("Gary", employees.get(2).getName());
 
     }
 
