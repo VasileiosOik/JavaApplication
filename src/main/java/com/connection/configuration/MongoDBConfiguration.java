@@ -37,6 +37,15 @@ public class MongoDBConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate() {
+        logConfiguration();
         return new MongoTemplate(mongo(), "Company");
+    }
+
+    private void logConfiguration() {
+        log.info("========================= MongoDB Connection =====================");
+        log.info("====== MongoDB url: {}", mongoUrl);
+        log.info("====== MongoDB Port: {}", mongoDBPort);
+        log.info("====== Collection Name: {}", mongoDBName);
+        log.info("===================================================================");
     }
 }
