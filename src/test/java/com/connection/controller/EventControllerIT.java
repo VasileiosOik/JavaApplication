@@ -7,6 +7,7 @@ import com.lordofthejars.nosqlunit.mongodb.MongoDbConfigurationBuilder;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import io.restassured.RestAssured;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,7 @@ import static org.hamcrest.Matchers.is;
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
+@Ignore
 public class EventControllerIT {
 
     private static final String APPLICATION_JSON = "application/json";

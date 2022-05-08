@@ -10,6 +10,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,15 +167,15 @@ public class CompanyControllerIT {
         .then()
                 .log().everything()
                 .statusCode(200)
-                .body("[0].id", equalTo(100002))
-                .body("[0].name", equalTo("Kevin"))
-                .body("[1].id", equalTo(100003))
-                .body("[1].name", equalTo("Tracey"));
+                .body("[0].id", equalTo(100001))
+                .body("[0].name", equalTo("David"))
+                .body("[1].id", equalTo(100002))
+                .body("[1].name", equalTo("Kevin"));
 	}
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/departmentTestData/DepartmentsRemainedExpected.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/departmentTestData/DepartmentsRemainedExpected.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteDepartment_whenExists() {
 
@@ -196,7 +197,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteDepartment_whenDoesNotExists() {
 
@@ -225,7 +226,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAfterDeleting.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAfterDeleting.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteEmployee() {
 		given()
@@ -239,7 +240,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testDeleteEmployee_whenDoesNotExist() {
 		given()
@@ -266,7 +267,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/departmentTestData/DepartmentAfterAdding.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/departmentTestData/DepartmentAfterAdding.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddNewDepartment() throws JsonProcessingException {
 
@@ -281,7 +282,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddNewDepartment_whenIsDuplicate() throws JsonProcessingException {
 
@@ -296,7 +297,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeeAfterAdding.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeeAfterAdding.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddNewEmployee() throws IOException {
 		given()
@@ -310,7 +311,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testAddNewEmployee_employeeExists() throws JsonProcessingException {
 		given()
@@ -324,7 +325,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeeAfterUpdatingDetails.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeeAfterUpdatingDetails.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testUpdateEmployeeJobTitle() throws JsonProcessingException {
 		given()
@@ -339,7 +340,7 @@ public class CompanyControllerIT {
 
 	@Test
 	@DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-	@ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+	@ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
 	@DatabaseTearDown("/departmentTestData/ClearData.xml")
 	public void testUpdateEmployeeJobTitle_whenDoesNotExist() throws JsonProcessingException {
 		given()

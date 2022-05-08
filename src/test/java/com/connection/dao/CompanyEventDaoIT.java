@@ -9,6 +9,7 @@ import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbConfigurationBuilder;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {CompanyEventDao.class, MongoDBConfiguration.class})
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
+@Ignore
 public class CompanyEventDaoIT {
 
     @Autowired

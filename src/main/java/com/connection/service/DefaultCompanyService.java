@@ -8,11 +8,11 @@ import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.connection.publisher.CompanyMessagePublisher;
 import com.connection.validation.EmployeeValidator;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;

@@ -4,7 +4,6 @@ import com.connection.domain.Department;
 import com.connection.domain.Employee;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
-import org.apache.commons.collections.CollectionUtils;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -76,7 +76,7 @@ public class CompanyEventDao {
             mongoTemplate.createCollection(COMPANY);
         }
         Criteria criteria = this.eventsCriteria(fromDate, toDate);
-        Pageable pageable = PageRequest.of(0, 1000, new Sort(Sort.Direction.DESC, CREATED_TIME));
+        Pageable pageable = PageRequest.of(0, 1000, Sort.by(Sort.Direction.DESC, CREATED_TIME));
         Query query = Query.query(criteria).with(pageable);
         List<Map> events = this.mongoTemplate.find(query, Map.class, COMPANY);
         LOG.debug("The events are: {}", events);

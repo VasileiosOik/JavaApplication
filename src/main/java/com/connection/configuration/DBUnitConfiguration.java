@@ -6,6 +6,7 @@ import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import javax.sql.DataSource;
 
 
@@ -23,9 +24,12 @@ public class DBUnitConfiguration {
     public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection() {
         DatabaseConfigBean bean = new DatabaseConfigBean();
         bean.setDatatypeFactory(new MySqlDataTypeFactory());
+        bean.setQualifiedTableNames(Boolean.TRUE);
+
 
         DatabaseDataSourceConnectionFactoryBean dbConnectionFactory = new DatabaseDataSourceConnectionFactoryBean(dataSource);
         dbConnectionFactory.setDatabaseConfig(bean);
+     //   dbConnectionFactory.setSchema("testdb2");
         return dbConnectionFactory;
     }
 }

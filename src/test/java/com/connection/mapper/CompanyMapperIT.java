@@ -8,6 +8,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -101,16 +102,16 @@ public class CompanyMapperIT {
         List<Employee> employees = companyMapper.getEmployeesByNumOfYearsWorked(20);
         LOG.debug("The employees are: {}", employees);
         assertNotNull(employees);
-        assertEquals(4, employees.size());
-        assertEquals("Kevin", employees.get(0).getName());
-        assertEquals("Tracey", employees.get(1).getName());
-        assertEquals("Gary", employees.get(2).getName());
+        assertEquals(5, employees.size());
+        assertEquals("David", employees.get(0).getName());
+        assertEquals("Kevin", employees.get(1).getName());
+        assertEquals("Tracey", employees.get(2).getName());
 
     }
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/employeeTestData/ChangeEmployeeTitle.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/ChangeEmployeeTitle.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testChangeEmployeeJobTitle() {
         companyMapper.changeEmployeeJobTitle("John", "Smith", "Developer");
@@ -118,7 +119,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/employeeTestData/RemovedEmployeesExpected.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/RemovedEmployeesExpected.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testRemoveEmployee() {
         int removeEmployee = companyMapper.removeEmployee(100008);
@@ -127,7 +128,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeesAndDepartmentsFilled.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testRemoveEmployeeThatDoesNotExist() {
         int removeEmployee = companyMapper.removeEmployee(1);
@@ -136,7 +137,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/departmentTestData/DepartmentsRemainedExpected.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/departmentTestData/DepartmentsRemainedExpected.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testRemoveDepartment() {
         companyMapper.updateEmployeeDataBeforeDeleteOfDepartment("Sales");
@@ -145,7 +146,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/employeeTestData/updateAnEmployee.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/updateAnEmployee.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void updateAnEmployee() {
         Employee employee = new EmployeeBuilder().withJobTitle("Senior Analyst")
@@ -157,7 +158,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/employeeTestData/EmployeeAfterAdding.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/employeeTestData/EmployeeAfterAdding.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testAddEmployee() {
         companyMapper.addEmployee(getEmployee());
@@ -168,7 +169,7 @@ public class CompanyMapperIT {
 
     @Test
     @DatabaseSetup("/employeeTestData/EmployeesAndDepartmentsFilled.xml")
-    @ExpectedDatabase("/departmentTestData/DepartmentAfterAdding.xml")
+    @ExpectedDatabase(assertionMode= DatabaseAssertionMode.NON_STRICT, value = "/departmentTestData/DepartmentAfterAdding.xml")
     @DatabaseTearDown("/departmentTestData/ClearData.xml")
     public void testAddDepartment() {
         companyMapper.addDepartment(getDepartment());
