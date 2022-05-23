@@ -12,11 +12,17 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import io.restassured.RestAssured;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,9 +40,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class, DirtiesContextTestExecutionListener.class})
+@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class CompanyControllerIT {
 
 	private static final String APPLICATION_JSON = "application/json";
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@LocalServerPort
 	private int port;
@@ -45,6 +55,11 @@ public class CompanyControllerIT {
 	public void setUp() {
 
 		RestAssured.port = port;
+	}
+
+	@After
+	public void tearUp() {
+		mongoTemplate.remove(new Query(), "Company");
 	}
 
 	@Test

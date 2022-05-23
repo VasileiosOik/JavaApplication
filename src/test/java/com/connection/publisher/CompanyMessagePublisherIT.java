@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -23,6 +25,8 @@ import java.time.Month;
 @SpringBootTest(classes = Application.class)
 @TestPropertySource(locations = "classpath:test.properties")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
+@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
+@Ignore
 public class CompanyMessagePublisherIT {
 
     @Autowired
@@ -41,9 +45,8 @@ public class CompanyMessagePublisherIT {
     public void clearUp() {
         amqpAdmin.purgeQueue("man.queue", false);
     }
-//not completed yet
+
     @Test
-    @Ignore
     public void sendMessageToQueue() {
         Employee employee = new EmployeeBuilder()
                 .withName("Bill")

@@ -71,7 +71,7 @@ public class CompanyEventDao {
         LOG.debug("The employee document has been added successfully");
     }
 
-    public ResponseEntity<Object> getEventsBetweenDates(LocalDate fromDate, LocalDate toDate) {
+    public ResponseEntity<Object> getEventsBetweenDates(Date fromDate, Date toDate) {
         if (!mongoTemplate.collectionExists(COMPANY)) {
             mongoTemplate.createCollection(COMPANY);
         }
@@ -87,7 +87,7 @@ public class CompanyEventDao {
         }
     }
 
-    private Criteria eventsCriteria(LocalDate fromDate, LocalDate toDate) {
+    private Criteria eventsCriteria(Date fromDate, Date toDate) {
         Criteria criteria = new Criteria();
 
         if (null != fromDate && null != toDate) {

@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/event")
@@ -29,15 +30,15 @@ public class EventController {
             @ApiResponse(code = 404, message = "No content to display")})
     @GetMapping(value = "/getEvents", produces = "application/json")
     public ResponseEntity<Object> getAllEventsBetweenDates(@RequestParam(name = "fromDate") String fromDate, @RequestParam(name = "toDate") String toDate) {
-        LocalDate fromDateParsed = parseDate(fromDate);
-        LocalDate toDateParsed = parseDate(toDate);
+        Date fromDateParsed = parseDate(fromDate);
+        Date toDateParsed = parseDate(toDate);
         return companyEventDao.getEventsBetweenDates(fromDateParsed, toDateParsed);
     }
 
-    private LocalDate parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private Date parseDate(String date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return date != null ? LocalDate.parse(date, formatter) : null;
+            return date != null ? format.parse(date) : null;
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
